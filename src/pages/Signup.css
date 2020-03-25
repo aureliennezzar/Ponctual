@@ -8,6 +8,11 @@ body {
 .login{
     display: block;
 }
+.brandTitle{
+    font-size: 5rem;
+    color: white;
+    text-align: center;
+}
 .loginPanel {
     width: 400px;
     padding: 40px;

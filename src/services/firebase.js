@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-var firebaseConfig = {
+var config = {
     apiKey: "AIzaSyAGOyjkk8bS2cTccYyoKXbUKtE2T1t0LeU",
     authDomain: "ponctual-fbaf7.firebaseapp.com",
     databaseURL: "https://ponctual-fbaf7.firebaseio.com",
