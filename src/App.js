@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classRoom from './component/classRoom'
 import {
   Route,
   BrowserRouter as Router,
@@ -12,9 +13,11 @@ function App() {
       <div className="App">
         <Switch>
           <Route exact path="/" component={Login} />
+          <Route path="/aurelienbg" component={classRoom} />
         </Switch>
       </div>
     </Router>
+
   );
 }
 
