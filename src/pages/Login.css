@@ -1,0 +1,71 @@
+body {
+    background: url('background2.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.login{
+    display: block;
+}
+.brandTitle{
+    font-size: 5rem;
+    color: white;
+    text-align: center;
+}
+.loginPanel {
+    width: 400px;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(63, 63, 75, 0.527);
+    text-align: center;
+    border-radius: 5%;
+}
+
+.loginPanel h1 {
+    color: white;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.inputs {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #3498db;
+    padding: 14px 10px;
+    width: 200px;
+    outline: none;
+    color: #fff;
+    border-radius: 24px;
+    transition: 0.25s;
+}
+
+.inputs:focus {
+    width: 280px;
+    border-color: #2ecc71;
+}
+
+.loginBtn {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #2ecc71;
+    padding: 14px 40px;
+    outline: none;
+    color: #fff;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.loginBtn:hover {
+    background: #2ecc71;
+}
