@@ -1,6 +1,5 @@
 import React from 'react';
 import Login from './pages/Login'
-// import firebase from 'services/firebase';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
