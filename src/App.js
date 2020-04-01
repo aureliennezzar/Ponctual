@@ -6,9 +6,8 @@ import {
   Redirect,
 } from "react-router-dom";
 import ControlPanel from './pages/ControlPanel';
-import Login from "./pages/Login"
+import Login from "./pages/Login2"
 import Signup from "./pages/Signup"
-import Home from "./pages/Home"
 import { auth } from './services/firebase';
 
 function PrivateRoute({ component: Component, authenticated, ...rest }) {
@@ -59,7 +58,8 @@ class App extends Component {
     return this.state.loading === true ? <h2>Loading...</h2> : (
       <Router>
         <Switch>
-          <Route exact path="/" component={Home}></Route>
+          {/* <Route exact path="/" component={Login}></Route> */}
+          <PublicRoute exact path="/" authenticated={this.state.authenticated} component={Login}></PublicRoute>
           <PrivateRoute path="/controlpanel" authenticated={this.state.authenticated} component={ControlPanel}></PrivateRoute>
           <PublicRoute path="/signup" authenticated={this.state.authenticated} component={Signup}></PublicRoute>
           <PublicRoute path="/login" authenticated={this.state.authenticated} component={Login}></PublicRoute>
