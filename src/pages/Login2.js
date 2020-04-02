@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import { Link, useParams } from "react-router-dom";
 import {signin} from "../components/auth";
 import './Login.css'
+import { translateError } from '../scripts/authApiErrors'
 
 export default class Login extends Component {
     constructor(props) {
@@ -25,11 +26,13 @@ export default class Login extends Component {
         try {
             await signin(this.state.email, this.state.password);
         } catch (error) {
-            if(error.code === "auth/user-not-found"){
-                let message = "Vous avez rentré un mauvais email ou mot de passe. Veuillez réessayer."
-                this.setState({ error: message });
+            //Traduit l'erreur
+            if(translateError(error.code).length>0){
+                //Affichage erreur traduite a l'utilisateur
+                this.setState({ error: translateError(error.code) });
             }else{
-                this.setState({ error: error.message });
+                //Affichage erreur dans la console si cela ne peut pas etre traduit
+                console.log(error.message);
             }
         }
     }
