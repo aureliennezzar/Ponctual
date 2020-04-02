@@ -1,0 +1,20 @@
+body{
+    font-family: sans-serif;
+}
+
+nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 10vh;
+    background:  rgb(63, 63, 75);
+    color: white;
+}
+.navLinks{
+    display: flex;
+    width: 50%;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+
+}

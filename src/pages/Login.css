@@ -1,9 +1,16 @@
 body {
-    background: url('background3.png') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    height: 100%;
+    margin: 0;
+}
+.bdImage{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url('background3.png') no-repeat center center fixed;
 }
 .login{
     display: block;
