@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import Nav from "../components/Nav"
-import "./ControlPanel.css"
-import { auth } from "../services/firebase"
+import Nav from "../../components/Nav"
+import "./UI.css"
 
-export default class ControlPanel extends Component {
+export default class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +19,10 @@ export default class ControlPanel extends Component {
       <div>
         <Nav />
         <div className="home">
-          <h1>Panneau de configuration</h1>
+          <h1>Panneau de controle admin</h1>
+          <form>
+
+          </form>
         </div>
       </div>
     )

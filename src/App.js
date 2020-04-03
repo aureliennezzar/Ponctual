@@ -1,35 +1,16 @@
 import React, { Component } from 'react';
 import {
-  Route,
   BrowserRouter as Router,
-  Switch,
-  Redirect,
+  Switch
 } from "react-router-dom";
-import ControlPanel from './pages/ControlPanel';
+import { auth } from "./services/firebase";
+import { setUserRole } from "./scripts/setUserRole";
+import { PublicRoute } from "./routes/PublicRoute"
+import { PrivateRoute } from "./routes/PrivateRoute"
+import Admin from "./pages/UI/admin";
+import Student from "./pages/UI/student";
+import Teacher from "./pages/UI/teacher";
 import Login from "./pages/Login"
-import Signup from "./pages/Signup"
-import { auth } from './services/firebase';
-
-function PrivateRoute({ component: Component, authenticated, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authenticated === true
-        ? <Component {...props} />
-        : <Redirect to={{ pathname: '/', state: { from: props.location } }} />}
-    />
-  )
-}
-function PublicRoute({ component: Component, authenticated, ...rest }) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authenticated === false
-        ? <Component {...props} />
-        : <Redirect to='/ControlPanel' />}
-    />
-  )
-}
 
 class App extends Component {
   constructor(props) {
@@ -37,16 +18,16 @@ class App extends Component {
     this.state = {
       authenticated: false,
       loading: true,
-      user: null
+      user: null,
+      userRole: null
     };
   }
+
   componentDidMount() {
     auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log(user)
+        setUserRole(user.email, this)
         this.setState({
-          authenticated: true,
-          loading: false,
           user: user
         });
       } else {
@@ -63,10 +44,10 @@ class App extends Component {
       <div >
         <Router>
           <Switch>
-            {/* <Route exact path="/" component={Login}></Route> */}
-            <PublicRoute exact path="/" authenticated={this.state.authenticated} component={Login}></PublicRoute>
-            <PrivateRoute path="/controlpanel" authenticated={this.state.authenticated} component={ControlPanel} ></PrivateRoute>
-            <PublicRoute path="/signup" authenticated={this.state.authenticated} component={Signup}></PublicRoute>
+            <PublicRoute exact path="/" authenticated={this.state.authenticated} component={Login} userRole={this.state.userRole}></PublicRoute>
+            <PrivateRoute path="/admin" authenticated={this.state.authenticated} component={Admin} userRole={this.state.userRole} userInfo={this.state.userInfo}></PrivateRoute>
+            <PrivateRoute path="/student" authenticated={this.state.authenticated} component={Student} userRole={this.state.userRole} userInfo={this.state.userInfo}></PrivateRoute>
+            <PrivateRoute path="/teacher" authenticated={this.state.authenticated} component={Teacher} userRole={this.state.userRole}></PrivateRoute>
           </Switch>
         </Router>
       </div>
