@@ -16,12 +16,9 @@ export default class Student extends Component {
   }
   render() {
     return (
-      <div>
-        <Nav userInfo={this.props.userInfo}/>
-        <div className="home">
+        <div>
           <h1>Panneau de controle eleve</h1>
         </div>
-      </div>
     )
   }
 }

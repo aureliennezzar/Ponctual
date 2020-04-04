@@ -1,7 +1,11 @@
 import React, { Component } from "react";
+import Nav from "../../components/Nav"
+import Admin from "admin";
+import Student from "student";
+import Teacher from "teacher";
 import "./UI.css"
 
-export default class Admin extends Component {
+export default class Panel extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,12 +19,10 @@ export default class Admin extends Component {
   }
   render() {
     return (
-        <div>
-          <h1>Panneau de controle admin</h1>
-          <form>
+      <div>
+        <Nav userInfo={this.props.userInfo}/>
 
-          </form>
-        </div>
+      </div>
     )
   }
 }

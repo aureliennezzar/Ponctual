@@ -16,12 +16,9 @@ export default class Teacher extends Component {
   }
   render() {
     return (
-      <div>
-        <Nav />
-        <div className="home">
+        <div>
           <h1>Panneau de controle formateur</h1>
         </div>
-      </div>
     )
   }
 }

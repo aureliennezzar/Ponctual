@@ -4,13 +4,13 @@ import {
     Redirect,
   } from "react-router-dom";
   
-export function PublicRoute({ component: Component, authenticated, role, ...rest }) {
+export function PublicRoute({ component: Component, authenticated, ...rest }) {
   return (
     <Route
       {...rest}
       render={(props) => authenticated === false
         ? <Component {...props} />
-        : <Redirect to={{ pathname: role }} />}
+        : <Redirect to={{ pathname: "/panel" }} />}
     />
   )
 }
