@@ -15,7 +15,6 @@ export function PrivateRoute({ component: Component, authenticated, ...rest }) {
             return <Redirect to={{ pathname: '/', state: { from: props.location } }} />
           }
           // authorised so return component
-          {console.log(rest.userInfo)}
           return <Component {...props} userInfo={rest.userInfo}/>
   
         }} />

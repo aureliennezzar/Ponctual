@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import "./UI.css"
 
-export default class Admin extends Component {
+export default class Student extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,10 +15,7 @@ export default class Admin extends Component {
   render() {
     return (
         <div>
-          <h1>Panneau de controle admin</h1>
-          <form>
-
-          </form>
+          <h1>Panneau de controle eleve</h1>
         </div>
     )
   }

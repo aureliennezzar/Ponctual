@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import Nav from "../../components/Nav"
-import "./UI.css"
 
-export default class Teacher extends Component {
+export default class Admin extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +15,10 @@ export default class Teacher extends Component {
   render() {
     return (
         <div>
-          <h1>Panneau de controle formateur</h1>
+          <h1>Panneau de controle admin</h1>
+          <form>
+
+          </form>
         </div>
     )
   }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import { Link, useParams } from "react-router-dom";
-import { signin } from "../components/auth";
+import { signin } from "../scripts/auth";
 import './Login.css'
 import { translateError } from '../scripts/authApiErrors'
 
@@ -48,7 +48,7 @@ export default class Login extends Component {
                 </h1>
                     <p>Remplir ici afin de vous connecter</p>
                     <div>
-                        <input className="inputs" placeholder="Email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2, 4}?" onChange={this.handleChange} value={this.state.email} type="email" />
+                        <input className="inputs" placeholder="Email" name="email" pattern="[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$" onChange={this.handleChange} value={this.state.email} type="email" />
                     </div>
                     <div>
                         <input className="inputs" placeholder="Mot de passe" name="password" onChange={this.handleChange} value={this.state.password} type="password" />

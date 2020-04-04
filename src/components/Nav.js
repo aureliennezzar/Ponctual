@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import { signOut } from "../components/auth";
-import { storage, storageRef } from "../services/firebase";
+import { signOut } from "../scripts/auth";
+import { storageRef } from "../services/firebase";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 // import "./Nav.css"
@@ -14,7 +14,7 @@ class Nav extends Component {
     setImage = (uid) => {
         const profilePictureRef = storageRef.child(`${uid}/profile_64x64.jpg`);
         profilePictureRef.getDownloadURL().then((url) =>{
-            this.setState({imageComponent: <img src={url} style={{borderRadius: '50%',cursor: "pointer"}} alt="Photo de profile"/>})
+            this.setState({imageComponent: <img src={url} style={{borderRadius: '50%',cursor: "pointer"}} alt={url}/>})
         }).catch(function (error) {
         });
     }

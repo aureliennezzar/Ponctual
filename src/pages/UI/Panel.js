@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Nav from "../../components/Nav"
-import Admin from "./admin";
-import Student from "./student";
-import Teacher from "./teacher";
+import Admin from "./roles/admin";
+import Student from "./roles/student";
+import Teacher from "./roles/teacher";
 import "./UI.css"
 
 export default class Panel extends Component {
