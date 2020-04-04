@@ -19,7 +19,7 @@ class App extends Component {
       authenticated: false,
       loading: true,
       user: null,
-      userRole: null
+      role: null
     };
   }
 
@@ -44,10 +44,10 @@ class App extends Component {
       <div >
         <Router>
           <Switch>
-            <PublicRoute exact path="/" authenticated={this.state.authenticated} component={Login} userRole={this.state.userRole}></PublicRoute>
-            <PrivateRoute path="/admin" authenticated={this.state.authenticated} component={Admin} userRole={this.state.userRole} userInfo={this.state.userInfo}></PrivateRoute>
-            <PrivateRoute path="/student" authenticated={this.state.authenticated} component={Student} userRole={this.state.userRole} userInfo={this.state.userInfo}></PrivateRoute>
-            <PrivateRoute path="/teacher" authenticated={this.state.authenticated} component={Teacher} userRole={this.state.userRole}></PrivateRoute>
+            <PublicRoute exact path="/" authenticated={this.state.authenticated} component={Login} role={this.state.role}></PublicRoute>
+            <PrivateRoute path="/admin" authenticated={this.state.authenticated} component={Admin} role={this.state.role} userInfo={this.state.userInfo}></PrivateRoute>
+            <PrivateRoute path="/student" authenticated={this.state.authenticated} component={Student} role={this.state.role} userInfo={this.state.userInfo}></PrivateRoute>
+            <PrivateRoute path="/teacher" authenticated={this.state.authenticated} component={Teacher} role={this.state.role}></PrivateRoute>
           </Switch>
         </Router>
       </div>
