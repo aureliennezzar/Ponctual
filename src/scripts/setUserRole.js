@@ -12,25 +12,23 @@ export const setUserRole = (userDoc, app) => {
         classe,
         telephone,
         profilepic,
+        role,
         status
       }
       app.setState({
         authenticated: true,
         loading: false,
-        role,
         userInfo
         });
     } else {
       app.setState({
         loading: false,
-        role: null
       });
       console.log("No such document!");
     }
   }).catch(function (error) {
     app.setState({
       loading: false,
-      role: null
     });
     console.log("Error getting document:", error);
   });

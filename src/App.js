@@ -7,9 +7,7 @@ import { auth } from "./services/firebase";
 import { setUserRole } from "./scripts/setUserRole";
 import { PublicRoute } from "./routes/PublicRoute"
 import { PrivateRoute } from "./routes/PrivateRoute"
-import Admin from "./pages/UI/admin";
-import Student from "./pages/UI/student";
-import Teacher from "./pages/UI/teacher";
+import Panel from "./pages/UI/Panel";
 import Login from "./pages/Login"
 
 class App extends Component {
@@ -45,9 +43,7 @@ class App extends Component {
         <Router>
           <Switch>
             <PublicRoute exact path="/" authenticated={this.state.authenticated} component={Login} role={this.state.role}></PublicRoute>
-            <PrivateRoute path="/admin" authenticated={this.state.authenticated} component={Admin} role={this.state.role} userInfo={this.state.userInfo}></PrivateRoute>
-            <PrivateRoute path="/student" authenticated={this.state.authenticated} component={Student} role={this.state.role} userInfo={this.state.userInfo}></PrivateRoute>
-            <PrivateRoute path="/teacher" authenticated={this.state.authenticated} component={Teacher} role={this.state.role}></PrivateRoute>
+            <PrivateRoute path="/panel" authenticated={this.state.authenticated} component={Panel} role={this.state.role} userInfo={this.state.userInfo}></PrivateRoute>
           </Switch>
         </Router>
       </div>
