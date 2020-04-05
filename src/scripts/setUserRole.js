@@ -1,10 +1,10 @@
-import { db } from '../services/firebase';
-export const setUserRole = (userDoc, app) => {
+import { db } from './services/firebase';
+export const setUserRole = (userDoc, state, setState) => {
   const docRef = db.collection('users').doc(userDoc);
 
   docRef.get().then((doc) => {
     if (doc.exists) {
-      const {nom, prenom, email, classe, telephone, profilepic, status, role} = doc.data();
+      const { nom, prenom, email, classe, telephone, profilepic, status, role } = doc.data();
       const userInfo = {
         nom,
         prenom,
@@ -15,21 +15,24 @@ export const setUserRole = (userDoc, app) => {
         role,
         status
       }
-      app.setState({
+      setState({
+        ...state,
+        userInfo,
         authenticated: true,
-        loading: false,
-        userInfo
-        });
+        loading: false
+      })
     } else {
-      app.setState({
-        loading: false,
-      });
+      setState({
+        ...state,
+        loading: false
+      })
       console.log("No such document!");
     }
   }).catch(function (error) {
-    app.setState({
-      loading: false,
-    });
+    setState({
+      ...state,
+      loading: false
+    })
     console.log("Error getting document:", error);
   });
 }
