@@ -36,7 +36,7 @@ const App = (props) => {
       }
     })
   }, []);
-  const {authenticated, loading, user, role, userInfo} = state;
+  const {authenticated, loading, role, userInfo} = state;
 
   return loading === true ? <h2>Loading...</h2> : (
     <div >

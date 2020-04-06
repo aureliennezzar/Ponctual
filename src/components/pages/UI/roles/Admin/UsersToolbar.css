@@ -1,0 +1,31 @@
+.toolbar {
+    display: flex;
+    width: 95%;
+    height: 8%;
+    border-bottom: 3px black solid;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.addBtn{
+    height: 65%;
+    margin-right: 3%;
+    float: right;
+    cursor: pointer;
+    color: black;
+    transition: .2s;
+    line-height: 40%;
+}
+.addBtn:hover{
+    color: rgb(74, 196, 69);
+    transition: .2s;
+}
+.addBtn:active{
+    height: 45%;
+    color: rgb(74, 196, 69);
+    transition: .2s;
+}
+
+.toolTitle{
+    margin-left: 3%;
+}

@@ -1,6 +1,6 @@
 import { auth } from "./services/firebase";
 
-export function signup(email, password) {
+export async function signup(email, password) {
     return auth().createUserWithEmailAndPassword(email, password);
 }
 

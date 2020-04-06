@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../../../components/Nav"
-import Admin from "./roles/admin";
-import Student from "./roles/student";
-import Teacher from "./roles/teacher";
+import Admin from "./roles/Admin/Admin";
+import Student from "./roles/Student/Student";
+import Teacher from "./roles/Teacher/Teacher";
 import "./UI.css"
 
 const Panel = props => {
