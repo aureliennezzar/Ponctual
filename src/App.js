@@ -10,6 +10,7 @@ import { PrivateRoute } from "./components/routes/PrivateRoute"
 import Panel from "./components/pages/UI/Panel";
 import Login from "./components/pages/Login"
 
+
 const App = (props) => {
   const [state, setState] = useState({
     authenticated: false,
@@ -21,7 +22,7 @@ const App = (props) => {
   useEffect(() => {
     auth().onAuthStateChanged((user) => {
       if (user) {
-        setUserRole(user.email, state, setState);
+        setUserRole(user.uid, state, setState);
         setState({
           ...state,
           user

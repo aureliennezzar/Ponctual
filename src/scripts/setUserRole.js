@@ -4,13 +4,9 @@ export const setUserRole = (userDoc, state, setState) => {
 
   docRef.get().then((doc) => {
     if (doc.exists) {
-      const { nom, prenom, email, classe, telephone, profilepic, status, role } = doc.data();
+      const { classe,  profilepic, status, role } = doc.data();
       const userInfo = {
-        nom,
-        prenom,
-        email,
         classe,
-        telephone,
         profilepic,
         role,
         status

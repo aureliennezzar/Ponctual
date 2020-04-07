@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import UsersToolbar from "./UsersToolbar"
 import UsersList from "./UsersList"
 import CreateUser from "./CreateUser"

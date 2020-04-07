@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import RadioButtonContext from "./RadioButtonContext"
-import SelectContext from "./SelectContext"
+import RadioButtonContext from "./Contexts/RadioButtonContext"
+import SelectContext from "./Contexts/SelectContext"
 
 const RadioButtons = () => {
     const [selectedOption, setSelectedOption] = useState('student');

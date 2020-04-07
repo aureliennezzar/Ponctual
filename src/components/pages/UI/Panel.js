@@ -5,7 +5,7 @@ import Student from "./roles/Student/Student";
 import Teacher from "./roles/Teacher/Teacher";
 import "./UI.css"
 
-const Panel = props => {
+const Panel = (props) => {
   const [panel, setPanel] = useState(null)
   useEffect(() => {
     document.body.style.background = "white";

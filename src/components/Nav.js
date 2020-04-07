@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import { signOut } from "../scripts/auth";
+import { auth } from "../scripts/services/firebase";
 import { storageRef } from "../scripts/services/firebase";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
@@ -9,9 +10,13 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 const Nav = props => {
     const [state, setState] = useState({
         imageComponent: <FontAwesomeIcon icon={faUserCircle} size="4x" />,
-        loading: true
+        loading: true,
+        uid: null,
+        displayName: null
     })
-    const {loading, imageComponent} = state;
+    const { loading, imageComponent, uid, displayName } = state;
+    const user = auth().currentUser;
+
     const setImage = uid => {
         const profilePictureRef = storageRef.child(`${uid}/profile_64x64.jpg`);
         profilePictureRef.getDownloadURL().then((url) => {
@@ -21,14 +26,23 @@ const Nav = props => {
     }
     const navStyle = {
         color: 'white'
-    }
-    const { nom, prenom, email, profilepic } = props.userInfo;
-    if (profilepic && loading) setImage(email);
+    };
+    const { profilepic } = props.userInfo;
+    if (profilepic && loading) setImage(uid);
+
+    useEffect(()=>{
+        setState({
+            ...state,
+            uid: user.uid,
+            displayName: user.displayName
+        })
+    },[]);
+    
     return (
         <nav>
             <h3>Burger</h3>
             <ul className="navLinks">
-                <li>{`${nom} ${prenom}`}</li>
+                <li>{`${displayName}`}</li>
 
                 {imageComponent}
 
