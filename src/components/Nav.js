@@ -11,11 +11,14 @@ const Nav = props => {
     const [state, setState] = useState({
         imageComponent: <FontAwesomeIcon icon={faUserCircle} size="4x" />,
         loading: true,
-        uid: null,
-        displayName: null
     })
-    const { loading, imageComponent, uid, displayName } = state;
     const user = auth().currentUser;
+    const { loading, imageComponent } = state;
+    const { profilepic } = props.userInfo;
+
+    useEffect(() => {
+        if (profilepic && loading) setImage(user.uid);
+    }, []);
 
     const setImage = uid => {
         const profilePictureRef = storageRef.child(`${uid}/profile_64x64.jpg`);
@@ -24,25 +27,17 @@ const Nav = props => {
         }).catch(function (error) {
         });
     }
+
+
+
     const navStyle = {
         color: 'white'
     };
-    const { profilepic } = props.userInfo;
-    if (profilepic && loading) setImage(uid);
-
-    useEffect(()=>{
-        setState({
-            ...state,
-            uid: user.uid,
-            displayName: user.displayName
-        })
-    },[]);
-    
     return (
         <nav>
             <h3>Burger</h3>
             <ul className="navLinks">
-                <li>{`${displayName}`}</li>
+                <li>{`${user.displayName}`}</li>
 
                 {imageComponent}
 

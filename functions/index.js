@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const nodemailer = require('nodemailer');
 const FieldValue = require('firebase-admin').firestore.FieldValue;
 
 admin.initializeApp();
@@ -35,7 +36,7 @@ function roleIsValid(role) {
 
 exports.createUser = functions.https.onCall(async (data, context) => {
     try {
-        const { firstName, lastName, password, email, classe, role} = data
+        const { firstName, lastName, email, password, classe, role } = data;
 
         //Checking that the user calling the Cloud Function is authenticated
         if (!context.auth) {
@@ -58,6 +59,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
         const userCreationRequest = {
             userDetails: data,
             status: 'Pending',
+            password,
             createdBy: callerUid,
             createdOn: FieldValue.serverTimestamp()
         }
@@ -94,9 +96,17 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             profilpic: false,
             role
         });
+        await admin.firestore().collection("tempoSendEmail").doc(userId).set({
+            email,
+            lastName,
+            firstName,
+            password,
+            role
+        })
+        await admin.firestore().collection("tempoSendEmail").doc(userId).delete()
+        
 
         await userCreationRequestRef.update({ status: 'Treated' });
-
         return { result: 'The new user has been successfully created.' };
 
 
@@ -124,3 +134,72 @@ exports.assignAdminClaim = functions.firestore
 
         return admin.auth().setCustomUserClaims('uid', claims);
     });
+
+/**
+* Here we're using Gmail to send 
+*/
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'noreply.ponctual@gmail.com',
+        pass: 't2)G96f<Rw%C5,Ky2'
+    }
+});
+
+
+function sendEmailTrigger(emailData) {
+    // 5. Send welcome email to new users
+
+    const { email, password, firstName, lastName, role } = emailData;
+
+    const mailOptions = {
+        from: 'Ponctual <noreply.ponctual@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
+        to: email,
+        subject: 'Initialisation du mot de passe', // email subject
+        html: `<p style="font-size: 16px;">Bonjour, ${firstName} ${lastName} et bienvenue dans l'équipe en tant que ${role}</p>
+            <br /><p style="font-size: 16px;">Voici votre mot de passe : ${password}</p>
+            <br /><p style="font-size: 16px;">Utiliser le afin de vous connecter et de le changer</p>
+        `
+    };
+    // 6. Process the sending of this email via nodemailer
+    return transporter.sendMail(mailOptions)
+        .then(() => {
+            console.log('Email sent ! ')
+        })
+        .catch(e => {
+            console.log('Error sending email!')
+        });
+}
+
+exports.sendMail = functions.firestore
+    .document('tempoSendEmail/{tempoId}')
+    .onCreate((snap, context) => {
+        const user = snap.data()
+        return sendEmailTrigger(user);
+    });
+
+// exports.sendEmail = functions.https.onRequest((req, res) => {
+//     cors(req, res, () => {
+
+//         // getting dest email by query string
+//         const dest = req.query.dest;
+
+//         const mailOptions = {
+//             from: 'Ponctual <noreply.ponctual@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
+//             to: email,
+//             subject: 'Initialisation du mot de passe', // email subject
+//             html: `<p style="font-size: 16px;">Bonjour, ${firstName} ${lastName} et bienvenue dans l'équipe en tant que ${role}</p>
+//                 <br /><p style="font-size: 16px;">Voici votre mot de passe : ${password}</p>
+//                 <br /><p style="font-size: 16px;">Utiliser le afin de vous connecter et de le changer</p>
+//             `
+//         };
+
+//         // returning result
+//         return transporter.sendMail(mailOptions, (erro, info) => {
+//             if(erro){
+//                 return res.send(erro.toString());
+//             }
+//             return res.send('Sended');
+//         });
+//     });    
+// });

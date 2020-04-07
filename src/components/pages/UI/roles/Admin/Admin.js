@@ -19,7 +19,7 @@ const Admin = props => {
         </div>
         <div className="right">
 
-          <h1>Gestion des classe</h1>
+          <h1>Gestion des classes</h1>
 
         </div>
       </div>

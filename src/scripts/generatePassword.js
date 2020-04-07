@@ -1,1 +1,0 @@
-export const Password = (length) => new Array(length).fill().map(() => String.fromCharCode(Math.random()*86+40)).join("")

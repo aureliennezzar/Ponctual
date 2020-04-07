@@ -1,18 +1,17 @@
 import { auth } from "./services/firebase";
-import { Password } from "../scripts/generatePassword";
 import firebase from 'firebase';
 
+const Password = (length) => new Array(length).fill().map(() => String.fromCharCode(Math.random() * 86 + 40)).join("")
 export async function signup(email, lname, fname, role, classe) {
-    let password = Password(16);
-    console.log(password)
 
-    let createUser = firebase.functions().httpsCallable('createUser');
-
-    let user = {
+    const createUser = firebase.functions().httpsCallable('createUser');
+    const sendMail = firebase.functions().httpsCallable('sendMail');
+    const password = Password(16)
+    const user = {
         firstName: fname,
         lastName: lname,
-        password,
         email,
+        password,
         classe,
         role
     };
@@ -23,10 +22,10 @@ export async function signup(email, lname, fname, role, classe) {
             console.log(resp.data.result);
         })
         .catch(function (error) {
-            let code = error.code;
-            let message = error.message;
+            const code = error.code;
+            const message = error.message;
             //Display error
-            console.log(message,code);
+            console.log("Error creating user",message,code);
 
         });
 }
