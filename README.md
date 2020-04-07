@@ -25,8 +25,8 @@ Un administrateur créer les comptes Eleves, Formateurs et Administrateurs.
 
 [BETA] Compte administrateur du projet :
 
-    - Email : admin@ponctual.fr
-    - Mot de passe : F-cM5c9XIx7_IXwB
+    Email : admin@ponctual.fr
+    Mot de passe : F-cM5c9XIx7_IXwB
 
 # Ponctual [ENG]
 Ponctual is a management application allowing, as a student, trainer or administrator of a school to report on school life simply and quickly. Thus it is possible for the trainer to take note of their courses and manage the punctuality of his students, these data are accessible by the trainer, the administrator and the student himself.
@@ -55,7 +55,7 @@ An administrator create the Students, Teachers and Administrators accounts.
 
 [BETA] Project administrator account:
 
-    - Email: admin@ponctual.fr
-    - Password: F-cM5c9XIx7_IXwB
+    Email: admin@ponctual.fr
+    Password: F-cM5c9XIx7_IXwB
 
 
