@@ -22,7 +22,9 @@ npm start
 
 ### Comment se connecter à Ponctual
 Un administrateur créer les comptes Eleves, Formateurs et Administrateurs.
-[BETA] Compte administrateur du projet :
+
+[BETA]Compte administrateur du projet :
+
     - Email : admin@ponctual.fr
     - Mot de passe : F-cM5c9XIx7_IXwB
 
