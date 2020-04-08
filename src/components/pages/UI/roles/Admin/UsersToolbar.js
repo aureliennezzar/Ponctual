@@ -10,7 +10,7 @@ const UsersToolbar = props => {
 
     }, [])
     const handleClick = (event) => {
-        alert('good')
+        props.setUserCreation(true)
     }
     return (
         <div className="toolbar">

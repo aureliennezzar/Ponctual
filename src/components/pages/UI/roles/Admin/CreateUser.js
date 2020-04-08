@@ -39,7 +39,7 @@ const CreateUser = props => {
             fname: "",
             email: ""
         })
-        // signup(email, lname, fname, role, selectValue);
+        signup(email, lname, fname, role, selectValue);
 
     }
 
@@ -49,22 +49,30 @@ const CreateUser = props => {
             [event.target.name]: event.target.value
         });
     }
+    const handleClick = (event) => {
+        props.setUserCreation(false)
+    }
     return (
-        <SelectContext.Provider value={SelectContextValue}>
-            <RadioButtonContext.Provider value={RbContextValue}>
-                <div className="createUser">
-                    <form className="createUserForm" onSubmit={handleSubmit}>
-                        <Forms onChange={handleChange} value={state}/>
-                        <RadioButtons />
-                        {selectClasse
-                            ? <Select />
-                            : <></>
-                        }
-                        <button className="submitBtn" type="submit">Ajouter</button>
-                    </form>
-                </div>
-            </RadioButtonContext.Provider>
-        </SelectContext.Provider>
+ 
+            <SelectContext.Provider value={SelectContextValue}>
+                <RadioButtonContext.Provider value={RbContextValue}>
+                    <div className="createUser">     
+                        <button onClick={handleClick}>X</button>
+                        <form className="createUserForm" onSubmit={handleSubmit}>
+                            <Forms onChange={handleChange} value={state} />
+                            <RadioButtons />
+                            {selectClasse
+                                ? <Select />
+                                : <></>
+                            }
+                            <button className="submitBtn" type="submit">Ajouter</button>
+                        </form>
+                    </div>
+                    <div className="overlay" onClick={handleClick}></div>
+                </RadioButtonContext.Provider>
+            </SelectContext.Provider>
+   
+            
     )
 }
 export default CreateUser

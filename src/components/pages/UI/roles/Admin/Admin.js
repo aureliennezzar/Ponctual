@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState,useContext} from "react";
 import UsersToolbar from "./UsersToolbar"
 import UsersList from "./UsersList"
 import CreateUser from "./CreateUser"
 import "./Admin.css"
 
+
+
 const Admin = props => {
+  const [userCreation,setUserCreation] = useState(false)
   useEffect(() => {
     document.body.style.background = "white";
   }, [])
@@ -12,7 +15,7 @@ const Admin = props => {
     <div className="adminPanel">
       <div className="container">
         <div className="left">
-          <UsersToolbar />
+          <UsersToolbar setUserCreation={setUserCreation} />
           <UsersList />
 
         </div>
@@ -22,7 +25,9 @@ const Admin = props => {
 
         </div>
       </div>
-      <CreateUser />
+      
+      {userCreation ? <CreateUser setUserCreation={setUserCreation}  /> : null }
+      
     </div>
   )
 }
