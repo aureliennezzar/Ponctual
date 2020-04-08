@@ -10,7 +10,7 @@ const UsersToolbar = props => {
 
     }, [])
     const handleClick = (event) => {
-        // alert('good')
+        alert('good')
     }
     return (
         <div className="toolbar">

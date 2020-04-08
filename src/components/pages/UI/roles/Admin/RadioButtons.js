@@ -11,17 +11,17 @@ const RadioButtons = () => {
         const { value } = event.target
         setSelectedOption(value);
         updateOption(value)
-        if(value==="student"){
+        if (value === "student") {
             updateComp(true)
         } else {
             updateSelectValue("default")
             updateComp(false)
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         updateComp(true)
         updateOption(selectedOption)
-    },[])
+    }, [])
     return (
         <div>
             <p>Role</p>

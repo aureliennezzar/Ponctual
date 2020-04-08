@@ -7,7 +7,6 @@ import "./Admin.css"
 const Admin = props => {
   useEffect(() => {
     document.body.style.background = "white";
-
   }, [])
   return (
     <div className="adminPanel">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import RadioButtons from "./RadioButtons";
 import RadioButtonContext from "./Contexts/RadioButtonContext";
 import SelectContext from "./Contexts/SelectContext";
@@ -8,13 +8,14 @@ import { signup } from "../../../../../scripts/auth";
 import "./CreateUser.css"
 
 const CreateUser = props => {
+    const { updateOption, updateComp } = useContext(RadioButtonContext);
     const [selectClasse, setSelectClasse] = useState(true)
     const [selectValue, setSelectValue] = useState("default")
     const [role, setRole] = useState(null)
     const [state, setState] = useState({
-        lname: null,
-        fname: null,
-        email: null,
+        lname: "",
+        fname: "",
+        email: "",
         password: null,
         error: ""
     })
@@ -33,7 +34,12 @@ const CreateUser = props => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        signup(email, lname, fname, role, selectValue);
+        setState({
+            lname: "",
+            fname: "",
+            email: ""
+        })
+        // signup(email, lname, fname, role, selectValue);
 
     }
 
@@ -48,7 +54,7 @@ const CreateUser = props => {
             <RadioButtonContext.Provider value={RbContextValue}>
                 <div className="createUser">
                     <form className="createUserForm" onSubmit={handleSubmit}>
-                        <Forms onChange={handleChange} />
+                        <Forms onChange={handleChange} value={state}/>
                         <RadioButtons />
                         {selectClasse
                             ? <Select />

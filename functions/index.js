@@ -93,7 +93,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             prenom: firstName,
             classe,
             status: "absent",
-            profilpic: false,
+            profilepic: false,
             role
         });
         await admin.firestore().collection("tempoSendEmail").doc(userId).set({
@@ -103,9 +103,8 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             password,
             role
         })
-        await admin.firestore().collection("tempoSendEmail").doc(userId).delete()
-        
 
+        
         await userCreationRequestRef.update({ status: 'Treated' });
         return { result: 'The new user has been successfully created.' };
 
@@ -132,7 +131,7 @@ exports.assignAdminClaim = functions.firestore
         claims['admin'] = true;
         claims['PonctualUser'] = true;
 
-        return admin.auth().setCustomUserClaims('uid', claims);
+        return admin.auth().setCustomUserClaims('eyYpIzknjsNXsWPUvVD18vMUABL2', claims);
     });
 
 /**

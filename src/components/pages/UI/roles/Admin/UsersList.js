@@ -17,7 +17,7 @@ const UsersList = props => {
                     <option value="2">Formateurs</option>
                     <option value="3">Admins</option>
                 </select>
-            </div>
+            </div>  
             
             <div className="list">
             </div>

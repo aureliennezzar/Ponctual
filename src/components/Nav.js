@@ -10,7 +10,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 const Nav = props => {
     const [state, setState] = useState({
         imageComponent: <FontAwesomeIcon icon={faUserCircle} size="4x" />,
-        loading: true,
+        loading: true
     })
     const user = auth().currentUser;
     const { loading, imageComponent } = state;
