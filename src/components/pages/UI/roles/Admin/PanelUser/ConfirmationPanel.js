@@ -1,5 +1,5 @@
 import React from "react";
-import { db } from "../../../../../scripts/services/firebase"
+import { db } from "../../../../../../scripts/services/firebase"
 import './ConfirmationPanel.css'
 
 const ConfirmationPanel = props => {

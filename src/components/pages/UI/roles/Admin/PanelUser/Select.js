@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import SelectContext from "./Contexts/SelectContext";
+import SelectContext from "../Contexts/SelectContext";
 
 const Select = () => {
     const [selectValue, setSelectValue] = useState("default");

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { db } from "../../../../../scripts/services/firebase";
+import { db } from "../../../../../../scripts/services/firebase";
 import "./Table.css"
 
 const Table = (props) => {

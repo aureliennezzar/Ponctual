@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import RadioButtons from "./RadioButtons";
-import RadioButtonContext from "./Contexts/RadioButtonContext";
-import SelectContext from "./Contexts/SelectContext";
+import RadioButtonContext from "../Contexts/RadioButtonContext";
+import SelectContext from "../Contexts/SelectContext";
 import Select from "./Select";
 import Forms from "./Forms";
-import { signup } from "../../../../../scripts/auth";
+import { signup } from "../../../../../../scripts/auth";
 import "./CreateUser.css"
 
 const CreateUser = props => {

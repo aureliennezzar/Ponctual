@@ -1,14 +1,18 @@
 import React, { useEffect,useState,useContext} from "react";
-import UsersToolbar from "./UsersToolbar"
-import UsersList from "./UsersList"
-import CreateUser from "./CreateUser"
-import ConfirmationPanel from "./ConfirmationPanel"
+import UsersToolbar from "./PanelUser/UsersToolbar"
+import UsersList from "./PanelUser/UsersList"
+import ClassesToolbar from "./PanelClasse/ClassesToolbar"
+import ClassesList from "./PanelClasse/ClassesList"
+import CreateUser from "./PanelUser/CreateUser"
+import CreateClass from "./PanelClasse/CreateClass"
+import ConfirmationPanel from "./PanelUser/ConfirmationPanel"
 import "./Admin.css"
 
 
 
 const Admin = props => {
   const [userCreation,setUserCreation] = useState(false)
+  const [classesCreation,setClassesCreation] = useState(false)
   const [deleteConfirmation,setDeleteConfirmation] = useState(false)
   const [userId,setUserId] = useState("")
   useEffect(() => {
@@ -19,17 +23,18 @@ const Admin = props => {
       <div className="container">
         <div className="left">
           <UsersToolbar setUserCreation={setUserCreation} />
-          <UsersList setUserId={setUserId} setDeleteConfirmation={setDeleteConfirmation}/>
+          <UsersList setUserId={setUserId} setDeleteConfirmation={setDeleteConfirmation} />
 
         </div>
         <div className="right">
-
-          <h1>Gestion des classes</h1>
+        <ClassesToolbar setClassesCreation={setClassesCreation}/>
+        <ClassesList />
 
         </div>
       </div>
       
       {userCreation ? <CreateUser setUserCreation={setUserCreation}  /> : null }
+      {classesCreation ? <CreateClass setClassesCreation={setClassesCreation}  /> : null }
       {deleteConfirmation ? <ConfirmationPanel userId={userId} setDeleteConfirmation={setDeleteConfirmation}  /> : null }
       
     </div>
