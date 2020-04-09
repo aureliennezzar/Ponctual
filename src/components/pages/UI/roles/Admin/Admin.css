@@ -14,3 +14,6 @@
     align-items: center;
     flex-direction: column;
 }
+.left{
+    border-right: black 2px solid;
+}
