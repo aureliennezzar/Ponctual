@@ -79,14 +79,6 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             .auth()
             .createUser(newUser);
 
-        const userId = userRecord.uid;
-
-        const claims = {};
-        claims[role] = true;
-        claims['PonctualUser'] = true;
-
-        await admin.auth().setCustomUserClaims(userId, claims);
-
         await admin.firestore().collection("users").doc(userId).set({
             email,
             nom: lastName,
@@ -96,6 +88,14 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             profilepic: false,
             role
         });
+        const userId = userRecord.uid;
+
+        const claims = {};
+        claims[role] = true;
+        claims['PonctualUser'] = true;
+
+        await admin.auth().setCustomUserClaims(userId, claims);
+
         await admin.firestore().collection("tempoSendEmail").doc(userId).set({
             email,
             lastName,
@@ -104,7 +104,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             role
         })
 
-        
+
         await userCreationRequestRef.update({ status: 'Treated' });
         return { result: 'The new user has been successfully created.' };
 
@@ -177,28 +177,15 @@ exports.sendMail = functions.firestore
         return sendEmailTrigger(user);
     });
 
-// exports.sendEmail = functions.https.onRequest((req, res) => {
-//     cors(req, res, () => {
-
-//         // getting dest email by query string
-//         const dest = req.query.dest;
-
-//         const mailOptions = {
-//             from: 'Ponctual <noreply.ponctual@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
-//             to: email,
-//             subject: 'Initialisation du mot de passe', // email subject
-//             html: `<p style="font-size: 16px;">Bonjour, ${firstName} ${lastName} et bienvenue dans l'équipe en tant que ${role}</p>
-//                 <br /><p style="font-size: 16px;">Voici votre mot de passe : ${password}</p>
-//                 <br /><p style="font-size: 16px;">Utiliser le afin de vous connecter et de le changer</p>
-//             `
-//         };
-
-//         // returning result
-//         return transporter.sendMail(mailOptions, (erro, info) => {
-//             if(erro){
-//                 return res.send(erro.toString());
-//             }
-//             return res.send('Sended');
-//         });
-//     });    
-// });
+exports.onDeleteUser = functions.firestore
+    .document('users/{uid}')
+    .onDelete((snap, context) => {
+        const { uid } = context.params
+        return admin.auth().deleteUser(uid)
+            .then(function () {
+                console.log('Successfully deleted user');
+            })
+            .catch(function (error) {
+                console.log('Error deleting user:', error);
+            });
+    });
