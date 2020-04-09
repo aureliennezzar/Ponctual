@@ -71,3 +71,9 @@ body {
 .loginBtn:hover {
     background: #2ecc71;
 }
+.errorLabel{
+    color: red;
+}
+.loginLabel{
+    color: white;
+}

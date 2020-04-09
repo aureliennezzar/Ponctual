@@ -2,28 +2,41 @@ import React, { useEffect, useState } from 'react'
 import { db } from "../../../../../scripts/services/firebase";
 import "./Table.css"
 
-const Table = () => {
+const Table = (props) => {
     const [userList, setUserlist] = useState([])
     const [loading, setLoading] = useState(true)
     useEffect(() => {
+        handleChange(props.selectState.selectValue)
+    }, [])
+
+    const handleChange = (val) => {
+        console.log(val)
         db.collection("users")
             .onSnapshot(function (querySnapshot) {
                 const userTab = [];
                 querySnapshot.forEach(function (doc) {
                     const { nom, prenom, role } = doc.data()
-                    if(role!='admin'){
+                    if (role != 'admin') {
                         userTab.push({ nom, prenom, role, uid: doc.id })
                     }
                 });
-                setUserlist(userTab); setLoading(false)
+                if (val != "default") {
+                    const userTabFilter = userTab.filter(user => user.role === val)
+                    setUserlist(userTabFilter)
+                } else {
+                    setUserlist(userTab)
+                }
+                setLoading(false)
+                props.setSelectState({
+                    ...props.selectState,
+                    changed: false
+                })
             });
-    }, [])
+
+    }
     const handleDelete = (event) => {
-        db.collection("users").doc(event.target.id).delete().then(function () {
-            console.log("Document successfully deleted!");
-        }).catch(function (error) {
-            console.error("Error removing document: ", error);
-        });
+        props.setUserId(event.target.id)
+        props.setDeleteConfirmation(true)
     }
     const renderTableData = () => {
         return userList.map((user) => {
@@ -48,6 +61,10 @@ const Table = () => {
                 {renderTableData()}
             </tbody>
         </table>
+
+    if (props.selectState.changed) {
+        handleChange(props.selectState.selectValue)
+    }
     return (
         <div className="list">
             {table}

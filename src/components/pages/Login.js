@@ -42,7 +42,7 @@ const Login = props => {
                 <h1>
                     Ponctual
                 </h1>
-                <p>Remplir ici afin de vous connecter</p>
+                <p className="loginLabel">Remplir ici afin de vous connecter</p>
                 <div>
                     <input className="inputs" placeholder="Email" name="email" pattern="[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$" onChange={handleChange} value={email} type="email" />
                 </div>
@@ -50,7 +50,7 @@ const Login = props => {
                     <input className="inputs" placeholder="Mot de passe" name="password" onChange={handleChange} value={password} type="password" />
                 </div>
                 <div>
-                    {error ? <p>{error}</p> : null}
+                    {error ? <p className="errorLabel">{error}</p> : null}
                     <button className="loginBtn" type="submit">Se connecter</button>
                 </div>
             </form>

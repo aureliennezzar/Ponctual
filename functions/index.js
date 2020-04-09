@@ -79,6 +79,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             .auth()
             .createUser(newUser);
 
+        const userId = userRecord.uid;
         await admin.firestore().collection("users").doc(userId).set({
             email,
             nom: lastName,
@@ -88,7 +89,6 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             profilepic: false,
             role
         });
-        const userId = userRecord.uid;
 
         const claims = {};
         claims[role] = true;
