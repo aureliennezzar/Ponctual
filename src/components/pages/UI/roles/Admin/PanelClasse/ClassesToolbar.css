@@ -1,0 +1,21 @@
+.submitClass{
+    border: none;
+    background:none; /* Green */
+    outline: 0;
+    transition: .2s;
+    height: 65%;
+    margin-right: 3%;
+    float: right;
+    cursor: pointer;
+    color: black;
+    line-height: 40%;
+}
+.submitClass:hover{
+    color: rgb(74, 196, 69);
+    transition: .2s;
+}
+.submitClass:active{
+    height: 45%;
+    color: rgb(74, 196, 69);
+    transition: .2s;
+}
