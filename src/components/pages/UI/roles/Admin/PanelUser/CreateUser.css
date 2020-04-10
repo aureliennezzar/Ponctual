@@ -1,9 +1,11 @@
 .createUser {
   position: absolute;
-  width: 50%;
+  text-align: center;
+  width: 500px;
   height: 50%;
   border-radius: 7px;
-  background-color: #3F3F4B;
+  background-color: rgb(255, 255, 255);
+  border: rgba(0, 0, 0, 0.678) 1px solid;
   left: 50%;
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
@@ -14,6 +16,30 @@
   box-shadow: 14px 16px 31px -17px rgba(0,0,0,0.86);
 }
 
+.createUser button{
+  width: 20%;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius:4px;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:17px;
+  padding:8px 20px;
+  text-decoration:none;
+  background-color: #148567;
+  border: none;
+  transition: .2s;
+}
+
+.createUser button:hover{
+  background-color: #168d6d;
+  -webkit-box-shadow: 0px 13px 16px -20px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 13px 16px -20px rgba(0,0,0,0.75);
+  box-shadow: 0px 13px 16px -20px rgba(0,0,0,0.75);
+  transition: .2s;
+  }
 
 .overlay {
   position: fixed;
@@ -25,4 +51,8 @@
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 3;
+}
+.createUserForm{
+  display: flex;
+  flex-direction: column;
 }
