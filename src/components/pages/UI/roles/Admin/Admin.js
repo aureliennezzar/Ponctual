@@ -4,7 +4,6 @@ import UsersList from "./PanelUser/UsersList"
 import ClassesToolbar from "./PanelClasse/ClassesToolbar"
 import ClassesList from "./PanelClasse/ClassesList"
 import CreateUser from "./PanelUser/CreateUser"
-import CreateClass from "./PanelClasse/CreateClass"
 import ConfirmationPanel from "./PanelUser/ConfirmationPanel"
 import "./Admin.css"
 
@@ -34,7 +33,6 @@ const Admin = props => {
       </div>
       
       {userCreation ? <CreateUser setUserCreation={setUserCreation}  /> : null }
-      {classesCreation ? <CreateClass setClassesCreation={setClassesCreation}  /> : null }
       {deleteConfirmation ? <ConfirmationPanel userId={userId} setDeleteConfirmation={setDeleteConfirmation}  /> : null }
       
     </div>

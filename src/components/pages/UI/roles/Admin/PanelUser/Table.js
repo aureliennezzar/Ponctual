@@ -10,7 +10,6 @@ const Table = (props) => {
     }, [])
 
     const handleChange = (val) => {
-        console.log(val)
         db.collection("users")
             .onSnapshot(function (querySnapshot) {
                 const userTab = [];

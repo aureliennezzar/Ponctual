@@ -42,7 +42,6 @@ const Nav = props => {
     const navStyle = {
         color: 'white'
     };
-    console.log(displayName)
     return (
         <nav>
             <h3>Burger</h3>
