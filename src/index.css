@@ -12,3 +12,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+button:active{
+  outline:0;
+}
+input{
+  -webkit-appearance: textfield;
+}
+input:focus{  
+  outline: none; 
+  }
+
