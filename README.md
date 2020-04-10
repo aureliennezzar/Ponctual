@@ -13,7 +13,7 @@ Ponctual est une application de gestion permettant, en tant qu'élève, formateu
 npm install
 ```
 
-Comment lancer le projet ?
+Comment lancer Ponctual ?
 
 
 ```
