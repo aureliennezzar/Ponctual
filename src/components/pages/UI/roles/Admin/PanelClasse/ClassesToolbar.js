@@ -18,7 +18,8 @@ const ClassesList = props => {
         if (inputVal.length > 0) {
             db.collection("classes").doc(inputVal).set({
                 nom: inputVal,
-                eleves: []
+                professeur: "Pas de formateur !",
+                eleves: [],
             })
                 .then(function () {
                     console.log("Document successfully written!");
