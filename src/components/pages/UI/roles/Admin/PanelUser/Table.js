@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { db } from "../../../../../../scripts/services/firebase";
 import "./Table.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserTimes,faUserEdit } from '@fortawesome/free-solid-svg-icons'
 
 const Table = (props) => {
     const [userList, setUserlist] = useState([])
@@ -44,7 +46,7 @@ const Table = (props) => {
                 <tr key={uid}>
                     <td>{prenom} {nom}</td>
                     <td>{role}</td>
-                    <td><button id={uid} onClick={handleDelete}>Supprimer</button><button>Modifier</button></td>
+                    <td className="trBtnCtnr"><div className="trBtn"><FontAwesomeIcon className="tdBtn delUsers" id={uid} onClick={handleDelete} icon={faUserTimes} size="2x" /><FontAwesomeIcon className="tdBtn editUsers" id={uid}icon={faUserEdit} size="2x" /></div></td>
                 </tr>
             )
         })

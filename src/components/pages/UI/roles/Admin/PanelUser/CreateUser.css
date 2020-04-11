@@ -3,7 +3,7 @@
   text-align: center;
   width: 420px;
   height: 575px;
-  border-radius: 7px;
+  border-radius: 4px;
   background-color: rgb(207, 207, 207);
   border: rgba(0, 0, 0, 0.678) 1px solid;
   left: 50%;
@@ -61,8 +61,8 @@
 
 .createUserForm{
   border:none;
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -87,8 +87,8 @@
 
 .form{
   border:none;
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   width: 100%;
   background-color:#F7F7F7;
 }
@@ -97,8 +97,8 @@
 /* basic stylings ------------------------------------------ */
 
 .ContainerInput	{ 
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   display: flex;
   align-items: center;
   font-family:'Roboto', sans-serif;;

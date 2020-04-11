@@ -5,10 +5,37 @@
     border: 3px solid #ddd;
     width: 100%;
 }
+#users .trBtn{
+    width: 150px;
+    display: flex;
+    justify-content: space-between;
+    
+
+}
+.tdBtn{
+    cursor: pointer;
+    transition: .4s;
+}
+.delUsers:hover{
+    color:#DD2D4A;
+    transition:.2s;
+}
+.editUsers:hover{
+    color:rgb(151, 45, 221);
+    transition:.2s
+}
+
+
+.trBtnCtnr{
+    display: flex;
+    justify-content: center;
+}
 
 #users td, #users th {
+
     border: 1px solid #ddd;
     padding: 8px;
+
 }
 
 #users tr:nth-child(even) {
@@ -26,3 +53,4 @@
     background-color: rgb(96, 96, 112);
     color: white;
 }
+
