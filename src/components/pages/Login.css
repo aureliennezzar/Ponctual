@@ -33,8 +33,8 @@ body {
     font-weight: 500;
 }
 
-.inputs {
-    border: 0;
+.inputs  {
+    border: 0 ;
     background: none;
     display: block;
     margin: 20px auto;
@@ -49,8 +49,8 @@ body {
 }
 
 .inputs:focus {
-    width: 280px;
-    border-color: #2ecc71;
+    width: 280px !important;
+    border-color: #2ecc71 !important;
 }
 
 .loginBtn {

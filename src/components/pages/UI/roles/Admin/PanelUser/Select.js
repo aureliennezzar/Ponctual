@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import SelectContext from "../Contexts/SelectContext";
 
+
 const Select = () => {
     const [selectValue, setSelectValue] = useState("default");
     const { updateSelectValue } = useContext(SelectContext);
@@ -11,13 +12,22 @@ const Select = () => {
     }
 
     return (
-        <select 
-        value={selectValue} 
-        onChange={handleChange} >
-            <option value="default">Selectionner une classe</option>
-            <option value="prepa-a">Prepa A</option>
-            <option value="prepa-b">Prepa B</option>
-        </select>
+        <div className="formfield-select">
+            
+            <div className="selectClassContainer">
+                <select id="mySelect"
+                    value={selectValue}
+                    onChange={handleChange} >
+                    <option value="default">Selectionner une classe</option>
+                    <option value="prepa-a">Prepa A</option>
+                    <option value="prepa-b">Prepa B</option>
+                    <option value="prepa-b">Prepa B</option>
+                    <option value="prepa-b">Prepa B</option>
+                    <option value="prepa-b">Prepa B</option>
+                    <option value="prepa-b">Prepa B</option>
+                </select>
+            </div>
+        </div>
     )
 }
 
