@@ -23,9 +23,11 @@ const RadioButtons = () => {
         updateOption(selectedOption)
     }, [])
     return (
-        <div>
-            <p>Role</p>
+        
 
+            
+        <div className="bottomFormContainer">
+        <p>Role :</p>
             <div className="radio">
                 <label>
                     <input type="radio" value="student"
@@ -52,6 +54,7 @@ const RadioButtons = () => {
             </div>
 
         </div>
+   
 
     )
 }

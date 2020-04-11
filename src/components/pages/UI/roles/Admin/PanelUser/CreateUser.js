@@ -1,4 +1,6 @@
 import React, { useState, useContext } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons'
 import RadioButtons from "./RadioButtons";
 import RadioButtonContext from "../Contexts/RadioButtonContext";
 import SelectContext from "../Contexts/SelectContext";
@@ -53,26 +55,31 @@ const CreateUser = props => {
         props.setUserCreation(false)
     }
     return (
- 
-            <SelectContext.Provider value={SelectContextValue}>
-                <RadioButtonContext.Provider value={RbContextValue}>
-                    <div className="createUser">     
-                        <button onClick={handleClick}>X</button>
-                        <form className="createUserForm" onSubmit={handleSubmit}>
-                            <Forms onChange={handleChange} value={state} />
-                            <RadioButtons />
-                            {selectClasse
-                                ? <Select />
-                                : <></>
-                            }
-                            <button className="submitBtn" type="submit">Ajouter</button>
-                        </form>
-                    </div>
-                    <div className="overlay" onClick={handleClick}></div>
-                </RadioButtonContext.Provider>
-            </SelectContext.Provider>
-   
-            
+
+        <SelectContext.Provider value={SelectContextValue}>
+            <RadioButtonContext.Provider value={RbContextValue}>
+                <div className="createUser">
+    
+                    <form className="createUserForm" onSubmit={handleSubmit}>
+                    
+                        <Forms onChange={handleChange} value={state} />
+                        <div className="divBtn"><FontAwesomeIcon className="delBtn" icon={faTimes} size="1x" onClick={handleClick} /></div>
+                        <div className="bottomForm"> <RadioButtons /> 
+                        {selectClasse
+                            ? <Select />
+                            : <></>
+                        }
+                        </div>
+
+                        <button className="submitBtn" type="submit" >Ajouter</button>
+                        
+                    </form>
+                </div>
+                <div className="overlay" onClick={handleClick}></div>
+            </RadioButtonContext.Provider>
+        </SelectContext.Provider>
+
+
     )
 }
 export default CreateUser

@@ -44,7 +44,7 @@ const Login = props => {
                 </h1>
                 <p className="loginLabel">Remplir ici afin de vous connecter</p>
                 <div>
-                    <input className="inputs" placeholder="Email" name="email" pattern="[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$" onChange={handleChange} value={email} type="email" />
+                    <input className="inputs" placeholder="Email" name="email" onChange={handleChange} value={email} type="email" />
                 </div>
                 <div>
                     <input className="inputs" placeholder="Mot de passe" name="password" onChange={handleChange} value={password} type="password" />

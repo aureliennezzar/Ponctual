@@ -8,6 +8,7 @@
     height: 100%;
 }
 .left, .right{
+    background-color:whitesmoke;
     width: 50%;
     height: 100%;
     display: flex;
