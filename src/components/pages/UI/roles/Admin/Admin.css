@@ -8,7 +8,7 @@
     height: 100%;
 }
 .left, .right{
-    background-color:whitesmoke;
+    background-color:#F4F7F6;
     width: 50%;
     height: 100%;
     display: flex;
@@ -16,5 +16,5 @@
     flex-direction: column;
 }
 .left{
-    border-right: black 2px solid;
+    border-right: #E6EAEA 1px solid;
 }

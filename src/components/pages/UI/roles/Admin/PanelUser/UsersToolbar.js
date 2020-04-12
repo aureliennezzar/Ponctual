@@ -13,7 +13,7 @@ const UsersToolbar = props => {
         props.setUserCreation(true)
     }
     return (
-        <div className="toolbar">
+        <div className="leftToolbar">
             <h1 className="toolTitle">Gestion des utilisateurs</h1>
             <FontAwesomeIcon className="addBtn" icon={faPlus} size="4x" onClick={handleClick} />
         </div>

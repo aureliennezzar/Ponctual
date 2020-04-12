@@ -10,6 +10,14 @@
     color: black;
     line-height: 40%;
 }
+.rightToolbar {
+    display: flex;
+    width: 95%;
+    height: 8%;
+    border-bottom: 2px rgb(196, 197, 197) solid;
+    align-items: center;
+    justify-content: space-between;
+}
 .submitClass:hover{
     color: rgb(74, 196, 69);
     transition: .2s;

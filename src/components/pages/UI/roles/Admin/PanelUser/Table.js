@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { db } from "../../../../../../scripts/services/firebase";
-import "./Table.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserTimes,faUserEdit } from '@fortawesome/free-solid-svg-icons'
+import "./Table.css"
 
 const Table = (props) => {
     const [userList, setUserlist] = useState([])

@@ -1,8 +1,8 @@
-.toolbar {
+.leftToolbar {
     display: flex;
     width: 95%;
     height: 8%;
-    border-bottom: 3px black solid;
+    border-bottom: 2px rgb(196, 197, 197) solid;
     align-items: center;
     justify-content: space-between;
 }

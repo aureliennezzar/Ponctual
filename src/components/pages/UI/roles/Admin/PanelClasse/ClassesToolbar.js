@@ -31,7 +31,7 @@ const ClassesList = props => {
         }
     }
     return (
-        <div className="toolbar">
+        <div className="rightToolbar">
             <h1 className="toolTitle">Gestion des classes W.I.P</h1>
             <input type="text" name="className" id="className" placeholder="Entrer nom" onChange={handleChange} value={inputVal} />
             <FontAwesomeIcon className="addBtn" icon={faPlus} size="4x" onClick={handleClick} />

@@ -10,7 +10,7 @@ const Forms = ({ onChange, value }) => {
                     <input  type="text" name="lname" className="InputsCustom" id="lname"  onChange={onChange} value={lname} required />
                     <span className="highlight"></span>
                     <span className="bar"></span>
-                    <label className="label" >Name</label>
+                    <label className="label" >Nom</label>
                 </div>
                 <div className="group">
                     <input type="text" name="fname" id="fname" className="InputsCustom"  onChange={onChange} value={fname} required />

@@ -60,7 +60,7 @@ const CreateUser = props => {
             <RadioButtonContext.Provider value={RbContextValue}>
                 <div className="createUser">
     
-                    <form className="createUserForm" onSubmit={handleSubmit}>
+                    <form className="createUserForm" onSubmit={handleSubmit} >
                     
                         <Forms onChange={handleChange} value={state} />
                         <div className="divBtn"><FontAwesomeIcon className="delBtn" icon={faTimes} size="1x" onClick={handleClick} /></div>

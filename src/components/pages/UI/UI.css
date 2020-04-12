@@ -3,8 +3,9 @@ nav{
     justify-content: space-around;
     align-items: center;
     min-height: 10vh;
-    background:  rgb(63, 63, 75);
-    color: white;
+    background:  #F4F7F6;
+    color: black;
+    border-bottom: 1px #E6EAEA solid;
 }
 .navLinks{
     display: flex;
@@ -12,5 +13,4 @@ nav{
     justify-content: space-around;
     align-items: center;
     list-style: none;
-
 }

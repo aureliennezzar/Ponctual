@@ -40,7 +40,7 @@ const Nav = props => {
 
 
     const navStyle = {
-        color: 'white'
+        color: 'black'
     };
     return (
         <nav>
