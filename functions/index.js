@@ -34,10 +34,11 @@ function roleIsValid(role) {
     return validRoles.includes(role);
 }
 
+const Password = (length) => new Array(length).fill().map(() => String.fromCharCode(Math.random() * 86 + 40)).join("")
 exports.createUser = functions.https.onCall(async (data, context) => {
     try {
-        const { firstName, lastName, email, password, classe, role } = data;
-
+        const { firstName, lastName, email, classe, role, telephone } = data;
+        const password = Password(16)
         //Checking that the user calling the Cloud Function is authenticated
         if (!context.auth) {
             throw new UnauthenticatedError('The user is not authenticated. Only authenticated Admin users can create new users.');
@@ -87,7 +88,8 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             classe,
             status: "absent",
             profilepic: false,
-            role
+            role,
+            telephone
         });
 
         const claims = {};

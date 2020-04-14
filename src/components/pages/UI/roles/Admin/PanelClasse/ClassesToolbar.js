@@ -7,10 +7,6 @@ import "./ClassesToolbar.css"
 
 const ClassesList = props => {
     const [inputVal, setInputVal] = useState("")
-    useEffect(() => {
-        document.body.style.background = "white";
-
-    }, [])
     const handleChange = (event) => {
         setInputVal(event.target.value)
     }

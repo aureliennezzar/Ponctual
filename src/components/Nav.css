@@ -1,13 +1,14 @@
-nav{
+nav {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    min-height: 10vh;
-    background:  #F4F7F6;
-    color: black;
+    height: 6vh;
+    background: rgb(116, 114, 114);
+    color: rgb(255, 255, 255);
     border-bottom: 1px #E6EAEA solid;
+    
 }
-.navLinks{
+.navLinks {
     display: flex;
     width: 50%;
     justify-content: space-around;
