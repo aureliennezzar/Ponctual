@@ -27,3 +27,6 @@
     color: rgb(74, 196, 69);
     transition: .2s;
 }
+.toolTitle{
+    font-weight: 500;
+}

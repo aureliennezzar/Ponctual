@@ -46,7 +46,7 @@ const Admin = props => {
     <div className="adminPanel">
       <div className="left">
         <div className="panelUsersNav">
-          <p>Gestion des utilisateurs</p>
+          <h2>Gestion des utilisateurs</h2>
         </div>
         <UsersList theme={theme} />
 
