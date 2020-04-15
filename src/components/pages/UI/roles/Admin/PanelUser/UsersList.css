@@ -1,17 +1,6 @@
-<<<<<<< HEAD
 .usersList{
     width: 96%;
     min-width: 96%;
     height: 90%;
-=======
-.MuiPaper-root{
-    padding: 0;
-    background-color: red;
-}
-
-.usersList{
-    width: 96%;
-    min-width: 96%;
->>>>>>> 1f2dc0b4ba233e528e52d4b3a2f3f5123419a38f
     background-color: #F4F7F6;
 }
