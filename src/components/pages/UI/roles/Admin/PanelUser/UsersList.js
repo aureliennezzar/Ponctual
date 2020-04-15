@@ -6,31 +6,29 @@ import { MuiThemeProvider, Paper } from "@material-ui/core/"
 import './UsersList.css'
 
 const UsersList = (props) => {
-    const [state, setState] = useState({
-        columns: [
-            { title: 'Prénom', field: 'prenom' },
-            { title: 'Nom', field: 'nom' },
-            {
-                title: 'Rôle',
-                field: 'role',
-                lookup: { student: "élève", teacher: "formateur" }
-            },
-            {
-                title: 'Email',
-                field: 'email',
-                editable: "onAdd"
-            },
-            {
-                title: 'Téléphone',
-                field: 'telephone',
-            },
-            {
-                title: 'Classe', field: 'classe',
-                lookup: {0: "testclasse", 1: "testclasse"}
-            }
-        ],
-        data: [],
-    });
+    const [columns, setColumns] = useState([
+        { title: 'Prénom', field: 'prenom' },
+        { title: 'Nom', field: 'nom' },
+        {
+            title: 'Rôle',
+            field: 'role',
+            lookup: { student: "élève", teacher: "formateur" }
+        },
+        {
+            title: 'Email',
+            field: 'email',
+            editable: "onAdd"
+        },
+        {
+            title: 'Téléphone',
+            field: 'telephone',
+        },
+        {
+            title: 'Classe', field: 'classe',
+            lookup: {}
+        }
+    ])
+    const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
     const initTable = () => {
         db.collection("users")
@@ -42,23 +40,42 @@ const UsersList = (props) => {
                         userTab.push({ nom, prenom, role, email, telephone, classe, uid: doc.id })
                     }
                 });
-                setState({
-                    ...state,
-                    data: [...state.data, ...userTab]
-                })
+                setData([...data, ...userTab])
             });
-        setLoading(false)
+    }
+    const initDataClasses = () => {
+        db.collection("classes")
+            .onSnapshot(function (querySnapshot) {
+                const columnsCopy = [...columns]
+                let lookup = {}
+                columnsCopy.pop()
+                querySnapshot.forEach(function (doc) {
+                    const { nom } = doc.data()
+                    const { id } = doc
+                    lookup = {...lookup, [id]: nom}
+                });
+                columnsCopy.push(
+                    {
+                        title: 'Classe', field: 'classe',
+                        lookup
+                    })
+                setColumns([...columnsCopy]);
+            });
     }
     useEffect(() => {
-        if (loading) initTable()
+        if (loading) {
+            initTable()
+            initDataClasses()
+            setLoading(false)
+        }
     })
     return (
         <div className="usersList">
             <MuiThemeProvider theme={props.theme}>
                 <MaterialTable
                     title="Utilisateurs"
-                    columns={state.columns}
-                    data={state.data}
+                    columns={columns}
+                    data={data}
                     components={{
                         Container: props => <Paper {...props} elevation={0} />
                     }}
@@ -106,7 +123,7 @@ const UsersList = (props) => {
                         },
                         toolbar: { searchPlaceholder: 'Rechercher' }
                     }}
-                    
+
                     editable={{
                         onRowAdd: (newData) =>
                             new Promise((resolve) => {

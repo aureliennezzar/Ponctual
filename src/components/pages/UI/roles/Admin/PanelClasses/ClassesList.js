@@ -5,7 +5,6 @@ import { signup } from "../../../../../../scripts/auth";
 import { MuiThemeProvider, Paper } from "@material-ui/core/"
 import ClassAdd from './ClassAdd';
 import "./ClassesList.css";
-
 const ClassesList = (props) => {
     const [classAddComponent, setClassAddComponent] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -36,10 +35,13 @@ const ClassesList = (props) => {
                     data: [...state.data, ...classeTab]
                 })
             });
-        setLoading(false)
     }
+
     useEffect(() => {
-        if (loading) initTable()
+        if (loading) {
+            initTable()
+            setLoading(false);
+        }
     })
 
     return (
