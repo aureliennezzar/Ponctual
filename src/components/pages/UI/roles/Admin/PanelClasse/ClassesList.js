@@ -39,12 +39,12 @@ const ClassesList = props => {
                 if (doc.exists) {
                     const fb_studList = doc.data().eleves
                     const studList = fb_studList.map((eleve, index) => (
-                        <li key={Math.random()*10}>- {eleve}</li>
+                        <li key={index}>- {eleve}</li>
                     ))
                     const divStudList =
-                        < div className="studList" >
+                        < div className="studList" key={Math.random()*10}>
                             <p>Liste élèves :</p>
-                            <ul key={Math.random()*10}>
+                            <ul>
                                 {studList}
                             </ul>
                         </div >

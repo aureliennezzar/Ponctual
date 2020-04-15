@@ -26,7 +26,11 @@ const UsersList = (props) => {
             },
             {
                 title: 'Classe', field: 'classe',
+<<<<<<< HEAD
                 lookup: {0: "testclasse", 1: "testclasse"}
+=======
+                lookup: { 1: "fi_dev", 2: "fi_ux", 3: "fi_dev2" }
+>>>>>>> 1f2dc0b4ba233e528e52d4b3a2f3f5123419a38f
             }
         ],
         data: [],
@@ -54,6 +58,7 @@ const UsersList = (props) => {
     })
     return (
         <div className="usersList">
+<<<<<<< HEAD
             <MuiThemeProvider theme={props.theme}>
                 <MaterialTable
                     title="Utilisateurs"
@@ -116,6 +121,70 @@ const UsersList = (props) => {
                                     setTimeout(() => {
                                         resolve();
 
+=======
+
+            <MuiThemeProvider theme={props.theme}>
+                <MaterialTable
+                    title="Utilisateurs"
+                    columns={state.columns}
+                    data={state.data}
+                    components={{
+                        Container: props => <Paper {...props} elevation={0} />
+                    }}
+                    options={{
+                        pageSizeOptions: [9],
+                        pageSize: 9,
+                        headerStyle: {
+                            backgroundColor: '#F4F7F6'
+                        },
+                        rowStyle: {
+                            backgroundColor: '#F4F7F6'
+                        }
+                    }}
+                    localization={{
+                        body: {
+                            addTooltip: "Ajouter",
+                            deleteTooltip: "Supprimer",
+                            editTooltip: "Modifier",
+                            editRow: {
+                                deleteText: "Êtes-vous sur de vouloir supprimer cet utilisateur ?",
+                                cancelTooltip: "Annuler",
+                                saveTooltip: "Confirmer"
+                            },
+                            filterRow: {
+                                filterTooltip: "Filtrer"
+                            },
+                            emptyDataSourceMessage: "Aucun utilisateur."
+                        },
+                        header: {
+                            actions: ""
+                        },
+                        pagination: {
+                            labelDisplayedRows: "{from}-{to}",
+                            labelRowsSelect: "lignes",
+                            labelRowsPerPage: "Lignes par page:",
+                            firstAriaLabel: "Première page",
+                            firstTooltip: "Première page",
+                            previousAriaLabel: "Page précedente",
+                            previousTooltip: "Page précedente",
+                            nextAriaLabel: "Page suivante",
+                            nextTooltip: "Page suivante",
+                            lastAriaLabel: "Dernière page",
+                            lastTooltip: "Dernière page",
+
+                        },
+                        toolbar: { searchPlaceholder: 'Rechercher' }
+                    }}
+                    editable={{
+                        onRowAdd: (newData) =>
+                            new Promise((resolve) => {
+                                const { email, nom, prenom, role, telephone, classe } = newData;
+                                console.log(newData)
+                                signup(email, nom, prenom, role, classe, telephone).then(
+                                    setTimeout(() => {
+                                        resolve();
+
+>>>>>>> 1f2dc0b4ba233e528e52d4b3a2f3f5123419a38f
                                     }, 1500)
                                 );
                             }),
