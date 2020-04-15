@@ -6,6 +6,7 @@ import { faUserTimes,faUserEdit } from '@fortawesome/free-solid-svg-icons'
 
 const Table = (props) => {
     const [userList, setUserlist] = useState([])
+     
     const [loading, setLoading] = useState(true)
     useEffect(() => {
         handleChange(props.selectState.selectValue)

@@ -1,40 +1,63 @@
-import React, { useEffect,useState,useContext} from "react";
-import UsersToolbar from "./PanelUser/UsersToolbar"
+import React, { useEffect, useState, useContext } from "react";
 import UsersList from "./PanelUser/UsersList"
-import ClassesToolbar from "./PanelClasse/ClassesToolbar"
-import ClassesList from "./PanelClasse/ClassesList"
-import CreateUser from "./PanelUser/CreateUser"
-import ConfirmationPanel from "./PanelUser/ConfirmationPanel"
+import ClassesList from "./PanelClasses/ClassesList"
+import { createMuiTheme } from "@material-ui/core/"
 import "./Admin.css"
 
+const theme = createMuiTheme({
+  scroller: {
+    backgroundColor: "#000"
+  },
+  typography: {
+    background: '#000'
+  },
+  overrides: {
+    MuiTableRow: {
+      root: {
+        "&:last-child td": {
+          borderBottom: 0,
+        },
+      }
+    },
+    MuiTable: {
+      root: {
 
+        shadows: 'none'
+      }
+    },
+    MuiToolbar: {
+      root: {
+        backgroundColor: '#F4F7F6'
+      }
+    },
+    MuiPaper: {
+      root: {
+        backgroundColor: '#F4F7F6',
+        shadows: 'none'
+      }
+    }
+
+  }
+})
 
 const Admin = props => {
-  const [userCreation,setUserCreation] = useState(false)
-  const [classesCreation,setClassesCreation] = useState(false)
-  const [deleteConfirmation,setDeleteConfirmation] = useState(false)
-  const [userId,setUserId] = useState("")
-  useEffect(() => {
-    document.body.style.background = "white";
-  }, [])
   return (
     <div className="adminPanel">
-      <div className="container">
-        <div className="left">
-          <UsersToolbar setUserCreation={setUserCreation} />
-          <UsersList setUserId={setUserId} setDeleteConfirmation={setDeleteConfirmation} />
-
+      <div className="left">
+        <div className="panelUsersNav">
+          <h2>Gestion des utilisateurs</h2>
         </div>
-        <div className="right">
-        <ClassesToolbar setClassesCreation={setClassesCreation}/>
-        <ClassesList />
 
-        </div>
+        <UsersList theme={theme} />
+
       </div>
-      
-      {userCreation ? <CreateUser setUserCreation={setUserCreation}  /> : null }
-      {deleteConfirmation ? <ConfirmationPanel userId={userId} setDeleteConfirmation={setDeleteConfirmation}  /> : null }
-      
+      <div className="right">
+        <div className="panelClassesNav">
+          <h2>Gestion des classes</h2>
+        </div>
+        <ClassesList theme={theme} />
+
+      </div>
     </div>
   )
 }

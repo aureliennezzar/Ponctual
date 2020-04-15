@@ -1,0 +1,33 @@
+.classesList{
+    width: 96%;
+    min-width: 96%;
+    height: 90%;
+    background-color: #F4F7F6;
+    position: relative;
+}
+.inputsAddClass{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+}
+.hider{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 50px;
+    background-color: #F4F7F6;
+    /* z-index: 11; */
+    
+}
+.classAddForm{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}

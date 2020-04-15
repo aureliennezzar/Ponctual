@@ -34,10 +34,19 @@ function roleIsValid(role) {
     return validRoles.includes(role);
 }
 
+function generatePassword() {
+    let length = 16,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?!+-_@",
+        retVal = "";
+    for (let i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    }
+    return retVal;
+}
 exports.createUser = functions.https.onCall(async (data, context) => {
     try {
-        const { firstName, lastName, email, password, classe, role } = data;
-
+        const { firstName, lastName, email, classe, role, telephone } = data;
+        const password = generatePassword();
         //Checking that the user calling the Cloud Function is authenticated
         if (!context.auth) {
             throw new UnauthenticatedError('The user is not authenticated. Only authenticated Admin users can create new users.');
@@ -87,7 +96,8 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             classe,
             status: "absent",
             profilepic: false,
-            role
+            role,
+            telephone
         });
 
         const claims = {};
@@ -150,16 +160,13 @@ function sendEmailTrigger(emailData) {
     // 5. Send welcome email to new users
 
     const { email, password, firstName, lastName, role } = emailData;
-
     const mailOptions = {
         from: 'Ponctual <noreply.ponctual@gmail.com>', // Something like: Jane Doe <janedoe@gmail.com>
         to: email,
         subject: 'Initialisation du mot de passe', // email subject
-        html: `<p style="font-size: 16px;">Bonjour, ${firstName} ${lastName} et bienvenue dans l'équipe en tant que ${role}</p>
-            <br /><p style="font-size: 16px;">Voici votre mot de passe : ${password}</p>
-            <br /><p style="font-size: 16px;">Utiliser le afin de vous connecter et de le changer</p>
-        `
-    };
+        html: `Bonjour, ${firstName} ${lastName} et bienvenue dans l'équipe en tant que ${role}
+        Voici votre mot de passe : <b>${password}</b>`
+    }
     // 6. Process the sending of this email via nodemailer
     return transporter.sendMail(mailOptions)
         .then(() => {
@@ -168,7 +175,8 @@ function sendEmailTrigger(emailData) {
         .catch(e => {
             console.log('Error sending email!')
         });
-}
+};
+
 
 exports.sendMail = functions.firestore
     .document('tempoSendEmail/{tempoId}')

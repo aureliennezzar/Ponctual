@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext ,useEffect} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons'
 import RadioButtons from "./RadioButtons";
@@ -10,6 +10,7 @@ import { signup } from "../../../../../../scripts/auth";
 import "./CreateUser.css"
 
 const CreateUser = props => {
+
     const { updateOption, updateComp } = useContext(RadioButtonContext);
     const [selectClasse, setSelectClasse] = useState(true)
     const [selectValue, setSelectValue] = useState("default")
@@ -21,6 +22,7 @@ const CreateUser = props => {
         password: null,
         error: ""
     })
+    
     const { lname, fname, email } = state;
 
     const RbContextValue = {

@@ -1,20 +1,19 @@
 import { auth } from "./services/firebase";
 import firebase from 'firebase';
 
-const Password = (length) => new Array(length).fill().map(() => String.fromCharCode(Math.random() * 86 + 40)).join("")
-export async function signup(email, lname, fname, role, classe) {
+
+export async function signup(email, lname, fname, role, classe, telephone) {
 
     const createUser = firebase.functions().httpsCallable('createUser');
-    const sendMail = firebase.functions().httpsCallable('sendMail');
-    const password = Password(16)
     const user = {
         firstName: fname,
         lastName: lname,
         email,
-        password,
         classe,
-        role
+        role,
+        telephone
     };
+    console.log(user)
 
     createUser(user)
         .then(function (resp) {
@@ -25,7 +24,7 @@ export async function signup(email, lname, fname, role, classe) {
             const code = error.code;
             const message = error.message;
             //Display error
-            console.log("Error creating user",message,code);
+            console.log("Error creating user", message, code);
 
         });
 }

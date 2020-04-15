@@ -1,14 +1,11 @@
 .adminPanel{
-    width: 100%;
-    height:89vh;
-    /* border: 2px green solid; */
-}
-.container{
     display: flex;
-    height: 100%;
+    width: 100%;
+    height:93.9vh;
+    z-index: 1;
 }
 .left, .right{
-    background-color:whitesmoke;
+    background-color:#F4F7F6;
     width: 50%;
     height: 100%;
     display: flex;
@@ -16,5 +13,21 @@
     flex-direction: column;
 }
 .left{
-    border-right: black 2px solid;
+    border-right: #E6EAEA 1px solid;
+}
+.panelUsersNav{
+    text-align: center;
+    width: 90%;
+    border-bottom: #E6EAEA 1px solid;
+}
+.panelUsersNav h2{
+    font-weight: 500;
+}
+.panelClassesNav{
+    text-align: center;
+    width: 90%;
+    border-bottom: #E6EAEA 1px solid;
+}
+.panelClassesNav h2{
+    font-weight: 500;
 }
