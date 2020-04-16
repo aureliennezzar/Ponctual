@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+ 
     root: {
         display: 'flex',
         width: '100%',
@@ -17,7 +18,10 @@ const useStyles = makeStyles((theme) => ({
             width: 200,
             height: '100%',
         },
-        '& button': {
+        '& > .select': {
+            width:200,
+            height:'80%'
+
 
         }
     }
@@ -83,10 +87,12 @@ const ClassAdd = (props) => {
                     <div className={classes.root}>
                         <TextField className="classAddInputs" id="outlined-basic" label="Nom" variant="outlined" size="small" name="nom" onChange={handleChange} value={nom} />
                         <TextField
+                            size="small"
+                            className="select"
                             id="outlined-select-currency"
                             name="formateur"
                             select
-                            label="Select"
+                            label="Formateur"
                             value={state.formateur}
                             onChange={handleChange}
                             variant="outlined"

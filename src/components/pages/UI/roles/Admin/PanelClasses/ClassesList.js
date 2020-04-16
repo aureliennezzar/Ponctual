@@ -5,6 +5,7 @@ import { signup } from "../../../../../../scripts/auth";
 import { MuiThemeProvider, Paper } from "@material-ui/core/"
 import ClassAdd from './ClassAdd';
 import "./ClassesList.css";
+import ClassMenu from "./ClassMenu"
 const ClassesList = (props) => {
     const [classAddComponent, setClassAddComponent] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -100,23 +101,16 @@ const ClassesList = (props) => {
                             render: rowData => {
                                 return (
 
-                                    <div
-                                        style={{
-                                            fontSize: 100,
-                                            textAlign: 'center',
-                                            color: 'white',
-                                            backgroundColor: '#43A047',
-                                        }}
-                                    >
-                                        {rowData.nom}
-                                    </div>
+                                    <ClassMenu/>
                                 )
                             },
                         },
                     ]}
                 />
+                 {classAddComponent && <ClassAdd setClassAddComponent={setClassAddComponent} />}
             </MuiThemeProvider>
-            {classAddComponent && <ClassAdd setClassAddComponent={setClassAddComponent} />}
+           
+
         </div>
     )
 
