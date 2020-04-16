@@ -95,7 +95,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             prenom: firstName,
             classe,
             status: "absent",
-            profilepic: false,
+            profilepic: "",
             role,
             telephone
         });

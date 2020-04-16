@@ -25,10 +25,11 @@ const Nav = props => {
     }, []);
 
     const setUser = user => {
-        const { uid, displayName } = user;
-        if (profilepic) {
-            const profilePictureRef = storageRef.child(`${uid}/profile_31x31.jpg`);
+        const {displayName } = user;
+        if (profilepic.length > 0) {
+            const profilePictureRef = storageRef.child(`${profilepic}/profile_31x31.jpg`);
             profilePictureRef.getDownloadURL().then((url) => {
+                
                 setState({ ...state, imageComponent: <img src={url} style={{ borderRadius: '50%', cursor: "pointer" }} alt={url} /> })
             }).catch(function (error) {
             });

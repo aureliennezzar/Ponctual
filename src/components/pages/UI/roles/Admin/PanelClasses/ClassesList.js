@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table';
 import { db } from '../../../../../../scripts/services/firebase'
-import { signup } from "../../../../../../scripts/auth";
 import { MuiThemeProvider, Paper } from "@material-ui/core/"
 import ClassAdd from './ClassAdd';
 import "./ClassesList.css";
