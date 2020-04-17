@@ -2,10 +2,31 @@ import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table';
 import { db } from '../../../../../../scripts/services/firebase'
 import { MuiThemeProvider, Paper } from "@material-ui/core/"
+import { makeStyles } from '@material-ui/core/styles';
 import ClassAdd from './ClassAdd';
 import "./ClassesList.css";
 import ClassMenu from "./ClassMenu"
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        width: "auto",
+        display: 'flex',
+        justifyContent: "center",
+        backgroundColor: 'whitesmoke'
+
+    },
+    theme: {
+        height: "250px",
+        width: "500px",
+        display: "flex",
+        flexDirection: "column",
+        flexWrap: "wrap"
+    }
+
+}));
+
 const ClassesList = (props) => {
+    const classes = useStyles()
     const [classAddComponent, setClassAddComponent] = useState(false)
     const [loading, setLoading] = useState(true)
     const [state, setState] = useState({
@@ -98,18 +119,23 @@ const ClassesList = (props) => {
                         {
                             tooltip: 'Afficher',
                             render: rowData => {
-                            
+
                                 return (
-                                    
-                                    <ClassMenu key={rowData.uid}/>
+                                    <div className={classes.root} >
+                                        <div style={{ width: "50%" }}>
+                                            <div className={classes.theme}>
+                                                <ClassMenu rowData={rowData} />
+                                            </div>
+                                        </div>
+                                    </div>
                                 )
                             },
                         },
                     ]}
                 />
-                 {classAddComponent && <ClassAdd setClassAddComponent={setClassAddComponent} />}
+                {classAddComponent && <ClassAdd setClassAddComponent={setClassAddComponent} />}
             </MuiThemeProvider>
-           
+
 
         </div>
     )

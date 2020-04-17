@@ -12,6 +12,7 @@ const UsersList = (props) => {
         {
             title: 'Rôle',
             field: 'role',
+            editable: "onAdd",
             lookup: { student: "élève", teacher: "formateur" }
         },
         {
@@ -52,7 +53,7 @@ const UsersList = (props) => {
                 querySnapshot.forEach(function (doc) {
                     const { nom } = doc.data()
                     const { id } = doc
-                    lookup = {...lookup, [id]: nom}
+                    lookup = { ...lookup, [id]: nom }
                 });
                 columnsCopy.push(
                     {
@@ -160,14 +161,14 @@ const UsersList = (props) => {
                         onRowDelete: (oldData) =>
                             new Promise((resolve) => {
                                 db.collection("users").doc(oldData.uid).delete().then(function () {
-                                    setTimeout(() => {
-                                        resolve();
-
-                                    }, 600);
                                     console.log("Document successfully deleted!");
                                 }).catch(function (error) {
                                     console.error("Error removing document: ", error);
                                 });
+                                setTimeout(() => {
+                                    resolve();
+
+                                }, 600);
                             }),
                     }}
                 />

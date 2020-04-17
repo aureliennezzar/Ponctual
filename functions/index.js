@@ -3,6 +3,7 @@ const admin = require('firebase-admin');
 const nodemailer = require('nodemailer');
 const FieldValue = require('firebase-admin').firestore.FieldValue;
 
+
 admin.initializeApp();
 
 class UnauthenticatedError extends Error {
@@ -43,6 +44,49 @@ function generatePassword() {
     }
     return retVal;
 }
+
+exports.changeClass = functions.firestore
+    .document('users/{uid}')
+    .onUpdate((snap, context) => {
+        const { uid } = context.params
+        if (snap.after.data().classe != snap.before.data().classe) {
+            const classeRefBefore = admin.firestore().collection("classes").doc(snap.before.data().classe)
+            classeRefBefore.update(
+                {
+                    "eleves":
+                        FieldValue.arrayRemove(uid)
+                }
+            )
+            const classeRefAfter = admin.firestore().collection("classes").doc(snap.after.data().classe)
+            classeRefAfter.get().then(function (doc) {
+                if (doc.exists) {
+                    classeRefAfter.set({
+                        ...doc.data(),
+                        eleves: [...doc.data().eleves, uid]
+                    });
+                } else {
+                    console.log("No such document!");
+                }
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+            });
+        }
+        return console.log("CECI EST UN CONSOLE LOG", snap.after.data())
+    });
+exports.removeFromClass = functions.firestore
+    .document('users/{uid}')
+    .onDelete((snap, context) => {
+        const { uid } = context.params
+        const classeRef = admin.firestore().collection("classes").doc(snap.data().classe)
+        return classeRef.update(
+            {
+                "eleves":
+                    FieldValue.arrayRemove(uid)
+            }
+        )
+         
+    });
+
 exports.createUser = functions.https.onCall(async (data, context) => {
     try {
         const { firstName, lastName, email, classe, role, telephone } = data;
@@ -98,6 +142,19 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             profilepic: "",
             role,
             telephone
+        });
+        const classeRef = admin.firestore().collection("classes").doc(classe)
+        await classeRef.get().then(function (doc) {
+            if (doc.exists) {
+                classeRef.set({
+                    ...doc.data(),
+                    eleves: [...doc.data().eleves, userId]
+                });
+            } else {
+                console.log("No such document!");
+            }
+        }).catch(function (error) {
+            console.log("Error getting document:", error);
         });
 
         const claims = {};
