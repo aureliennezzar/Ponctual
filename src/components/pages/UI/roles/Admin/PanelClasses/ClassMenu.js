@@ -23,10 +23,13 @@ const useStyles = makeStyles((theme) => ({
     }
 
 }));
+ const data = [{name:"admin Admin",url:"https://firebasestorage.googleapis.com/v0/b/ponctual-fbaf7.appspot.com/o/T9vM9idjOvPvwZ6ZsxflUhcabSB2%2Fprofile_31x31.jpg?alt=media&token=87a30b8c-6c12-45bf-9d5a-6e1c1aad488b"}]
 
 
 export default function ClassMenu() {
     const [usersData, setUsersData] = useState([])
+
+    
     const [loading, setLoading] = useState(true)
 
     const initUsersData = () => {
@@ -36,22 +39,28 @@ export default function ClassMenu() {
                 querySnapshot.forEach(function (doc) {
                     
                     const { nom, prenom, profilepic } = doc.data()
-                    if (profilepic > 0) {
+                    
+                    if (profilepic.length > 0) {
                 
                         const profilePictureRef = storageRef.child(`${profilepic}/profile_31x31.jpg`);
                         profilePictureRef.getDownloadURL().then((url) => {
                             
-                            tab.push({ name: `${prenom} ${nom}`, url })
-                
+                            tab.push({ name: `${prenom} ${nom}`,url })
+                            
+                            
                         }).catch(function (error) {
                             console.log(error)
                         });
                     } else {
-                        tab.push({ name: `${prenom} ${nom}`, url: "./user-graduate-solid.svg" })
+                        tab.push({ name: `${prenom} ${nom}`,url: "./user-graduate-solid.svg" })
+                      
                     }
                    
                 });
-                setUsersData([...tab])
+               
+                
+                setUsersData(tab)
+                
                 setLoading(false)
             });
         
@@ -61,17 +70,24 @@ export default function ClassMenu() {
     useEffect(() => {
         if (loading) {
         initUsersData()
+        
+        
+        
     }})
 
-   
+  
     const classes = useStyles()
+    
     return (
         <>
             <div className={classes.root} >
                 <div style={{ width: "50%" }}>
                     <div className={classes.theme}>
-                        {usersData.map((item, i) => {
-                            return <div key={i} style={{ margin: 10 }}><Tooltip title={item.name} ><Avatar alt={user.name} src={user.url} /></Tooltip></div>
+                          {console.log(...[usersData])}
+                          {console.log(data)}
+                        {usersData.map((user, i) => {
+                            
+                            return <div key={i} style={{ margin: 10 }}><Tooltip title={user.name} ><Avatar  src={user.url} /></Tooltip></div>
                         })
                         }
                     </div>

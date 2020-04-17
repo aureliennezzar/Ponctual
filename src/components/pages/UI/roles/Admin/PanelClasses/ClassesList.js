@@ -98,9 +98,10 @@ const ClassesList = (props) => {
                         {
                             tooltip: 'Afficher',
                             render: rowData => {
+                            
                                 return (
-
-                                    <ClassMenu/>
+                                    
+                                    <ClassMenu key={rowData.uid}/>
                                 )
                             },
                         },
