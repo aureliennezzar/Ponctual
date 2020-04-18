@@ -3,6 +3,7 @@ import Nav from "../../../components/Nav"
 import Admin from "./roles/Admin/Admin";
 import Student from "./roles/Student/Student";
 import Teacher from "./roles/Teacher/Teacher";
+import Footer from '../../Footer'
 
 const Panel = (props) => {
   const [panel, setPanel] = useState(null)

@@ -6,18 +6,20 @@ import { makeStyles } from '@material-ui/core/styles';
 import ClassAdd from './ClassAdd';
 import "./ClassesList.css";
 import ClassMenu from "./ClassMenu"
+import ClassMenuToolbar from "./ClassMenuToolbar"
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        width: "auto",
+        width: "100%",
+        height: "100%",
         display: 'flex',
-        justifyContent: "center",
+        // justifyContent: "center",
         backgroundColor: 'whitesmoke'
 
     },
     theme: {
         height: "250px",
-        width: "500px",
+        width: "auto",
         display: "flex",
         flexDirection: "column",
         flexWrap: "wrap"
@@ -121,10 +123,19 @@ const ClassesList = (props) => {
                             render: rowData => {
 
                                 return (
-                                    <div className={classes.root} >
-                                        <div style={{ width: "50%" }}>
-                                            <div className={classes.theme}>
-                                                <ClassMenu rowData={rowData} />
+                                    <div className={classes.root}>
+                                        <ClassMenuToolbar />
+                                        <div style={{ 
+                                            width: "100%",
+                                            height: "100%",
+                                            display:"flex",
+                                            alignItems:"center",
+                                            justifyContent: "center"
+                                            }}>
+                                            <div style={{ width: "60%" }}>
+                                                <div className={classes.theme}>
+                                                    <ClassMenu rowData={rowData} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

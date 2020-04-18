@@ -1,0 +1,17 @@
+.cm_toolbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: auto;
+    height: 75%;
+}
+
+.cm_toolbarCtnr {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 75px;
+    height: 250px;
+    background-color: #BDBDBD;
+}

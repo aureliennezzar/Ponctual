@@ -5,14 +5,45 @@ import { storageRef, db } from "../../../../../../scripts/services/firebase";
 import loader from '../../../../../../assets/loaderClassMenu.gif'
 
 const ClassMenu = (props) => {
-    const [usersData, setUsersData] = useState([])
+    const [usersData, setUsersData] = useState([
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+        { displayName: `nom prenom`, photoUrl: null },
+    ])
     const [loading, setLoading] = useState(true)
     const [noStuds, setNoStuds] = useState(false)
     useEffect(() => {
         if (loading) {
-            db.collection("classes").doc(props.rowData.uid).get().then(function(doc){
+            db.collection("classes").doc(props.rowData.uid).get().then(function (doc) {
                 const { eleves } = doc.data()
-                if(eleves.length===0) setNoStuds(true)
+                if (eleves.length === 0) setNoStuds(true)
                 eleves.forEach(eleve => {
                     db.collection("users").doc(eleve).get().then(function (doc) {
                         if (doc.exists) {
@@ -22,7 +53,7 @@ const ClassMenu = (props) => {
                                     setUsersData(oldArray => [...oldArray, { displayName: `${doc.data().prenom} ${doc.data().nom}`, photoUrl: url }])
                                 }).catch(function (error) {
                                 });
-                            } else {
+                            } else { 
                                 setUsersData(oldArray => [...oldArray, { displayName: `${doc.data().prenom} ${doc.data().nom}`, photoUrl: null }])
                             }
                         }
@@ -36,7 +67,8 @@ const ClassMenu = (props) => {
     }, [])
     return (
         <>
-            {loading||noStuds? <div className="loader"><p>Aucun élève.</p></div> : usersData.map((user, i) => {
+        {/* || noStuds */}
+            {loading  ? <div className="loader"><p>Aucun élève.</p></div> : usersData.map((user, i) => {
                 const { displayName, photoUrl } = user;
                 return <div key={i} style={{ margin: 10 }}><Tooltip title={displayName} ><Avatar alt={displayName} src={photoUrl} /></Tooltip></div>
             })}
