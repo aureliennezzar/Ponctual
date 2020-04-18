@@ -6,6 +6,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #26262B;
 }
+html{
+  height: 100%;
+}
+#root{
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
@@ -25,4 +34,11 @@ input:focus {
 
 select:focus {
   outline: none;
+}
+.loader{
+  display: flex;
+  width: 99%;
+  height: 99%;
+  align-items: center;
+  justify-content: center;
 }

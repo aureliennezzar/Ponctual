@@ -9,6 +9,7 @@ import { PublicRoute } from "./components/routes/PublicRoute"
 import { PrivateRoute } from "./components/routes/PrivateRoute"
 import Panel from "./components/pages/UI/Panel";
 import Login from "./components/pages/Login"
+import loader from './assets/loader.gif'
 
 
 const App = (props) => {
@@ -37,15 +38,15 @@ const App = (props) => {
       }
     })
   }, []);
-  const {authenticated, loading, role, userInfo} = state;
+  const { authenticated, loading, role, userInfo } = state;
 
-  return loading === true ? <h2>Loading...</h2> : (
-      <Router>
-        <Switch>
-          <PublicRoute exact path="/" authenticated={authenticated} component={Login} role={role}></PublicRoute>
-          <PrivateRoute path="/panel" authenticated={authenticated} component={Panel} role={role} userInfo={userInfo}></PrivateRoute>
-        </Switch>
-      </Router>
+  return loading ? <div className="loader"><img src={loader}></img></div> : (
+    <Router>
+      <Switch>
+        <PublicRoute exact path="/" authenticated={authenticated} component={Login} role={role}></PublicRoute>
+        <PrivateRoute path="/panel" authenticated={authenticated} component={Panel} role={role} userInfo={userInfo}></PrivateRoute>
+      </Switch>
+    </Router>
   );
 }
 
