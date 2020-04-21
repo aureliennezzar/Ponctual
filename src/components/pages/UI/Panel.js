@@ -6,6 +6,7 @@ import Teacher from "./roles/Teacher/Teacher";
 import Footer from '../../Footer'
 
 const Panel = (props) => {
+  console.log(props.userInfo)
   const [panel, setPanel] = useState(null)
   useEffect(() => {
     document.body.style.background = "#F4F7F6";

@@ -7,28 +7,10 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme) => ({
- 
-    root: {
-        display: 'flex',
-        width: '100%',
-        justifyContent: "space-between",
-        alignItems: "center",
-        '& input': {
-            width: 200,
-            height: '100%',
-        },
-        '& > .select': {
-            width:200,
-            height:'80%'
-
-
-        }
-    }
-}));
 
 const ClassAdd = (props) => {
-    const { setClassAddComponent } = props
+
+    const { setClassAddComponent, mode } = props
     const [formateurs, setFormateurs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [state, setState] = useState({
@@ -36,19 +18,48 @@ const ClassAdd = (props) => {
         formateur: '',
     })
     const { nom, formateur } = state
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            display: 'flex',
+            width: '100%',
+            textAlign: 'center',
+            justifyContent: "space-between",
+            alignItems: "center",
+            '& input': {
+                width: 200,
+                height: '100%',
+            },
+            '& > .select': {
+                width: 200,
+                height: '80%'
+            }
+        }
+    }));
+
     const initFormateurs = () => {
         db.collection("users")
             .onSnapshot(function (querySnapshot) {
                 const teachersTab = [];
                 querySnapshot.forEach(function (doc) {
                     const { nom, prenom, role } = doc.data()
-                    if(role=="teacher") teachersTab.push({ label:nom+' '+prenom})
+                    if (role == "teacher") teachersTab.push({ label: nom + ' ' + prenom })
                 });
-                setFormateurs(teachersTab)
+                setFormateurs(teachersTab);
+                setLoading(false)
             });
     }
     useEffect(() => {
-        if (loading) initFormateurs();
+        if (loading) {
+            console.log(mode)
+            if (mode != "default") {
+                const { nom, formateur } = mode
+                setState({
+                    nom,
+                    formateur
+                })
+            }
+            initFormateurs();
+        }
     });
     const handleChange = (event) => {
         setState({
@@ -58,22 +69,48 @@ const ClassAdd = (props) => {
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        db.collection("classes").add({
-            nom,
-            formateur,
-            status: 0,
-            eleves: []
-        })
-            .then(function (docRef) {
-                console.log("Document written with ID: ", docRef.id);
-            })
-            .catch(function (error) {
-                console.error("Error adding document: ", error);
-            });
-        setClassAddComponent(false)
+        const { uid } = mode[1]
+        switch (mode[0]) {
+            case "add":
+                db.collection("classes").add({
+                    nom,
+                    formateur,
+                    status: 0,
+                    eleves: [],
+                    appointments: []
+                })
+                    .then(function (docRef) {
+                        console.log("Document written with ID: ", docRef.id);
+                    })
+                    .catch(function (error) {
+                        console.error("Error adding document: ", error);
+                    });
+
+                break;
+            case "delete":
+                db.collection("classes").doc(uid).delete()
+                break;
+
+            case "edit":
+                db.collection("classes").doc(uid).update({
+                    nom,
+                    formateur
+                })
+                    .then(function (docRef) {
+                        console.log("Document written with ID: ", docRef.id);
+                    })
+                    .catch(function (error) {
+                        console.error("Error adding document: ", error);
+                    });
+                break;
+
+            default:
+                break;
+        }
+        setClassAddComponent([false, "default"])
     }
     const handleCancel = () => {
-        setClassAddComponent(false)
+        setClassAddComponent([false, "default"])
         setState({
             nom: '',
             formateur: ''
@@ -85,25 +122,29 @@ const ClassAdd = (props) => {
             <div className="hider">
                 <form className="classAddForm" onSubmit={handleSubmit} autoComplete="off">
                     <div className={classes.root}>
-                        <TextField className="classAddInputs" id="outlined-basic" label="Nom" variant="outlined" size="small" name="nom" onChange={handleChange} value={nom} />
-                        <TextField
-                            size="small"
-                            className="select"
-                            id="outlined-select-currency"
-                            name="formateur"
-                            select
-                            label="Formateur"
-                            value={state.formateur}
-                            onChange={handleChange}
-                            variant="outlined"
-                        >
-                            {formateurs.map(option => (
-                                <MenuItem key={option.label} value={option.label}>
-                                    {option.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        {/* <TextField className="classAddInputs" id="outlined-basic2" label="Formateur" variant="outlined" size="small" name="formateur" onChange={handleChange} value={formateur} /> */}
+                        {mode[0] != "delete" ?
+                            <>
+                                <TextField className="classAddInputs" id="outlined-basic" label="Nom" variant="outlined" size="small" name="nom" onChange={handleChange} value={nom} />
+                                <TextField
+                                    size="small"
+                                    className="select"
+                                    id="outlined-select-currency"
+                                    name="formateur"
+                                    select
+                                    label="Formateur"
+                                    value={state.formateur}
+                                    onChange={handleChange}
+                                    variant="outlined"
+                                >
+                                    {formateurs.map(option => (
+                                        <MenuItem key={option.label} value={option.label}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </> : <h3>Êtes-vous sur de vouloir supprimer cette classe ?</h3>
+                        }
+
                         <div style={{ display: "flex" }}>
                             <IconButton aria-label="Créer" type="submit">
                                 <CheckIcon />

@@ -10,6 +10,8 @@ import { PrivateRoute } from "./components/routes/PrivateRoute"
 import Panel from "./components/pages/UI/Panel";
 import Login from "./components/pages/Login"
 import loader from './assets/loader.gif'
+import TimeTablePanel from './components/pages/UI/TimeTablePanel/TimeTablePanel';
+import TimeTable from './components/pages/UI/TimeTablePanel/TimeTable.js';
 
 
 const App = (props) => {
@@ -21,6 +23,7 @@ const App = (props) => {
     userInfo: {}
   })
   useEffect(() => {
+    document.body.style.background = "#F4F7F6";
     auth().onAuthStateChanged((user) => {
       if (user) {
         setUserRole(user.uid, state, setState);
@@ -45,6 +48,8 @@ const App = (props) => {
       <Switch>
         <PublicRoute exact path="/" authenticated={authenticated} component={Login} role={role}></PublicRoute>
         <PrivateRoute path="/panel" authenticated={authenticated} component={Panel} role={role} userInfo={userInfo}></PrivateRoute>
+        <PrivateRoute exact path="/scheduler" authenticated={authenticated} component={TimeTablePanel} role={role} userInfo={userInfo}></PrivateRoute>
+        <PrivateRoute path="/scheduler/:id" authenticated={authenticated} component={TimeTable} role={role} userInfo={userInfo}></PrivateRoute>
       </Switch>
     </Router>
   );

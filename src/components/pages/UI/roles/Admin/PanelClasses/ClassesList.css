@@ -26,9 +26,13 @@
     /* z-index: 11; */
     
 }
+
 .classAddForm{
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
+}
+.classAddForm h3{
+    margin-left: 125px;
 }
