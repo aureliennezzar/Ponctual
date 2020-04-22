@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-/* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
@@ -8,13 +6,11 @@ import {
   Toolbar,
   MonthView,
   WeekView,
-  ViewSwitcher,
   Appointments,
   AppointmentTooltip,
   AppointmentForm,
   DragDropProvider,
   EditRecurrenceMenu,
-  AllDayPanel,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { connectProps } from '@devexpress/dx-react-core';
 import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -38,10 +34,10 @@ import Create from '@material-ui/icons/Create';
 import { db } from '../../../../scripts/services/firebase'
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import SchoolIcon from '@material-ui/icons/School';
+import "moment/locale/fr";
 
 
 const containerStyles = theme => ({
@@ -242,17 +238,19 @@ class AppointmentFormContainerBasic extends React.PureComponent {
             <div className={classes.wrapper}>
               <Create className={classes.icon} color="action" />
               <TextField
-                {...textEditorProps('Matière')}
+                {...textEditorProps('title')}
               />
             </div>
             <div className={classes.wrapper}>
               <CalendarToday className={classes.icon} color="action" />
-              <MuiPickersUtilsProvider utils={MomentUtils}>
+              <MuiPickersUtilsProvider utils={MomentUtils} locale={"fr"} >
                 <KeyboardDateTimePicker
                   label="Début"
                   {...pickerEditorProps('startDate')}
                 />
                 <KeyboardDateTimePicker
+                  okLabel="confirmer"
+                  cancelLabel="Annuler"
                   label="Fin"
                   {...pickerEditorProps('endDate')}
                 />
@@ -280,7 +278,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
             <div className={classes.wrapper}>
               <LocationOn className={classes.icon} color="action" />
               <TextField
-                {...textEditorProps('salle')}
+                {...textEditorProps('location')}
               />
             </div>
             <div className={classes.wrapper}>
@@ -303,7 +301,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
                   this.commitAppointment('deleted');
                 }}
               >
-                Delete
+                Supprimer
               </Button>
             )}
             <Button
@@ -315,7 +313,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
                 applyChanges();
               }}
             >
-              {isNewAppointment ? 'Create' : 'Save'}
+              {isNewAppointment ? 'Créer' : 'Modifier'}
             </Button>
           </div>
         </div>
@@ -424,6 +422,7 @@ class TimeTableAdmin extends React.PureComponent {
   }
   componentDidUpdate(props) {
     this.appointmentForm.update();
+    console.log(this.state.data);
     db.collection("classes").doc(this.state.idClass).update({
       appointments: this.state.data
     });
@@ -508,6 +507,8 @@ class TimeTableAdmin extends React.PureComponent {
           :
           <Paper>
             <Scheduler
+              firstDayOfWeek={1}
+              locale={'fr-FR'}
               data={data}
               height={660}
             >
@@ -522,9 +523,9 @@ class TimeTableAdmin extends React.PureComponent {
               <WeekView
                 startDayHour={startDayHour}
                 endDayHour={endDayHour}
+                
               />
               <MonthView />
-              <AllDayPanel />
               <EditRecurrenceMenu />
               <Appointments />
               <AppointmentTooltip
@@ -533,7 +534,6 @@ class TimeTableAdmin extends React.PureComponent {
                 showDeleteButton
               />
               <Toolbar />
-              <ViewSwitcher />
               <AppointmentForm
                 overlayComponent={this.appointmentForm}
                 visible={editingFormVisible}
@@ -547,19 +547,19 @@ class TimeTableAdmin extends React.PureComponent {
               onClose={this.cancelDelete}
             >
               <DialogTitle>
-                Delete Appointment
+                Supprimer le cours
           </DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  Are you sure you want to delete this appointment?
+                  Êtes-vous sûr de vouloir supprimer ce cours ?
             </DialogContentText>
               </DialogContent>
               <DialogActions>
                 <Button onClick={this.toggleConfirmationVisible} color="primary" variant="outlined">
-                  Cancel
+                  Annuler
             </Button>
                 <Button onClick={this.commitDeletedAppointment} color="secondary" variant="outlined">
-                  Delete
+                  Supprimer
             </Button>
               </DialogActions>
             </Dialog>

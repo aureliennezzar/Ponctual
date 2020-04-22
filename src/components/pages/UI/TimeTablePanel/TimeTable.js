@@ -164,12 +164,14 @@ export default class TimeTable extends React.PureComponent {
                         <Scheduler
                             data={data}
                             height={660}
+                            firstDayOfWeek={1}
+                            locale={'fr-FR'}
                         >
                             <WeekView
                                 startDayHour={9}
                                 endDayHour={19}
                             />
-
+                          
                             <Appointments
                                 appointmentComponent={this.myAppointment}
                             />
