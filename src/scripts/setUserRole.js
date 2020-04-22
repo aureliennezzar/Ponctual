@@ -15,7 +15,8 @@ export const setUserRole = (userDoc, state, setState) => {
         ...state,
         userInfo,
         authenticated: true,
-        loading: false
+        loading: false,
+        role
       })
     } else {
       setState({

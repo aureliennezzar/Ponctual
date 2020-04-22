@@ -13,7 +13,6 @@ export async function signup(email, lname, fname, role, classe, telephone) {
         role,
         telephone
     };
-    console.log(user)
 
     createUser(user)
         .then(function (resp) {

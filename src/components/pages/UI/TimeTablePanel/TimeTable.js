@@ -68,7 +68,8 @@ export default class TimeTable extends React.PureComponent {
                 target: null,
                 data: {},
             },
-            idClass: props.match.params.id
+            idClass: props.match.params.id,
+            wrongId: false
         };
         this.toggleVisibility = () => {
             const { visible: tooltipVisibility } = this.state;
@@ -124,6 +125,10 @@ export default class TimeTable extends React.PureComponent {
                 })
             } else {
                 // doc.data() will be undefined in this case
+                this.setState({
+                    ...this.state,
+                    wrongId: true
+                })
                 console.log("No such document!");
             }
         }).catch(function (error) {
@@ -150,29 +155,36 @@ export default class TimeTable extends React.PureComponent {
         } = this.state;
 
         return (
-            <Paper>
-                <Scheduler
-                    data={data}
-                    height={660}
-                >
-                    <WeekView
-                        startDayHour={9}
-                        endDayHour={19}
-                    />
+            <>
+                {this.state.wrongId
+                    ? <div>
+                        <h2>Erreur ! Cette page n'existe pas ! </h2>
+                    </div>
+                    : <Paper>
+                        <Scheduler
+                            data={data}
+                            height={660}
+                        >
+                            <WeekView
+                                startDayHour={9}
+                                endDayHour={19}
+                            />
 
-                    <Appointments
-                        appointmentComponent={this.myAppointment}
-                    />
+                            <Appointments
+                                appointmentComponent={this.myAppointment}
+                            />
 
-                    <AppointmentTooltip
-                        showCloseButton
-                        visible={visible}
-                        onVisibilityChange={this.toggleVisibility}
-                        appointmentMeta={appointmentMeta}
-                        onAppointmentMetaChange={this.onAppointmentMetaChange}
-                    />
-                </Scheduler>
-            </Paper>
+                            <AppointmentTooltip
+                                showCloseButton
+                                visible={visible}
+                                onVisibilityChange={this.toggleVisibility}
+                                appointmentMeta={appointmentMeta}
+                                onAppointmentMetaChange={this.onAppointmentMetaChange}
+                            />
+                        </Scheduler>
+                    </Paper>
+                }
+            </>
         );
     }
 }

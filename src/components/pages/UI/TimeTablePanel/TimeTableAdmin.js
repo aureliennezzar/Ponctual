@@ -36,6 +36,12 @@ import Close from '@material-ui/icons/Close';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Create from '@material-ui/icons/Create';
 import { db } from '../../../../scripts/services/firebase'
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import SchoolIcon from '@material-ui/icons/School';
 
 
 const containerStyles = theme => ({
@@ -82,6 +88,9 @@ const containerStyles = theme => ({
   textField: {
     width: '100%',
   },
+  formControl: {
+    width: '100%',
+  },
 });
 
 class AppointmentFormContainerBasic extends React.PureComponent {
@@ -90,7 +99,26 @@ class AppointmentFormContainerBasic extends React.PureComponent {
 
     this.state = {
       appointmentChanges: {},
+      formateurs: [],
     };
+
+    db.collection("users").where("role", "==", "teacher")
+      .get()
+      .then((querySnapshot) => {
+        let teachersTab = [];
+        querySnapshot.forEach((doc) => {
+          const { nom, prenom } = doc.data()
+          teachersTab.push({ label: nom + ' ' + prenom })
+        });
+        console.log(teachersTab)
+        this.setState({
+          ...this.state,
+          formateurs: teachersTab
+        })
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
 
     this.getAppointmentData = () => {
       const { appointmentData } = this.props;
@@ -103,6 +131,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
 
     this.changeAppointment = this.changeAppointment.bind(this);
     this.commitAppointment = this.commitAppointment.bind(this);
+
   }
 
   changeAppointment({ field, changes }) {
@@ -164,6 +193,13 @@ class AppointmentFormContainerBasic extends React.PureComponent {
       label: field[0].toUpperCase() + field.slice(1),
       className: classes.textField,
     });
+    const selectEditorProps = field => ({
+      value: displayAppointmentData[field] || '',
+      onChange: ({ target: change }) => this.changeAppointment({
+        field: [field], changes: change.value,
+      }),
+    });
+
 
     const pickerEditorProps = field => ({
       className: classes.picker,
@@ -206,32 +242,51 @@ class AppointmentFormContainerBasic extends React.PureComponent {
             <div className={classes.wrapper}>
               <Create className={classes.icon} color="action" />
               <TextField
-                {...textEditorProps('title')}
+                {...textEditorProps('Matière')}
               />
             </div>
             <div className={classes.wrapper}>
               <CalendarToday className={classes.icon} color="action" />
               <MuiPickersUtilsProvider utils={MomentUtils}>
                 <KeyboardDateTimePicker
-                  label="Start Date"
+                  label="Début"
                   {...pickerEditorProps('startDate')}
                 />
                 <KeyboardDateTimePicker
-                  label="End Date"
+                  label="Fin"
                   {...pickerEditorProps('endDate')}
                 />
               </MuiPickersUtilsProvider>
             </div>
             <div className={classes.wrapper}>
+              <SchoolIcon className={classes.icon} color="action" />
+              <FormControl variant="outlined" className={classes.formControl}>
+                <InputLabel >Formateur</InputLabel>
+                <Select
+                  name="Formateur"
+                  label="Formateur"
+                  {...selectEditorProps('formateur')}
+                >
+                  {this.state.formateurs.map(formateur => (
+                    <MenuItem key={formateur.label} value={formateur.label}>
+                      {formateur.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+
+              </FormControl>
+
+            </div>
+            <div className={classes.wrapper}>
               <LocationOn className={classes.icon} color="action" />
               <TextField
-                {...textEditorProps('location')}
+                {...textEditorProps('salle')}
               />
             </div>
             <div className={classes.wrapper}>
               <Notes className={classes.icon} color="action" />
               <TextField
-                {...textEditorProps('notes')}
+                {...textEditorProps('informations')}
                 multiline
                 rows="6"
               />
@@ -308,10 +363,10 @@ class TimeTableAdmin extends React.PureComponent {
       if (doc.exists) {
         let appointments = []
         doc.data().appointments.forEach(appointment => {
-          let { title, startDate, endDate, id, location } = appointment
+          let { title, startDate, endDate, id, location, formateur } = appointment
           let sDate = new Date(startDate.seconds * 1000)
           let eDate = new Date(endDate.seconds * 1000)
-          appointments.push({ title, startDate: sDate, endDate: eDate, id, location })
+          appointments.push({ title, startDate: sDate, endDate: eDate, id, location, formateur })
         });
         this.setState({
           ...this.state,
@@ -448,7 +503,7 @@ class TimeTableAdmin extends React.PureComponent {
       <>
         {this.state.wrongid ?
           <div>
-            <h2>Erreur ! Cette classe n'existe pas ! </h2>
+            <h2>Erreur ! Cette page n'existe pas ! </h2>
           </div>
           :
           <Paper>

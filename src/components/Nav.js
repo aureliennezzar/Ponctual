@@ -12,7 +12,7 @@ const Nav = props => {
         imageComponent: <FontAwesomeIcon icon={faUserCircle} size="2x" />,
         loading: true
     })
-    const [displayName, setDisplayName] = useState('Loading...')
+    const [displayName, setDisplayName] = useState('')
     const { loading, imageComponent } = state;
     const { profilepic } = props.userInfo;
 
@@ -21,7 +21,7 @@ const Nav = props => {
         const user = auth().currentUser;
         if (user && loading) {
             setUser(user)
-        } else { setDisplayName("Loading...") }
+        } else { setDisplayName("") }
     }, []);
 
     const setUser = user => {
