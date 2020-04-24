@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { db } from '../../../../scripts/services/firebase'
+import { firestore } from 'firebase';
 import Paper from '@material-ui/core/Paper';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
@@ -31,7 +33,6 @@ import Notes from '@material-ui/icons/Notes';
 import Close from '@material-ui/icons/Close';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Create from '@material-ui/icons/Create';
-import { db } from '../../../../scripts/services/firebase'
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
@@ -106,7 +107,6 @@ class AppointmentFormContainerBasic extends React.PureComponent {
           const { nom, prenom } = doc.data()
           teachersTab.push({ label: nom + ' ' + prenom })
         });
-        console.log(teachersTab)
         this.setState({
           ...this.state,
           formateurs: teachersTab
@@ -186,7 +186,6 @@ class AppointmentFormContainerBasic extends React.PureComponent {
         field: [field], changes: change.value,
       }),
       value: displayAppointmentData[field] || '',
-      label: field[0].toUpperCase() + field.slice(1),
       className: classes.textField,
     });
     const selectEditorProps = field => ({
@@ -238,6 +237,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
             <div className={classes.wrapper}>
               <Create className={classes.icon} color="action" />
               <TextField
+                label="Cours"
                 {...textEditorProps('title')}
               />
             </div>
@@ -278,15 +278,17 @@ class AppointmentFormContainerBasic extends React.PureComponent {
             <div className={classes.wrapper}>
               <LocationOn className={classes.icon} color="action" />
               <TextField
+                label="Salle"
                 {...textEditorProps('location')}
               />
             </div>
             <div className={classes.wrapper}>
               <Notes className={classes.icon} color="action" />
               <TextField
-                {...textEditorProps('informations')}
+                label="Informations"
                 multiline
                 rows="6"
+                {...textEditorProps('notes')}
               />
             </div>
           </div>
@@ -331,7 +333,23 @@ const styles = theme => ({
     right: theme.spacing(1) * 4,
   },
 });
-
+const AppointmentContent = withStyles(styles, { name: 'AppointmentContent' })(({
+  classes, data, formatDate, ...restProps
+}) => (
+    <Appointments.AppointmentContent {...restProps} formatDate={formatDate} data={data}>
+      <div className={classes.container}>
+        <div className={classes.title}>
+          <b>{data.title}</b>
+        </div>
+        <div className={classes.text}>
+          Salle : {data.location}
+        </div>
+        <div className={classes.text}>
+          Formateur : <br></br>{data.formateur.split(' ')[0]}
+        </div>
+      </div>
+    </Appointments.AppointmentContent>
+  ));
 /* eslint-disable-next-line react/no-multi-comp */
 class TimeTableAdmin extends React.PureComponent {
   constructor(props) {
@@ -354,17 +372,40 @@ class TimeTableAdmin extends React.PureComponent {
       endDayHour: 19,
       isNewAppointment: false,
       idClass: props.match.params.id,
-      wrongid: false
+      wrongid: false,
+      formateurs: [],
     };
+    db.collection('classes').doc(this.state.idClass).get().then((doc) => {
+      this.setState({
+        ...this.state,
+        classe: doc.data().nom
+      })
+    }).catch(function (err) {
+      console.log(err)
+    })
+    db.collection("users").where("role", "==", "teacher").get().then((querySnapshot) => {
+      let teachersTab = []
+      querySnapshot.forEach((doc) => {
+        const { nom, prenom } = doc.data()
+        teachersTab.push([doc.id, `${nom} ${prenom}`])
+      });
+      this.setState({
+        ...this.state,
+        formateurs: teachersTab
+      })
+    })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
 
     db.collection("classes").doc(props.match.params.id).get().then((doc) => {
       if (doc.exists) {
         let appointments = []
         doc.data().appointments.forEach(appointment => {
-          let { title, startDate, endDate, id, location, formateur } = appointment
+          let { title, startDate, endDate, id, location, formateur, notes } = appointment
           let sDate = new Date(startDate.seconds * 1000)
           let eDate = new Date(endDate.seconds * 1000)
-          appointments.push({ title, startDate: sDate, endDate: eDate, id, location, formateur })
+          appointments.push({ title, startDate: sDate, endDate: eDate, id, location, formateur, notes })
         });
         this.setState({
           ...this.state,
@@ -421,8 +462,26 @@ class TimeTableAdmin extends React.PureComponent {
     });
   }
   componentDidUpdate(props) {
+    const { data } = this.state;
     this.appointmentForm.update();
-    console.log(this.state.data);
+    const usersRef = db.collection("users")
+
+    this.state.formateurs.forEach(formateur => {
+      const result = data.filter(appointment => appointment.formateur == formateur[1]);
+      if (result.length > 0) {
+        usersRef.doc(formateur[0]).get().then((doc) => {
+          usersRef.doc(doc.id).set({
+            ...doc.data(),
+            appointments: {
+              ...doc.data().appointments,
+              [this.state.idClass]: result
+            }
+          })
+        }).catch(function (err) {
+          console.log(err)
+        })
+      }
+    });
     db.collection("classes").doc(this.state.idClass).update({
       appointments: this.state.data
     });
@@ -474,7 +533,7 @@ class TimeTableAdmin extends React.PureComponent {
       let { data } = state;
       if (added) {
         const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
-        data = [...data, { id: startingAddedId, ...added }];
+        data = [...data, { id: startingAddedId, classe: this.state.classe, ...added }];
       }
       if (changed) {
         data = data.map(appointment => (
@@ -523,11 +582,13 @@ class TimeTableAdmin extends React.PureComponent {
               <WeekView
                 startDayHour={startDayHour}
                 endDayHour={endDayHour}
-                
+
               />
               <MonthView />
               <EditRecurrenceMenu />
-              <Appointments />
+              <Appointments
+                appointmentContentComponent={AppointmentContent}
+              />
               <AppointmentTooltip
                 showOpenButton
                 showCloseButton

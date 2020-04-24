@@ -5,8 +5,7 @@ import {
 } from "react-router-dom";
 
 export function PrivateRoute({ component: Component, authenticated, role, userInfo, ...rest }) {
-  console.log(Component.name);
-  
+console.log(Component.name)
   return (
     <Route
       {...rest}
@@ -14,7 +13,7 @@ export function PrivateRoute({ component: Component, authenticated, role, userIn
         if (!authenticated) {
           // not logged in so redirect to home
           return <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        } else if (Component.name === "TimeTablePanel" && role != "admin" || Component.displayName === "WithStyles(TimeTableAdmin)" && role != "admin") {
+        } else if (Component.name === "TimeTablePanel" && role != "admin" || Component.displayName === "WithStyles(TimeTableAdmin)" && role != "admin" || Component.name === "TimeTable" && role === "admin") {
           return <Redirect to={{ pathname: '/', state: { from: props.location } }} />
         }
         // authorised so return component

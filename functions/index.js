@@ -84,7 +84,7 @@ exports.removeFromClass = functions.firestore
                     FieldValue.arrayRemove(uid)
             }
         )
-         
+
     });
 
 exports.createUser = functions.https.onCall(async (data, context) => {
@@ -133,7 +133,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             .createUser(newUser);
 
         const userId = userRecord.uid;
-        await admin.firestore().collection("users").doc(userId).set({
+        let userInfos = {
             email,
             nom: lastName,
             prenom: firstName,
@@ -141,11 +141,16 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             status: "absent",
             profilepic: "",
             role,
-            telephone
-        });
+            telephone,
+        }
+        if (role === "teacher") {
+            userInfos.appointments = []
+            userInfos.classe = ""
+        }
+        await admin.firestore().collection("users").doc(userId).set(userInfos);
         const classeRef = admin.firestore().collection("classes").doc(classe)
         await classeRef.get().then(function (doc) {
-            if (doc.exists) {
+            if (doc.exists&&role!="teacher") {
                 classeRef.set({
                     ...doc.data(),
                     eleves: [...doc.data().eleves, userId]

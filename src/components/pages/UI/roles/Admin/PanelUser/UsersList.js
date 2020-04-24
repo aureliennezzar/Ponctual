@@ -128,8 +128,10 @@ const UsersList = (props) => {
                     editable={{
                         onRowAdd: (newData) =>
                             new Promise((resolve) => {
-                                const { email, nom, prenom, role, telephone, classe } = newData;
-                                console.log(newData)
+                                let data = {...newData}
+                                if(data.classe===undefined) data.classe="Sans classe"
+                                const { email, nom, prenom, role, telephone, classe } = data;
+                                console.log(classe)
                                 signup(email, nom, prenom, role, classe, telephone).then(
                                     setTimeout(() => {
                                         resolve();
@@ -140,34 +142,54 @@ const UsersList = (props) => {
                         onRowUpdate: (newData, oldData) =>
                             new Promise((resolve) => {
                                 const { nom, prenom, email, role, classe, telephone, uid } = newData
-                                db.collection("users").doc(uid).set({
+                                let userInfos = {
                                     nom,
                                     prenom,
                                     email,
                                     role,
                                     classe,
-                                    telephone
-                                })
-                                    .then(function () {
-                                        console.log("Document successfully written!");
-                                        setTimeout(() => {
-                                            resolve();
-                                        }, 600);
-                                    })
-                                    .catch(function (error) {
-                                        console.error("Error writing document: ", error);
-                                    });
+                                    telephone,
+                                }
+                                if (role === "teacher") {
+                                    userInfos.appointments = []
+                                    userInfos.classe = ""
+                                }
+                                db.collection("users").doc(uid).update(userInfos);
+                                setTimeout(() => {
+                                    resolve();
+                                }, 600);
                             }),
                         onRowDelete: (oldData) =>
+
                             new Promise((resolve) => {
-                                db.collection("users").doc(oldData.uid).delete().then(function () {
+                                const { role, uid } = oldData;
+                                if (role != "teacher") {
+                                    const { classe } = oldData;
+                                    db.collection("classes").doc(classe).get().then(function (doc) {
+                                        if (doc.exists) {
+                                            const { eleves } = doc.data()
+                                            let newTab = [...eleves]
+                                            const lastStudId = newTab.indexOf(uid)
+                                            newTab.splice(lastStudId, 1)
+                                            db.collection("classes").doc(classe).update({
+                                                eleves: newTab
+                                            });
+                                        } else {
+                                            // doc.data() will be undefined in this case
+                                            console.log("No such document!");
+                                        }
+                                    }).catch(function (error) {
+                                        console.error("Error removing document: ", error);
+                                    });
+                                }
+
+                                db.collection("users").doc(uid).delete().then(function () {
                                     console.log("Document successfully deleted!");
                                 }).catch(function (error) {
                                     console.error("Error removing document: ", error);
                                 });
                                 setTimeout(() => {
                                     resolve();
-
                                 }, 600);
                             }),
                     }}

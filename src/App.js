@@ -49,9 +49,12 @@ const App = (props) => {
       <Switch>
         <PublicRoute exact path="/" authenticated={authenticated} component={Login} role={role}></PublicRoute>
         <PrivateRoute path="/panel" authenticated={authenticated} component={Panel} role={role} userInfo={userInfo}></PrivateRoute>
-        <PrivateRoute exact path="/scheduler" authenticated={authenticated} component={TimeTablePanel} role={role} userInfo={userInfo}></PrivateRoute>
-        <PrivateRoute path="/scheduler/admin/:id" authenticated={authenticated} component={TimeTableAdmin} role={role} userInfo={userInfo}></PrivateRoute>
-        <PrivateRoute path="/scheduler/:id" authenticated={authenticated} component={TimeTable} role={role} userInfo={userInfo}></PrivateRoute>
+
+        {/* <PrivateRoute exact path="/scheduler" authenticated={authenticated} component={TimeTablePanel} role={role} userInfo={userInfo}></PrivateRoute> */}
+
+        <PrivateRoute path="/agenda/admin/:id" authenticated={authenticated} component={TimeTableAdmin} role={role} userInfo={userInfo}></PrivateRoute>
+
+        <PrivateRoute exact path="/agenda" authenticated={authenticated} component={TimeTable} role={role} userInfo={userInfo}></PrivateRoute>
       </Switch>
     </Router>
   );

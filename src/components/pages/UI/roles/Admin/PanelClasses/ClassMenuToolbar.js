@@ -9,8 +9,8 @@ import ClassAdd from './ClassAdd';
 import { NavLink } from "react-router-dom";
 import './ClassMenuToolbar.css'
 const ClassMenuToolbar = (props) => {
-    
-    
+
+
     useEffect(() => {
     }, [])
     const handleEdit = () => {
@@ -24,7 +24,7 @@ const ClassMenuToolbar = (props) => {
             <div className="cm_toolbarCtnr">
                 <div className="cm_toolbar">
                     <Tooltip title="Emploi du temps">
-                        <NavLink to={`/scheduler/admin/${props.rowData.uid}`}>
+                        <NavLink to={`/agenda/admin/${props.rowData.uid}`}>
                             <IconButton aria-label="table" color="primary">
                                 <TableChartIcon />
                             </IconButton>

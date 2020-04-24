@@ -52,7 +52,7 @@ const ClassAdd = (props) => {
         if (loading) {
             console.log(mode)
             if (mode != "default") {
-                const { nom, formateur } = mode
+                const { nom, formateur } = mode[1]
                 setState({
                     nom,
                     formateur
@@ -73,8 +73,8 @@ const ClassAdd = (props) => {
         switch (mode[0]) {
             case "add":
                 db.collection("classes").add({
-                    nom,
-                    formateur,
+                    nom: nom || "Aucun nom",
+                    formateur: formateur || "Aucun formateur",
                     status: 0,
                     eleves: [],
                     appointments: []
@@ -93,8 +93,8 @@ const ClassAdd = (props) => {
 
             case "edit":
                 db.collection("classes").doc(uid).update({
-                    nom,
-                    formateur
+                    nom: nom || "Aucun nom",
+                    formateur: formateur || "Aucun formateur",
                 })
                     .then(function (docRef) {
                         console.log("Document written with ID: ", docRef.id);

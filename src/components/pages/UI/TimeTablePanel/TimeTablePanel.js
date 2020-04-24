@@ -67,7 +67,7 @@ class TimeTablePanel extends Component {
         this.setState({
             ...this.state,
             [event.target.name]: event.target.value,
-            buttonComp: <NavLink style={{textDecoration: "none"}}to={`/scheduler/admin/${event.target.value}`}>
+            buttonComp: <NavLink style={{textDecoration: "none"}}to={`/agenda/admin/${event.target.value}`}>
                 <Button variant="contained" > Voir emploi du temps </Button>
             </NavLink>
         });

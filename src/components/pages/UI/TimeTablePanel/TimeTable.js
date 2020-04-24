@@ -9,11 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import { withStyles } from '@material-ui/core/styles';
-// import appointments from './demo-data/today-appointments';
-import moment from 'moment';
-import { appointments } from './demo-data/appointments';
-import { db } from '../../../../scripts/services/firebase'
-
+import { auth, db } from "../../../../scripts/services/firebase";
+import Grid from '@material-ui/core/Grid';
+import Room from '@material-ui/icons/Room';
 
 
 const styles = theme => ({
@@ -26,6 +24,21 @@ const styles = theme => ({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
+    },
+});
+const style = ({ palette }) => ({
+    icon: {
+        color: palette.action.active,
+    },
+    textCenter: {
+        textAlign: 'center',
+    },
+    header: {
+        height: '260px',
+        backgroundSize: 'cover',
+    },
+    commandButton: {
+        backgroundColor: 'rgba(255,255,255,0.65)',
     },
 });
 
@@ -58,6 +71,46 @@ const AppointmentBase = ({
 
 const Appointment = withStyles(styles, { name: 'Appointment' })(AppointmentBase);
 
+const Content = withStyles(style, { name: 'Content' })(({
+    children, appointmentData, classes, ...restProps
+}) => (
+        <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
+            <Grid container alignItems="center">
+                <Grid item xs={2} className={classes.textCenter}>
+                    <Room className={classes.icon} />
+                </Grid>
+                <Grid item xs={10}>
+                    <span>{appointmentData.location}</span>
+                </Grid>
+            </Grid>
+            <Grid container >
+                <Grid item xs={2} className={classes.textCenter}>
+                    <InfoIcon className={classes.icon} />
+                </Grid>
+                <Grid item xs={10}>
+                    <span>{appointmentData.notes}</span>
+                </Grid>
+            </Grid>
+        </AppointmentTooltip.Content>
+    ));
+
+const AppointmentContent = withStyles(styles, { name: 'AppointmentContent' })(({
+    classes, data, formatDate, ...restProps
+}) => (
+        <Appointments.AppointmentContent {...restProps} formatDate={formatDate} data={data}>
+            <div className={classes.container}>
+                <div className={classes.title}>
+                    <b>{data.title}</b>
+                </div>
+                <div className={classes.text}>
+                    Salle : {data.location}
+                </div>
+                <div className={classes.text}>
+                    Formateur : <br></br>{data.formateur.split(' ')[0]}
+                </div>
+            </div>
+        </Appointments.AppointmentContent>
+    ));
 export default class TimeTable extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -68,9 +121,10 @@ export default class TimeTable extends React.PureComponent {
                 target: null,
                 data: {},
             },
-            idClass: props.match.params.id,
-            wrongId: false
+            collectionRef: ["", ""]
         };
+
+
         this.toggleVisibility = () => {
             const { visible: tooltipVisibility } = this.state;
             this.setState({ visible: !tooltipVisibility });
@@ -79,64 +133,68 @@ export default class TimeTable extends React.PureComponent {
             this.setState({ appointmentMeta: { data, target } });
         };
         this.myAppointment = this.myAppointment.bind(this);
+        this.initAppointmentsStudent = this.initAppointmentsStudent.bind(this);
+        this.initAppointmentsTeacher = this.initAppointmentsTeacher.bind(this);
     }
     componentDidMount() {
-        db.collection("classes").doc(this.props.match.params.id).get().then((doc) => {
+        const { collectionRef } = this.state;
+        if (this.props.userInfo.role != "teacher") {
+            this.initAppointmentsStudent()
+        } else {
+            this.initAppointmentsTeacher()
+        }
+    }
+    initAppointmentsStudent() {
+        const { classe } = this.props.userInfo
+        db.collection("classes").doc(classe).get().then((doc) => {
             if (doc.exists) {
                 let appointments = []
                 doc.data().appointments.forEach(appointment => {
-                    let { title, startDate, endDate, id, location } = appointment
+                    let { title, startDate, endDate, id, location, notes, formateur, classe } = appointment
                     let sDate = new Date(startDate.seconds * 1000)
                     let eDate = new Date(endDate.seconds * 1000)
-                    appointments.push({ title, startDate: sDate, endDate: eDate, id, location })
+                    appointments.push({ title, startDate: sDate, endDate: eDate, id, location, notes, formateur, classe })
                 });
 
-                const currentDate = moment();
-                let date = currentDate.date();
-
-                const makeTodayAppointment = (startDate, endDate) => {
-                    const days = moment(startDate).diff(endDate, 'days');
-                    const nextStartDate = moment(startDate)
-                        .year(currentDate.year())
-                        .month(currentDate.month())
-                        .date(date);
-                    const nextEndDate = moment(endDate)
-                        .year(currentDate.year())
-                        .month(currentDate.month())
-                        .date(date + days);
-
-                    return {
-                        startDate: nextStartDate.toDate(),
-                        endDate: nextEndDate.toDate(),
-                    };
-                };
-                const tab = appointments.map(({ startDate, endDate, ...restArgs }) => {
-                    const result = {
-                        ...makeTodayAppointment(startDate, endDate),
-                        ...restArgs,
-                    };
-                    date += 1;
-                    if (date > 31) date = 1;
-                    return result;
-                });
                 this.setState({
                     ...this.state,
-                    data: tab
+                    data: appointments
                 })
             } else {
-                // doc.data() will be undefined in this case
-                this.setState({
-                    ...this.state,
-                    wrongId: true
-                })
                 console.log("No such document!");
             }
         }).catch(function (error) {
             console.log("Error getting document:", error);
         });
-        console.log("mounted", this.props.match.params.id)
     }
+    initAppointmentsTeacher() {
+        const { uid } = auth().currentUser;
+        db.collection("users").doc(uid).get().then((doc) => {
+            if (doc.exists) {
+                const tab = Object.values(doc.data().appointments)
+                let appointments = []
+                tab.forEach(classe => {
+                    appointments.push(...classe)
+                })
+                let data = []
+                appointments.forEach(appointment => {
+                    let { title, startDate, endDate, id, location, notes, formateur, classe } = appointment
+                    let sDate = new Date(startDate.seconds * 1000)
+                    let eDate = new Date(endDate.seconds * 1000)
+                    data.push({ title, startDate: sDate, endDate: eDate, id, location, notes, formateur, classe })
+                });
 
+                this.setState({
+                    ...this.state,
+                    data
+                })
+            } else {
+                console.log("No such document!");
+            }
+        }).catch(function (error) {
+            console.log("Error getting document:", error);
+        });
+    }
     myAppointment(props) {
         return (
             <Appointment
@@ -155,38 +213,32 @@ export default class TimeTable extends React.PureComponent {
         } = this.state;
 
         return (
-            <>
-                {this.state.wrongId
-                    ? <div>
-                        <h2>Erreur ! Cette page n'existe pas ! </h2>
-                    </div>
-                    : <Paper>
-                        <Scheduler
-                            data={data}
-                            height={660}
-                            firstDayOfWeek={1}
-                            locale={'fr-FR'}
-                        >
-                            <WeekView
-                                startDayHour={9}
-                                endDayHour={19}
-                            />
-                          
-                            <Appointments
-                                appointmentComponent={this.myAppointment}
-                            />
+            <Paper>
+                <Scheduler
+                    data={data}
+                    height={660}
+                    firstDayOfWeek={1}
+                    locale={'fr-FR'}
+                >
+                    <WeekView
+                        startDayHour={9}
+                        endDayHour={19}
+                    />
 
-                            <AppointmentTooltip
-                                showCloseButton
-                                visible={visible}
-                                onVisibilityChange={this.toggleVisibility}
-                                appointmentMeta={appointmentMeta}
-                                onAppointmentMetaChange={this.onAppointmentMetaChange}
-                            />
-                        </Scheduler>
-                    </Paper>
-                }
-            </>
+                    <Appointments
+                        appointmentContentComponent={AppointmentContent}
+                    />
+
+                    <AppointmentTooltip
+                        showCloseButton
+                        visible={visible}
+                        contentComponent={Content}
+                        onVisibilityChange={this.toggleVisibility}
+                        appointmentMeta={appointmentMeta}
+                        onAppointmentMetaChange={this.onAppointmentMetaChange}
+                    />
+                </Scheduler>
+            </Paper>
         );
     }
 }
