@@ -9,10 +9,13 @@ const Teacher = props => {
     document.body.style.background = "#F4F7F6";
     setUser(auth().currentUser)
     setLoading(false)
+    return () => {
+      setLoading(true)
+    }
   }, [])
   return (
     <div className="teacherPanel">
-      {loading === false && <h1>Bonjour, {user.displayName}</h1>}
+      {loading === false && user && <h1>Bonjour, {user.displayName} Eleve</h1>}
       <div className="nextCourseTeacher">
           <p>Votre prochain cours commence a xH</p>
         <div className="nextCourseInfosTeacher">
