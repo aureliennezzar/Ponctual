@@ -45,7 +45,7 @@ const Nav = props => {
     };
     return (
         <nav>
-            <h3>Burger</h3>
+            <h3>Menu enfant</h3>
             <ul className="navLinks">
                 <li>{`${displayName}`}</li>
                 <div className="imageComponent">
