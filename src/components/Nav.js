@@ -6,7 +6,7 @@ import { storageRef } from "../scripts/services/firebase";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import './Nav.css'
-
+import { PictureNav } from './PictureNav'
 const Nav = props => {
     const [state, setState] = useState({
         imageComponent: <FontAwesomeIcon icon={faUserCircle} size="2x" />,
@@ -51,7 +51,7 @@ const Nav = props => {
                 <div className="imageComponent">
                     {imageComponent}
                 </div>
-
+                   <PictureNav imageComponent={imageComponent}/>
                 <Link style={navStyle} to='/' onClick={signOut}>
                     <li>Se déconnecter</li>
                 </Link>
