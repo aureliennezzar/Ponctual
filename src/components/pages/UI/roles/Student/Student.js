@@ -16,7 +16,7 @@ const Student = props => {
   }, [])
   return (
     <div className="studentPanel">
-      {loading === false && user && <h1>Bonjour, {user.displayName}</h1>}
+      {loading === false && user && <h1>Bonjour, {user.displayName} Eleve</h1>}
       <div className="nextCourseStudent">
           <p>Votre prochain cours commence a xH</p>
         <div className="nextCourseInfosStudent">
