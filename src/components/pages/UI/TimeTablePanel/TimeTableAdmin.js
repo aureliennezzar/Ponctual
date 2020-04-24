@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { db } from '../../../../scripts/services/firebase'
-import { firestore } from 'firebase';
 import Paper from '@material-ui/core/Paper';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
-  Toolbar,
-  MonthView,
   WeekView,
+  Toolbar,
   Appointments,
   AppointmentTooltip,
   AppointmentForm,
   DragDropProvider,
   EditRecurrenceMenu,
+  DateNavigator,
+  TodayButton,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { connectProps } from '@devexpress/dx-react-core';
 import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -38,7 +38,7 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import SchoolIcon from '@material-ui/icons/School';
-import "moment/locale/fr";
+import Nav from '../../../Nav'
 
 
 const containerStyles = theme => ({
@@ -345,7 +345,7 @@ const AppointmentContent = withStyles(styles, { name: 'AppointmentContent' })(({
           Salle : {data.location}
         </div>
         <div className={classes.text}>
-          Formateur : <br></br>{data.formateur.split(' ')[0]}
+          Formateur : {data.formateur.split(' ')[0]}
         </div>
       </div>
     </Appointments.AppointmentContent>
@@ -368,13 +368,15 @@ class TimeTableAdmin extends React.PureComponent {
       editingAppointment: undefined,
       previousAppointment: undefined,
       addedAppointment: {},
-      startDayHour: 9,
-      endDayHour: 19,
+      startDayHour: 8,
+      endDayHour: 18,
       isNewAppointment: false,
       idClass: props.match.params.id,
       wrongid: false,
       formateurs: [],
     };
+
+    this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
     db.collection('classes').doc(this.state.idClass).get().then((doc) => {
       this.setState({
         ...this.state,
@@ -559,20 +561,22 @@ class TimeTableAdmin extends React.PureComponent {
     const { classes } = this.props;
     return (
       <>
+        <Nav userInfo={this.props.userInfo} />
         {this.state.wrongid ?
           <div>
             <h2>Erreur ! Cette page n'existe pas ! </h2>
           </div>
           :
-          <Paper>
+          <Paper height="50%">
             <Scheduler
               firstDayOfWeek={1}
               locale={'fr-FR'}
               data={data}
-              height={660}
+              height={"auto"}
             >
               <ViewState
                 currentDate={currentDate}
+                onCurrentDateChange={this.currentDateChange}
               />
               <EditingState
                 onCommitChanges={this.commitChanges}
@@ -582,9 +586,9 @@ class TimeTableAdmin extends React.PureComponent {
               <WeekView
                 startDayHour={startDayHour}
                 endDayHour={endDayHour}
-
+                cellDuration={60}
+                excludedDays={[0]}
               />
-              <MonthView />
               <EditRecurrenceMenu />
               <Appointments
                 appointmentContentComponent={AppointmentContent}
@@ -595,6 +599,8 @@ class TimeTableAdmin extends React.PureComponent {
                 showDeleteButton
               />
               <Toolbar />
+              <DateNavigator />
+              <TodayButton messages={{ today: "Aujourd'hui" }} />
               <AppointmentForm
                 overlayComponent={this.appointmentForm}
                 visible={editingFormVisible}
@@ -646,4 +652,4 @@ class TimeTableAdmin extends React.PureComponent {
   }
 }
 
-export default withStyles(styles, { name: 'EditingDemo' })(TimeTableAdmin);
+export default withStyles(styles, { name: 'Agenda' })(TimeTableAdmin);

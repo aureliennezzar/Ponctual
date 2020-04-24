@@ -4,7 +4,11 @@ import {
     AppointmentTooltip,
     Scheduler,
     WeekView,
+    Toolbar,
+    DateNavigator,
+    TodayButton,
 } from '@devexpress/dx-react-scheduler-material-ui';
+import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
@@ -12,7 +16,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { auth, db } from "../../../../scripts/services/firebase";
 import Grid from '@material-ui/core/Grid';
 import Room from '@material-ui/icons/Room';
-
+import Nav from '../../../Nav'
 
 const styles = theme => ({
     button: {
@@ -94,26 +98,15 @@ const Content = withStyles(style, { name: 'Content' })(({
         </AppointmentTooltip.Content>
     ));
 
-const AppointmentContent = withStyles(styles, { name: 'AppointmentContent' })(({
-    classes, data, formatDate, ...restProps
-}) => (
-        <Appointments.AppointmentContent {...restProps} formatDate={formatDate} data={data}>
-            <div className={classes.container}>
-                <div className={classes.title}>
-                    <b>{data.title}</b>
-                </div>
-                <div className={classes.text}>
-                    Salle : {data.location}
-                </div>
-                <div className={classes.text}>
-                    Formateur : <br></br>{data.formateur.split(' ')[0]}
-                </div>
-            </div>
-        </Appointments.AppointmentContent>
-    ));
+
 export default class TimeTable extends React.PureComponent {
     constructor(props) {
         super(props);
+        let today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
         this.state = {
             data: [],
             visible: false,
@@ -121,9 +114,11 @@ export default class TimeTable extends React.PureComponent {
                 target: null,
                 data: {},
             },
-            collectionRef: ["", ""]
+            currentDate: today,
+            collectionRef: ["", ""],
         };
 
+        this.currentDateChange = (currentDate) => { this.setState({ currentDate }); };
 
         this.toggleVisibility = () => {
             const { visible: tooltipVisibility } = this.state;
@@ -210,35 +205,68 @@ export default class TimeTable extends React.PureComponent {
             data,
             appointmentMeta,
             visible,
+            currentDate,
         } = this.state;
+        const AppointmentContent = withStyles(styles, { name: 'AppointmentContent' })(({
+            classes, data, formatDate, ...restProps
+        }) => (
+                <Appointments.AppointmentContent {...restProps} formatDate={formatDate} data={data}>
+                    <div className={classes.container}>
+                        <div className={classes.title}>
+                            <b>{data.title}</b>
+                        </div>
+                        <div className={classes.text}>
+                            Salle : {data.location}
+                        </div>
 
+                        <div className={classes.text}>
+                            {this.props.userInfo.role != "teacher"
+                                ? <>Formateur : <br></br>{data.formateur.split(' ')[0]}</>
+                                : <>Classe : <br></br>{data.classe}</>
+                            }
+                        </div>
+
+                    </div>
+                </Appointments.AppointmentContent>
+            ));
         return (
-            <Paper>
-                <Scheduler
-                    data={data}
-                    height={660}
-                    firstDayOfWeek={1}
-                    locale={'fr-FR'}
-                >
-                    <WeekView
-                        startDayHour={9}
-                        endDayHour={19}
-                    />
+            <>
+                <Nav userInfo={this.props.userInfo} />
+                <Paper>
+                    <Scheduler
+                        data={data}
+                        height={"auto"}
+                        firstDayOfWeek={1}
+                        locale={'fr-FR'}
+                    >
+                        <ViewState
+                            currentDate={currentDate}
+                            onCurrentDateChange={this.currentDateChange}
+                        />
+                        <WeekView
+                            startDayHour={8}
+                            endDayHour={18}
+                            cellDuration={60}
+                        />
 
-                    <Appointments
-                        appointmentContentComponent={AppointmentContent}
-                    />
+                        <Appointments
+                            appointmentContentComponent={AppointmentContent}
+                        />
 
-                    <AppointmentTooltip
-                        showCloseButton
-                        visible={visible}
-                        contentComponent={Content}
-                        onVisibilityChange={this.toggleVisibility}
-                        appointmentMeta={appointmentMeta}
-                        onAppointmentMetaChange={this.onAppointmentMetaChange}
-                    />
-                </Scheduler>
-            </Paper>
+                        <AppointmentTooltip
+                            showCloseButton
+                            visible={visible}
+                            contentComponent={Content}
+                            onVisibilityChange={this.toggleVisibility}
+                            appointmentMeta={appointmentMeta}
+                            onAppointmentMetaChange={this.onAppointmentMetaChange}
+                        />
+                        <Toolbar />
+                        <DateNavigator />
+                        <TodayButton messages={{today: "Aujourd'hui"}}/>
+                    </Scheduler>
+                </Paper>
+            </>
         );
     }
 }
