@@ -142,6 +142,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             profilepic: "",
             role,
             telephone,
+            profilePicChanged: false,
         }
         if (role === "teacher") {
             userInfos.appointments = []
