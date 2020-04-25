@@ -1,32 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import { auth, db } from "../../../../../scripts/services/firebase";
+import TableChartIcon from '@material-ui/icons/TableChart';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Icon from '@material-ui/core/Icon';
 import "./Student.css"
+import DayTimeTable from "../../../../DayTimeTable";
 
-const Student = props => {
-  const [loading, setLoading] = useState(true)
-  const [state, setState] = useState({
-    user: "Loading",
-    nextAppointmentDate: [],
-    nextAppointment: {}
-  })
-  const { location, formateur, notes, title } = state.nextAppointment
-  useEffect(() => {
-    if(loading){
+const styles = (theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+});
+
+class Student extends Component {
+  constructor(props) {
+    super(props)
+    const { currentUser } = auth()
+    this.state = {
+      loading: true,
+      user: currentUser,
+      nextAppointmentDate: [],
+      nextAppointment: {},
+      showDayTable: false,
+    }
+    this.initAppointments = this.initAppointments.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  componentDidMount() {
+    if (this.state.loading) {
       document.body.style.background = "#F4F7F6";
       const { currentUser } = auth()
-      setState({
-        ...state,
+      this.setState({
+        ...this.state,
         user: currentUser
       })
-      if(currentUser) initAppointments(currentUser)
-      setLoading(false)
+      if (currentUser) this.initAppointments(currentUser)
+      this.setState({
+        ...this.state,
+        loading: false
+      })
     }
-    return () => {
-      setLoading(true)
-    }
-  }, [])
 
-  const initAppointments = (user) => {
+  }
+
+  initAppointments = (user) => {
     db.collection("users").doc(user.uid).get().then((doc) => {
       db.collection("classes").doc(doc.data().classe).get().then((doc) => {
         const appointments = doc.data().appointments.map(appointment => {
@@ -34,7 +53,21 @@ const Student = props => {
           appointment.endDate = new Date(appointment.endDate.seconds * 1000)
           return appointment
         })
-        console.log(appointments)
+        const todayAppointments = appointments.filter(appointment => {
+          let today = new Date();
+          const tDd = String(today.getDate()).padStart(2, '0');
+          const tMm = String(today.getMonth() + 1).padStart(2, '0');
+          today = tDd + '/' + tMm;
+          let appointmentDay = appointment.startDate
+          const aDd = String(appointmentDay.getDate()).padStart(2, '0');
+          const aMm = String(appointmentDay.getMonth() + 1).padStart(2, '0');
+          appointmentDay = aDd + '/' + aMm;
+          if (appointmentDay === today) {
+            return appointment
+          }
+        })
+
+        console.log(todayAppointments)
         const nextAppointments = appointments.filter(appointment => {
           if (appointment.startDate > new Date()) {
             return appointment
@@ -70,10 +103,11 @@ const Student = props => {
             message += `le ${nextDate} à`
             break;
         }
-        setState({
-          ...state,
+        this.setState({
+          ...this.state,
           nextAppointmentDate: [nextAppointmentDate.getHours(), message],
           nextAppointment,
+          todayAppointments,
         })
       }).catch(function (err) {
         console.log(err)
@@ -82,27 +116,44 @@ const Student = props => {
       console.log(err)
     })
   }
-  if(loading === false && state.user) {
-    console.log("display")
-    console.log(loading, state.user)
-
-  } else {
-    console.log("dont display")
-    console.log(loading, state.user)
+  handleClick() {
+    this.setState({
+      ...this.state,
+      showDayTable: true,
+    })
   }
-  return (
-    <div className="studentPanel">
-      {loading === false && state.user && <h1>Bonjour, {state.user.displayName}</h1>}
-      <div className="nextCourseStudent">
-        <p>Votre prochain cours commence {state.nextAppointmentDate[1]} {state.nextAppointmentDate[0]} H</p>
-        <div className="nextCourseInfosStudent">
-          <p>Infos du cours : {title}</p>
-          <p>Formateur : {formateur}</p>
-          <p>Salle : {location}</p>
-          <p>Informations : {notes}</p>
-        </div>
+  render() {
+
+    const { classes } = this.props;
+    const nextCourseInfosStudent =
+      <div className="nextCourseInfosStudent">
+        <p>Infos du cours : {this.state.nextAppointment.title}</p>
+        <p>Formateur : {this.state.nextAppointment.formateur}</p>
+        <p>Salle : {this.state.nextAppointment.location}</p>
+        <p>Informations : {this.state.nextAppointment.notes}</p>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          startIcon={<TableChartIcon />}
+          onClick={this.handleClick}
+        >
+          Vos cours de la journée
+      </Button>
       </div>
-    </div>
-  )
+    return (
+      <div className="studentPanel">
+        {this.state.loading === false && this.state.user && <h1>Bonjour, {this.state.user.displayName}</h1>}
+        <div className="nextCourseStudent">
+          <p>Votre prochain cours commence {this.state.nextAppointmentDate[1]} {this.state.nextAppointmentDate[0]} H</p>
+          {nextCourseInfosStudent}
+        </div>
+        {this.state.showDayTable
+          ? <DayTimeTable appointments={this.state.todayAppointments} />
+          : null}
+      </div>
+    )
+  }
 }
-export default Student
+
+export default withStyles(styles)(Student);
