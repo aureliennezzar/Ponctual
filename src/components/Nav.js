@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
-import { signOut } from "../scripts/auth";
 import { auth } from "../scripts/services/firebase";
 import { storageRef } from "../scripts/services/firebase";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -25,37 +23,54 @@ const Nav = props => {
     }, []);
 
     const setUser = user => {
-        const {displayName } = user;
+        const { displayName } = user;
         if (profilepic.length > 0) {
-            const profilePictureRef = storageRef.child(`${profilepic}/profile_31x31.jpg`);
-            profilePictureRef.getDownloadURL().then((url) => {
-                
-                setState({ ...state, imageComponent: <img src={url} style={{ borderRadius: '50%', cursor: "pointer" }} alt={url} /> })
+            storageRef.child(profilepic).listAll().then(function (res) {
+
+                res.items.forEach(function (itemRef) {
+                    itemRef.getDownloadURL().then((url) => {
+
+                        setState({ ...state, imageComponent: <img className="resize" src={url} style={{ borderRadius: '50%', cursor: "pointer" }} alt={url} /> })
+                    }).catch(function (error) {
+                    });
+                });
             }).catch(function (error) {
             });
+
         }
         setDisplayName(displayName);
         setState({ ...state, loading: false });
+        db.collection('users').doc(profilepic).update({
+            profilePicChanged:false
+        })
+
+        
+
     }
 
+    const initListener = (user) => {
+        db.collection('users').doc(profilepic)
+            .onSnapshot(function (doc) {
+              if(doc.data().profilePicChanged){
+                  setUser(user)
+              }
+                
+            });
 
 
-    const navStyle = {
-        color: 'white'
-    };
+    }
+
     return (
         <nav>
-            <h3>Menu enfant</h3>
-            <ul className="navLinks">
-                <li>{`${displayName}`}</li>
-                <div className="imageComponent">
-                    {imageComponent}
-                </div>
-                   <PictureNav imageComponent={imageComponent}/>
-                <Link style={navStyle} to='/' onClick={signOut}>
-                    <li>Se déconnecter</li>
-                </Link>
-            </ul>
+            <h3 style={{ left: 20, position: "fixed" }}>Menu enfant</h3>
+            <div className="navCtnr">
+
+                <p>LOGO</p>
+                <ul className="navLinks">
+                    <li>{`${displayName}`}</li>
+                    <PictureNav imageComponent={imageComponent} profilepic={profilepic} />
+                </ul>
+            </div>
         </nav>
     )
 }

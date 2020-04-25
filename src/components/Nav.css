@@ -1,7 +1,6 @@
 nav {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: center;
     height: 6vh;
     background: #239BEB;
     color: rgb(255, 255, 255);
@@ -10,8 +9,22 @@ nav {
 }
 .navLinks {
     display: flex;
-    width: 50%;
-    justify-content: space-around;
+    width: 10vw;
+    justify-content: space-between;
     align-items: center;
     list-style: none;
 }
+.navCtnr{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 80vw;
+    border:solid 1px red
+
+}
+nav  img.resize {
+
+    width:50px;
+    height:50px;
+  }
