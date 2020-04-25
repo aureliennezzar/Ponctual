@@ -32,7 +32,6 @@ const Student = props => {
       console.log(err)
     })
   }
-  console.log(state)
   return (
     <div className="studentPanel">
       {loading === false && state.user && <h1>Bonjour, {state.user.displayName}</h1>}
