@@ -67,8 +67,7 @@ const Nav = props => {
 
                 <p>LOGO</p>
                 <div className="navLinks">
-                    {`${displayName}`}
-                   <div style={{zIndex:99999}}><PictureNav imageComponent={imageComponent}  /></div>
+                   <div style={{zIndex:99999}}><PictureNav imageComponent={imageComponent} displayName={displayName.toLowerCase()} /></div>
                 </div>
             </div>
         </nav>
