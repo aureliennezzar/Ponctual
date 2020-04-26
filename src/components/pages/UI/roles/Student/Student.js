@@ -3,12 +3,22 @@ import { auth, db } from "../../../../../scripts/services/firebase";
 import TableChartIcon from '@material-ui/icons/TableChart';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import Icon from '@material-ui/core/Icon';
 import "./Student.css"
 import DayTimeTable from "../../../../DayTimeTable";
-
+import Paper from "@material-ui/core/Paper";
+import Fade from "@material-ui/core/Fade";
+import ClearIcon from '@material-ui/icons/Clear';
+import IconButton from '@material-ui/core/IconButton';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
+import StudentContact from './StudentContact'
 const styles = (theme) => ({
   button: {
+    margin: theme.spacing(1),
+  },
+  container: {
+    display: 'flex',
+  },
+  paper: {
     margin: theme.spacing(1),
   },
 });
@@ -23,9 +33,12 @@ class Student extends Component {
       nextAppointmentDate: [],
       nextAppointment: {},
       showDayTable: false,
+      showContact: false,
     }
     this.initAppointments = this.initAppointments.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.initContact = this.initContact.bind(this)
+
   }
 
   componentDidMount() {
@@ -62,7 +75,7 @@ class Student extends Component {
           const aDd = String(appointmentDay.getDate()).padStart(2, '0');
           const aMm = String(appointmentDay.getMonth() + 1).padStart(2, '0');
           appointmentDay = aDd + '/' + aMm;
-          if (appointmentDay === today) {
+          if (appointmentDay === "27/04") {
             return appointment
           }
         })
@@ -90,7 +103,7 @@ class Student extends Component {
         let message = ""
         switch (true) {
           case (daysDiff === 0):
-            message += "à"
+            message += "aujourd'hui à"
             break;
           case (daysDiff === 1):
             message += "demain à"
@@ -103,9 +116,15 @@ class Student extends Component {
             message += `le ${nextDate} à`
             break;
         }
+        let nextAppointmentTime = ""
+        if (nextAppointmentDate.getMinutes() < 10) {
+          nextAppointmentTime = `${nextAppointmentDate.getHours()}:0${nextAppointmentDate.getMinutes()}`
+        } else {
+          nextAppointmentTime = `${nextAppointmentDate.getHours()}:${nextAppointmentDate.getMinutes()}`
+        }
         this.setState({
           ...this.state,
-          nextAppointmentDate: [nextAppointmentDate.getHours(), message],
+          nextAppointmentDate: [nextAppointmentTime, message],
           nextAppointment,
           todayAppointments,
         })
@@ -119,7 +138,13 @@ class Student extends Component {
   handleClick() {
     this.setState({
       ...this.state,
-      showDayTable: true,
+      showDayTable: !this.state.showDayTable,
+    })
+  }
+  initContact() {
+    this.setState({
+      ...this.state,
+      showContact: !this.state.showContact,
     })
   }
   render() {
@@ -127,33 +152,62 @@ class Student extends Component {
     const { classes } = this.props;
     const nextCourseInfosStudent =
       <div className="nextCourseInfosStudent">
-        <p>Infos du cours : {this.state.nextAppointment.title}</p>
-        <p>Formateur : {this.state.nextAppointment.formateur}</p>
-        <p>Salle : {this.state.nextAppointment.location}</p>
-        <p>Informations : {this.state.nextAppointment.notes}</p>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          startIcon={<TableChartIcon />}
-          onClick={this.handleClick}
-        >
-          Vos cours de la journée
-      </Button>
+        <div className="nextCourseInfos">
+          <h2><b>{this.state.nextAppointment.title}</b> {this.state.nextAppointmentDate[1]} {this.state.nextAppointmentDate[0]}</h2>
+          <p>Formateur : <b>{this.state.nextAppointment.formateur}</b></p>
+          <p>Salle : <b>{this.state.nextAppointment.location}</b></p>
+          <p>Informations : <b>{this.state.nextAppointment.notes}</b></p>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            startIcon={<TableChartIcon />}
+            onClick={this.handleClick}>
+            Vos cours de la journée
+        </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.button}
+            startIcon={<AnnouncementIcon />}
+            onClick={this.initContact}>
+            Signaler un retard/absences
+        </Button>
+        </div>
       </div>
     return (
       <div className="studentPanel">
         {this.state.loading === false && this.state.user && <h1>Bonjour, {this.state.user.displayName}</h1>}
-        <div className="nextCourseStudent">
-          <p>Votre prochain cours commence {this.state.nextAppointmentDate[1]} {this.state.nextAppointmentDate[0]} H</p>
-          {nextCourseInfosStudent}
-        </div>
-        {this.state.showDayTable
-          ? <DayTimeTable appointments={this.state.todayAppointments} />
+
+        <p>Votre prochain cours : </p>
+        {nextCourseInfosStudent}
+        {this.state.showContact
+          ? <Fade in={this.state.showContact}>
+            <StudentContact initContact={this.initContact}/>
+          </Fade>
           : null}
+        {this.state.showDayTable
+          ? <div className={classes.container}>
+            <Fade in={this.state.showDayTable}>
+              <Paper elevation={4} className={classes.paper}>
+                <div className="overlayTb" onClick={this.handleClick}>
+                </div>
+                <div className="dayTimeTableCtnr">
+                  <div className="dayTbBtn">
+                    <IconButton aria-label="delete" color="primary" onClick={this.handleClick}>
+                      <ClearIcon />
+                    </IconButton>
+                  </div>
+                  <DayTimeTable appointments={this.state.todayAppointments} />
+                </div>
+              </Paper>
+            </Fade>
+          </div>
+          : null}
+
       </div>
     )
   }
 }
 
-export default withStyles(styles)(Student);
+export default withStyles(styles)(Student)

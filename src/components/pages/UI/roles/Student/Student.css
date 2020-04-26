@@ -1,17 +1,57 @@
-.nextCourseInfosStudent{
-    width: 100%;
-    height: 200px;
-    background: rgb(232, 236, 235);
-    border-radius: 4px;
+.nextCourseInfosStudent {
+    display: flex;
+    justify-content: center;
+    width: 350px;
+    height: auto;
+    color: white;
+    background: #239BEB;
+    border-radius: 3px;
+    text-align: center;
+    -webkit-box-shadow: 10px 10px 43px -14px rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 10px 10px 43px -14px rgba(0, 0, 0, 0.19);
+    box-shadow: 10px 10px 43px -14px rgba(0, 0, 0, 0.19);
 }
-.studentPanel{
+.nextCourseInfos{
+    text-align: center;
+    align-items: center;
+}
+
+.studentPanel {
     width: 100%;
-    height: 100%;
+    height: 92.2vh;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.nextCourseStudent{
-    width: 50%;
-    height: 200px;
+
+
+.dayTimeTableCtnr {
+    position: absolute;
+    width: 500px;
+    top: 50%;
+    left: 50%;
+    color: white;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    z-index: 3;
+}
+
+.dayTbBtn {
+    position: fixed;
+    right: 5px;
+    top: 5px;
+    z-index: 4;
+}
+
+.overlayTb {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    cursor: pointer;
 }
