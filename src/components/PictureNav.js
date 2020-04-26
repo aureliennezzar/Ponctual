@@ -5,20 +5,39 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { Link } from 'react-router-dom'
 import { signOut } from "../scripts/auth";
+import { db, auth } from "../scripts/services/firebase";
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { IconButton } from '@material-ui/core';
 import { storageRef } from "../scripts/services/firebase";
 
+const theme = createMuiTheme({
+    overrides: {
+      MuiIconButton: {
+        root: {
+          '&:hover': {
+            backgroundColor: "blue"
+            
+          }
+        }
+      }
+    }
+  })
+
 const useStyles = makeStyles(theme => ({
-    '.MuiIconButton-label': {
-        width: 31,
-        height: 31
-    },
+    overrides: {
+        MuiIconButton: {
+          root: {
+            '&:hover': {
+              backgroundColor: "$labelcolor"
+            }
+          }
+        }
+      },
     root: {
 
         height: "100%",
@@ -38,7 +57,9 @@ const useStyles = makeStyles(theme => ({
 const PictureNav = props => {
     const classPicture = useStyles();
     const [open, setOpen] = useState(false);
+    const [userId, setUserId] = useState("")
     const anchorRef = useRef(null);
+
 
     const handleToggle = () => {
         setOpen(prevOpen => !prevOpen);
@@ -61,15 +82,14 @@ const PictureNav = props => {
 
     const handleFile = event => {
         let file = event.target.files[0]
-        uploadFile(file);
-        
-
+        uploadFile(file,event);
     }
 
-    const { profilepic, imageComponent } = props
-    const uploadFile = (file) => {
-        if (file !== undefined && file.type.split('/')[0] === "image") {
-            storageRef.child(profilepic).listAll().then(function (res) {
+    const { imageComponent } = props
+   console.log(auth().currentUser.uid)
+    const uploadFile = (file,event) => {
+        if (userId && file !== undefined && file.type.split('/')[0] === "image") {
+            storageRef.child(userId).listAll().then(function (res) {
                 if (res.items.length > 0) {
                     res.items.forEach(function (itemRef) {
                         console.log('je suis rentré')
@@ -80,7 +100,11 @@ const PictureNav = props => {
                         });
                     })
                 }
-                storageRef.child(`${profilepic}/${file.name}`).put(file).then(function (snapshot) {
+                storageRef.child(`${userId}/${file.name}`).put(file).then(function (snapshot) {
+                    db.collection('users').doc(userId).update({
+                        profilepic:true,
+                        profilePicChanged:true
+                    })
                     console.log('Uploaded a blob or file!');
                 }).catch(function (error) {
                     console.log(error);
@@ -88,24 +112,28 @@ const PictureNav = props => {
             }).catch(function (error) {
             });
         }
-        db.collection('users').doc(profilepic).update({
-            profilePicChanged:true
-        })
+    
+        handleClose(event)
     }
 
     const prevOpen = useRef(open);
     useEffect(() => {
+        const user = auth().currentUser;
+        if(user ){
+            setUserId(user.uid)
         if (prevOpen.current === true && open === false) {
             anchorRef.current.focus();
         }
 
         prevOpen.current = open;
+     }
     }, [open]);
     return (
         <>
             <div className={classPicture.root}>
-                <div >
-                    <IconButton
+                <div style={{width:"100%",height:"100%"}}>
+                    <MuiThemeProvider theme={theme}>
+                    <IconButton 
                         size="medium"
                         ref={anchorRef}
                         aria-controls={open ? "menu-list-grow" : undefined}
@@ -115,6 +143,8 @@ const PictureNav = props => {
                     >
                         {imageComponent}
                     </IconButton>
+                    </MuiThemeProvider>
+
                     <Popper
                         open={open}
                         anchorEl={anchorRef.current}
@@ -144,7 +174,7 @@ const PictureNav = props => {
                                                 <input
                                                     type="file"
                                                     id="file-input"
-                                                    onChange={handleFile, handleClose}
+                                                    onChange={handleFile}
                                                     style={{ display: "none" }}>
                                                 </input>
 
