@@ -15,18 +15,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { IconButton } from '@material-ui/core';
 import { storageRef } from "../scripts/services/firebase";
 
-const theme = createMuiTheme({
-    overrides: {
-      MuiIconButton: {
-        root: {
-          '&:hover': {
-            backgroundColor: "blue"
-            
-          }
-        }
-      }
-    }
-  })
+
 
 const useStyles = makeStyles(theme => ({
     overrides: {
@@ -85,8 +74,7 @@ const PictureNav = props => {
         uploadFile(file,event);
     }
 
-    const { imageComponent } = props
-   console.log(auth().currentUser.uid)
+    const { imageComponent, displayName } = props
     const uploadFile = (file,event) => {
         if (userId && file !== undefined && file.type.split('/')[0] === "image") {
             storageRef.child(userId).listAll().then(function (res) {
@@ -128,11 +116,14 @@ const PictureNav = props => {
         prevOpen.current = open;
      }
     }, [open]);
+   const prenom = displayName.split(' ')[0]
+   const nom = displayName.split(' ')[1]
+   console.log(nom)
     return (
         <>
             <div className={classPicture.root}>
                 <div style={{width:"100%",height:"100%"}}>
-                    <MuiThemeProvider theme={theme}>
+                   
                     <IconButton 
                         size="medium"
                         ref={anchorRef}
@@ -143,7 +134,6 @@ const PictureNav = props => {
                     >
                         {imageComponent}
                     </IconButton>
-                    </MuiThemeProvider>
 
                     <Popper
                         open={open}
@@ -159,7 +149,6 @@ const PictureNav = props => {
                                     width: 200,
                                     transformOrigin:
                                         placement === "bottom" ? "center top" : "center bottom",
-
                                 }}
                             >
                                 <Paper>
@@ -169,7 +158,10 @@ const PictureNav = props => {
                                             id="menu-list-grow"
                                             onKeyDown={handleListKeyDown}
                                         >
-                                            <br></br>
+                                           
+                                            <p style={{textAlign:"center", fontFamily:"Verdana, sans-serif"}}>{`${prenom.toLowerCase()} ${nom.toUpperCase()}` }</p>
+                                            <hr width="70%" backgroundColor="grey"/>
+                                         
                                             <MenuItem >
                                                 <input
                                                     type="file"
@@ -181,17 +173,17 @@ const PictureNav = props => {
                                                 <label
                                                     style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
                                                     htmlFor="file-input">
-                                                    <PhotoCameraIcon /> Changer de photo
+                                                    <PhotoCameraIcon style={{marginRight:5}}/> Changer de photo
                                                 </label>
                                             </MenuItem>
-                                            <MenuItem onClick={handleClose}><AccountBoxIcon /> Mon profile</MenuItem>
+                                            <MenuItem onClick={handleClose}><AccountBoxIcon style={{marginRight:5}}/> Mon profile</MenuItem>
 
                                             <Link
                                                 to='/'
                                                 onClick={signOut}
                                                 style={{ textDecoration: "none", color: "black" }}>
                                                 <MenuItem>
-                                                    <ExitToAppIcon />Se déconnecter
+                                                    <ExitToAppIcon style={{marginRight:5}}/>Se déconnecter
                                                 </MenuItem>
                                             </Link>
                                             <br></br>
