@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { auth,db } from "../../../../../scripts/services/firebase";
+import React, { Component } from "react";
+import { auth, db } from "../../../../../scripts/services/firebase";
 import { withStyles } from '@material-ui/core/styles';
 import TableChartIcon from '@material-ui/icons/TableChart';
 import Button from '@material-ui/core/Button';
@@ -9,9 +9,19 @@ import Fade from "@material-ui/core/Fade";
 import ClearIcon from '@material-ui/icons/Clear';
 import IconButton from '@material-ui/core/IconButton';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
-import StudentContact from './StudentContact'
+import StudentContact from '../Student/StudentContact'
 import "./Teacher.css"
-
+const styles = (theme) => ({
+  button: {
+    margin: theme.spacing(1),
+  },
+  container: {
+    display: 'flex',
+  },
+  paper: {
+    margin: theme.spacing(1),
+  },
+});
 class Teacher extends Component {
   constructor(props) {
     super(props)
