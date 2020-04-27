@@ -50,10 +50,14 @@ const App = (props) => {
     <Router>
       <Switch>
         <PublicRoute exact path="/" authenticated={authenticated} component={Login} role={role}></PublicRoute>
-        <PrivateRoute path="/acceuil" authenticated={authenticated} component={Panel} role={role} userInfo={userInfo}></PrivateRoute>
-        <PrivateRoute path="/gestion" authenticated={authenticated} component={AdminGestion} role={role} userInfo={userInfo}></PrivateRoute>
-        <PrivateRoute path="*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
-        {/* <PrivateRoute exact path="/scheduler" authenticated={authenticated} component={TimeTablePanel} role={role} userInfo={userInfo}></PrivateRoute> */}
+        <PrivateRoute exact path="/acceuil" authenticated={authenticated} component={Panel} role={role} userInfo={userInfo}></PrivateRoute>
+        <PrivateRoute exact path="/gestion" authenticated={authenticated} component={AdminGestion} role={role} userInfo={userInfo}></PrivateRoute>
+        <PrivateRoute exact path="*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
+        <PrivateRoute path="/acceuil/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
+        <PrivateRoute path="/gestion/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
+        <PrivateRoute path="/agenda/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
+        <PrivateRoute path="/agenda/admin/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
+        <PrivateRoute path="" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
 
         <PrivateRoute path="/agenda/admin/:id" authenticated={authenticated} component={TimeTableAdmin} role={role} userInfo={userInfo}></PrivateRoute>
 
