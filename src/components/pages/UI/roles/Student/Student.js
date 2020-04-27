@@ -183,7 +183,7 @@ class Student extends Component {
         {nextCourseInfosStudent}
         {this.state.showContact
           ? <Fade in={this.state.showContact}>
-            <StudentContact initContact={this.initContact}/>
+            <StudentContact initContact={this.initContact} />
           </Fade>
           : null}
         {this.state.showDayTable
