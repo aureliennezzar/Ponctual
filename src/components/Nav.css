@@ -1,31 +1,41 @@
 nav {
     display: flex;
-    justify-content: center;
-    height: 6vh;
-    background: #239BEB;
+    justify-content: space-between;
+    height: 6.5vh;
+    background: rgb(9, 111, 179);
     color: rgb(255, 255, 255);
     border-bottom: 1px #E6EAEA solid;
     
 }
-.navLinks {
+.rightNav {
     display: flex;
-    width: 10vw;
-    justify-content: space-between;
+    width: 20vw;
+    justify-content: center;
     align-items: center;
     list-style: none;
+    z-index: 9999;
 }
-.navCtnr{
+.middleNav{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     height: 100%;
-    width: 80vw;
+    width: 20vw;
 
 }
+.leftNav{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 20vw;
+
+}
+
 nav  img.resize {
 
-    width:48px;
-    height:48px;
+    width:35px;
+    height:35px;
   
   }
 

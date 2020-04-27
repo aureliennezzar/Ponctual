@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from "../scripts/services/firebase";
 import { storageRef } from "../scripts/services/firebase";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 import './Nav.css'
 import PictureNav from './PictureNav'
+import HomeNav from './HomeNav'
 const Nav = props => {
     const [state, setState] = useState({
-        imageComponent: <FontAwesomeIcon icon={faUserCircle} size="2x" />,
+        imageComponent: <AccountCircleIcon fontSize="large" />,
         loading: true,
-        user:null
+        user: null
     })
     const [displayName, setDisplayName] = useState('')
     const { loading, imageComponent } = state;
     const { profilepic } = props.userInfo;
-    
+
 
     useEffect(() => {
         const user = auth().currentUser;
         if (user && loading) {
-            setState({...state,user})
+            setState({ ...state, user })
             setUser(user)
             initListener(user)
-            
+
         } else { setDisplayName("") }
     }, []);
 
@@ -62,14 +63,20 @@ const Nav = props => {
 
     return (
         <nav>
-            <h3 style={{ left: 20, position: "fixed" }}>Menu enfant</h3>
-            <div className="navCtnr">
 
-                <p>LOGO</p>
-                <div className="navLinks">
-                   <div style={{zIndex:99999}}><PictureNav imageComponent={imageComponent} displayName={displayName.toLowerCase()} /></div>
-                </div>
+            <div className="leftNav">
+                <HomeNav userInfo={props.userInfo}/>
             </div>
+            
+            <div className="middleNav">
+                <p>LOGO</p>
+            </div>
+            <div className="rightNav">
+
+                <PictureNav imageComponent={imageComponent} displayName={displayName.toLowerCase()} />
+            </div>
+
+
         </nav>
     )
 }

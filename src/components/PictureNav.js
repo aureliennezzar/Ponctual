@@ -5,7 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
-import { makeStyles, createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { makeStyles} from "@material-ui/core/styles";
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { Link } from 'react-router-dom'
 import { signOut } from "../scripts/auth";
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
         MuiIconButton: {
           root: {
             '&:hover': {
-              backgroundColor: "$labelcolor"
+              background: "$labelcolor"
             }
           }
         }
@@ -32,9 +32,7 @@ const useStyles = makeStyles(theme => ({
         height: "100%",
         width: "auto",
         zIndex: "99999",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+
     },
     paper: {
 
@@ -80,7 +78,6 @@ const PictureNav = props => {
             storageRef.child(userId).listAll().then(function (res) {
                 if (res.items.length > 0) {
                     res.items.forEach(function (itemRef) {
-                        console.log('je suis rentré')
                         itemRef.delete().then(function () {
                             console.log("File deleted successfully");
                         }).catch(function (error) {
@@ -118,7 +115,6 @@ const PictureNav = props => {
     }, [open]);
    const prenom = displayName.split(' ')[0]
    const nom = displayName.split(' ')[1]
-   console.log(nom)
     return (
         <>
             <div className={classPicture.root}>
@@ -163,7 +159,8 @@ const PictureNav = props => {
                                             <hr width="70%" backgroundColor="grey"/>
                                          
                                             <MenuItem >
-                                                <input
+                                                <input 
+                                                    accept="image/*"
                                                     type="file"
                                                     id="file-input"
                                                     onChange={handleFile}
