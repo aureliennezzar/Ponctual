@@ -8,7 +8,7 @@ import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
 import ClearIcon from '@material-ui/icons/Clear';
 import IconButton from '@material-ui/core/IconButton';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import "./Teacher.css"
 const styles = (theme) => ({
   button: {
@@ -167,7 +167,7 @@ class Teacher extends Component {
             variant="contained"
             color="secondary"
             className={classes.button}
-            startIcon={<AnnouncementIcon />}
+            startIcon={<AssignmentTurnedInIcon />}
             onClick={this.initRollCall}>
             Faire l'appel
         </Button>
