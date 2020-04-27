@@ -8,8 +8,9 @@ import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
 import ClearIcon from '@material-ui/icons/Clear';
 import IconButton from '@material-ui/core/IconButton';
-import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import BeenhereIcon from '@material-ui/icons/Beenhere';
 import "./Teacher.css"
+import { Redirect } from "react-router-dom";
 const styles = (theme) => ({
   button: {
     margin: theme.spacing(1),
@@ -30,7 +31,9 @@ class Teacher extends Component {
       user: currentUser,
       nextAppointmentDate: [],
       nextAppointment: {},
+      actualAppointment: {},
       showDayTable: false,
+      showCallRoll: false,
     }
     this.initAppointments = this.initAppointments.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -56,6 +59,8 @@ class Teacher extends Component {
   }
 
   initAppointments = (user) => {
+
+    const todayDate = new Date(new Date(new Date().setHours(11)).setMinutes(48))
     db.collection("users").doc(user.uid).get().then((doc) => {
       const tab = Object.values(doc.data().appointments)
       let allClassesAppointments = []
@@ -69,21 +74,25 @@ class Teacher extends Component {
         return appointment
       })
       const todayAppointments = appointments.filter(appointment => {
-        let today = new Date();
-        const tDd = String(today.getDate()).padStart(2, '0');
-        const tMm = String(today.getMonth() + 1).padStart(2, '0');
-        today = tDd + '/' + tMm;
+        const tDd = String(todayDate.getDate()).padStart(2, '0');
+        const tMm = String(todayDate.getMonth() + 1).padStart(2, '0');
+        const today = tDd + '/' + tMm;
         let appointmentDay = appointment.startDate
         const aDd = String(appointmentDay.getDate()).padStart(2, '0');
         const aMm = String(appointmentDay.getMonth() + 1).padStart(2, '0');
         appointmentDay = aDd + '/' + aMm;
-        if (appointmentDay === "27/04") {
+        if (appointmentDay === today) {
           return appointment
         }
       })
-
+      const actualAppointment = todayAppointments.filter(appointment => {
+        console.log(appointment.endDate, todayDate)
+        if (appointment.startDate <= todayDate && appointment.endDate >= todayDate) {
+          return appointment
+        }
+      })[0]
       const nextAppointments = appointments.filter(appointment => {
-        if (appointment.startDate > new Date()) {
+        if (appointment.startDate > todayDate) {
           return appointment
         }
       })
@@ -92,7 +101,7 @@ class Teacher extends Component {
       nextAppointments.forEach(appointment => {
         courses.push(appointment.startDate)
       });
-      const goal = new Date();
+      const goal = todayDate;
       const nextAppointmentDate = courses.reduce(function (prev, curr) {
         return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
       });
@@ -100,8 +109,9 @@ class Teacher extends Component {
         if (appointment.startDate === nextAppointmentDate)
           return appointment
       })[0]
-      const timeDiff = nextAppointmentDate.getTime() - new Date().getTime();
-      const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24))
+
+      const timeDiff = nextAppointmentDate.getTime() - todayDate.getTime();
+      const daysDiff = Math.round(timeDiff / (1000 * 3600 * 24))
       let message = ""
       switch (true) {
         case (daysDiff === 0):
@@ -124,11 +134,13 @@ class Teacher extends Component {
       } else {
         nextAppointmentTime = `${nextAppointmentDate.getHours()}:${nextAppointmentDate.getMinutes()}`
       }
+
       this.setState({
         ...this.state,
         nextAppointmentDate: [nextAppointmentTime, message],
         nextAppointment,
         todayAppointments,
+        actualAppointment,
       })
     }).catch(function (err) {
       console.log(err)
@@ -141,42 +153,64 @@ class Teacher extends Component {
     })
   }
   initRollCall() {
-    alert('APPEL')
+    this.setState({
+      ...this.state,
+      showCallRoll: !this.state.showCallRoll,
+    })
   }
   render() {
 
     const { classes } = this.props;
+
     const nextCourseInfosStudent =
-      <div className="nextCourseInfosCtnr">
-        <div className="nextCourseInfos">
-          <h2><b>{this.state.nextAppointment.title}</b> {this.state.nextAppointmentDate[1]} {this.state.nextAppointmentDate[0]}</h2>
-          <p>Classe : <b>{this.state.nextAppointment.classe}</b></p>
-          <p>Salle : <b>{this.state.nextAppointment.location}</b></p>
-          <p>Informations : <b>{this.state.nextAppointment.notes}</b></p>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            startIcon={<TableChartIcon />}
-            onClick={this.handleClick}>
-            Vos cours de la journée
+
+      <div>
+        <p>Votre prochain cours: </p>
+        <div className="nextCourseInfosCtnr">
+          <div className="nextCourseInfos">
+            <h2><b>{this.state.nextAppointment.title}</b> {this.state.nextAppointmentDate[1]} {this.state.nextAppointmentDate[0]}</h2>
+            <p>Classe : <b>{this.state.nextAppointment.classe}</b></p>
+            <p>Salle : <b>{this.state.nextAppointment.location}</b></p>
+            <p>Informations : <b>{this.state.nextAppointment.notes}</b></p>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              startIcon={<TableChartIcon />}
+              onClick={this.handleClick}>
+              Vos cours de la journée
         </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            startIcon={<AssignmentTurnedInIcon />}
-            onClick={this.initRollCall}>
-            Faire l'appel
+          </div>
+        </div>
+      </div>
+
+    const actualCourseInfosStudent =
+      <div style={{ paddingRight: "100px" }}>
+        <p>Cours actuel : </p>
+        <div className="nextCourseInfosCtnr">
+          <div className="nextCourseInfos">
+            <h2><b>{this.state.actualAppointment.title}</b></h2>
+            <p>Classe : <b>{this.state.actualAppointment.classe}</b></p>
+            <p>Salle : <b>{this.state.actualAppointment.location}</b></p>
+            <p>Informations : <b>{this.state.actualAppointment.notes}</b></p>
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+              startIcon={<BeenhereIcon />}
+              onClick={this.initRollCall}>
+              Faire l'appel
         </Button>
+          </div>
         </div>
       </div>
     return (
       <div className="teacherPanel">
         {this.state.loading === false && this.state.user && <h1>Bonjour, {this.state.user.displayName}</h1>}
 
-        <p>Votre prochain cours : </p>
-        {nextCourseInfosStudent}
+        <div style={{ display: "flex" }}>
+          {actualCourseInfosStudent}
+          {nextCourseInfosStudent}</div>
         {this.state.showDayTable
           ? <div className={classes.container}>
             <Fade in={this.state.showDayTable}>
@@ -194,6 +228,9 @@ class Teacher extends Component {
               </Paper>
             </Fade>
           </div>
+          : null}
+        {this.state.showCallRoll
+          ? <Redirect to="/appel" />
           : null}
 
       </div>

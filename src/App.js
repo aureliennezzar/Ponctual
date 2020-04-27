@@ -13,7 +13,8 @@ import loader from './assets/loader.gif'
 import TimeTablePanel from './components/pages/UI/TimeTablePanel/TimeTablePanel';
 import TimeTable from './components/pages/UI/TimeTablePanel/TimeTable';
 import TimeTableAdmin from './components/pages/UI/TimeTablePanel/TimeTableAdmin';
-import  AdminGestion  from './components/pages/UI/roles/Admin/AdminGestion'
+import AdminGestion from './components/pages/UI/roles/Admin/AdminGestion'
+import CallRoll from './components/pages/UI/roles/Teacher/CallRoll'
 import NotFoundPage from './components/NotFoundPage'
 
 
@@ -52,16 +53,14 @@ const App = (props) => {
         <PublicRoute exact path="/" authenticated={authenticated} component={Login} role={role}></PublicRoute>
         <PrivateRoute exact path="/acceuil" authenticated={authenticated} component={Panel} role={role} userInfo={userInfo}></PrivateRoute>
         <PrivateRoute exact path="/gestion" authenticated={authenticated} component={AdminGestion} role={role} userInfo={userInfo}></PrivateRoute>
+        <PrivateRoute exact path="/appel" authenticated={authenticated} component={CallRoll} role={role} userInfo={userInfo}></PrivateRoute>
+        <PrivateRoute exact path="/agenda" authenticated={authenticated} component={TimeTable} role={role} userInfo={userInfo}></PrivateRoute>
         <PrivateRoute exact path="*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
+        <PrivateRoute path="/appel/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
         <PrivateRoute path="/acceuil/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
         <PrivateRoute path="/gestion/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
         <PrivateRoute path="/agenda/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
-        <PrivateRoute path="/agenda/admin/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
-        <PrivateRoute path="" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
-
         <PrivateRoute path="/agenda/admin/:id" authenticated={authenticated} component={TimeTableAdmin} role={role} userInfo={userInfo}></PrivateRoute>
-
-        <PrivateRoute exact path="/agenda" authenticated={authenticated} component={TimeTable} role={role} userInfo={userInfo}></PrivateRoute>
       </Switch>
     </Router>
   );

@@ -1,0 +1,17 @@
+.callRollPanelCtnr{
+    display: flex;
+    width: 100%;
+    height: 93.4vh;
+    justify-content: center;
+    align-items: center;
+}
+.callRollPanel{
+    width: 80%;
+    height: 80%;
+    border-radius: 3px;
+    background-color: white;
+    text-align: center;
+    -webkit-box-shadow: 0px 0px 22px -12px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 22px -12px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 22px -12px rgba(0,0,0,0.75);
+}
