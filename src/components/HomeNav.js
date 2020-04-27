@@ -31,9 +31,9 @@ const HomeNav = props => {
     const [open, setOpen] = useState(false)
 
     const [state, setState] = useState({
-        admin: undefined,
-        student: undefined,
-        teacher: undefined
+        admin: null,
+        student: null,
+        teacher: null
     })
 
     const onMouseEnter = () => {
@@ -50,8 +50,6 @@ const HomeNav = props => {
                 ...state,
                 [props.userInfo.role]: true
             })
-
-
         }
     }, []);
 
@@ -74,7 +72,7 @@ const HomeNav = props => {
                                 {...(open ? { timeout: 500 } : {})}
                             >
                                 <div elevation={4} className={classes.paper}>
-                                    <Tooltip title="Gestion"><Button><TuneIcon /></Button></Tooltip>
+                                    <Tooltip title="Gestion"><NavLink to={"/gestion"} ><Button><TuneIcon /></Button></NavLink></Tooltip>
                                 </div>
                             </Grow> </>}
                         {teacher || student ? <Grow
