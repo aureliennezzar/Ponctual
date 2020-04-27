@@ -131,7 +131,6 @@ const UsersList = (props) => {
                                 let data = {...newData}
                                 if(data.classe===undefined) data.classe="Sans classe"
                                 const { email, nom, prenom, role, telephone, classe } = data;
-                                console.log(classe)
                                 signup(email, nom, prenom, role, classe, telephone).then(
                                     setTimeout(() => {
                                         resolve();

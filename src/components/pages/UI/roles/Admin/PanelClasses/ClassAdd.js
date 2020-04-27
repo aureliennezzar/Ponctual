@@ -50,7 +50,6 @@ const ClassAdd = (props) => {
     }
     useEffect(() => {
         if (loading) {
-            console.log(mode)
             if (mode != "default") {
                 const { nom, formateur } = mode[1]
                 setState({

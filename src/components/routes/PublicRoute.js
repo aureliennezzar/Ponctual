@@ -10,7 +10,7 @@ export function PublicRoute({ component: Component, authenticated, ...rest }) {
       {...rest}
       render={(props) => authenticated === false
         ? <Component {...props} />
-        : <Redirect to={{ pathname: "/panel" }} />}
+        : <Redirect to={{ pathname: "/acceuil" }} />}
     />
   )
 }

@@ -24,7 +24,6 @@ export default class DayTimeTable extends React.PureComponent {
 
   render() {
     const { data } = this.state;
-    console.log(data)
     return (
       <Paper>
         <Scheduler

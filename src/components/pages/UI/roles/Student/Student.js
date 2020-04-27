@@ -79,8 +79,6 @@ class Student extends Component {
             return appointment
           }
         })
-
-        console.log(todayAppointments)
         const nextAppointments = appointments.filter(appointment => {
           if (appointment.startDate > new Date()) {
             return appointment

@@ -57,8 +57,6 @@ class Teacher extends Component {
 
   initAppointments = (user) => {
     db.collection("users").doc(user.uid).get().then((doc) => {
-      
-      console.log(doc.data().appointments)
       const tab = Object.values(doc.data().appointments)
       let allClassesAppointments = []
       tab.forEach(classe => {
@@ -89,7 +87,7 @@ class Teacher extends Component {
           return appointment
         }
       })
-      
+
       const courses = [];
       nextAppointments.forEach(appointment => {
         courses.push(appointment.startDate)
