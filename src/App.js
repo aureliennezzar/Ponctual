@@ -13,6 +13,7 @@ import loader from './assets/loader.gif'
 import TimeTablePanel from './components/pages/UI/TimeTablePanel/TimeTablePanel';
 import TimeTable from './components/pages/UI/TimeTablePanel/TimeTable';
 import TimeTableAdmin from './components/pages/UI/TimeTablePanel/TimeTableAdmin';
+import  AdminGestion  from './components/pages/UI/roles/Admin/AdminGestion'
 
 
 const App = (props) => {
@@ -49,6 +50,7 @@ const App = (props) => {
       <Switch>
         <PublicRoute exact path="/" authenticated={authenticated} component={Login} role={role}></PublicRoute>
         <PrivateRoute path="/panel" authenticated={authenticated} component={Panel} role={role} userInfo={userInfo}></PrivateRoute>
+        <PrivateRoute path="/gestion" authenticated={authenticated} component={AdminGestion} role={role} userInfo={userInfo}></PrivateRoute>
 
         {/* <PrivateRoute exact path="/scheduler" authenticated={authenticated} component={TimeTablePanel} role={role} userInfo={userInfo}></PrivateRoute> */}
 
