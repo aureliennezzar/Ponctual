@@ -404,10 +404,10 @@ class TimeTableAdmin extends React.PureComponent {
       if (doc.exists) {
         let appointments = []
         doc.data().appointments.forEach(appointment => {
-          let { title, startDate, endDate, id, location, formateur, notes } = appointment
+          let { title, startDate, endDate, id, location, formateur, notes, classe } = appointment
           let sDate = new Date(startDate.seconds * 1000)
           let eDate = new Date(endDate.seconds * 1000)
-          appointments.push({ title, startDate: sDate, endDate: eDate, id, location, formateur, notes })
+          appointments.push({ title, startDate: sDate, endDate: eDate, id, location, formateur, notes, classe })
         });
         this.setState({
           ...this.state,

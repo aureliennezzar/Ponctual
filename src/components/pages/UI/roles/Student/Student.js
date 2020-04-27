@@ -151,7 +151,7 @@ class Student extends Component {
 
     const { classes } = this.props;
     const nextCourseInfosStudent =
-      <div className="nextCourseInfosStudent">
+      <div className="nextCourseInfosCtnr">
         <div className="nextCourseInfos">
           <h2><b>{this.state.nextAppointment.title}</b> {this.state.nextAppointmentDate[1]} {this.state.nextAppointmentDate[0]}</h2>
           <p>Formateur : <b>{this.state.nextAppointment.formateur}</b></p>

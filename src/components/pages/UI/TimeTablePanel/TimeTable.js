@@ -132,7 +132,6 @@ export default class TimeTable extends React.PureComponent {
         this.initAppointmentsTeacher = this.initAppointmentsTeacher.bind(this);
     }
     componentDidMount() {
-        const { collectionRef } = this.state;
         if (this.props.userInfo.role != "teacher") {
             this.initAppointmentsStudent()
         } else {
