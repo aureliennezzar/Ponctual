@@ -9,7 +9,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import { NavLink } from "react-router-dom";
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import TableChartIcon from '@material-ui/icons/TableChart';
-import { auth, db } from "../scripts/services/firebase";
+import { auth } from "../scripts/services/firebase";
 
 
 

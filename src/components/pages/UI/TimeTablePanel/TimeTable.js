@@ -8,7 +8,7 @@ import {
     DateNavigator,
     TodayButton,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
+import { ViewState } from '@devexpress/dx-react-scheduler';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
@@ -132,7 +132,7 @@ export default class TimeTable extends React.PureComponent {
         this.initAppointmentsTeacher = this.initAppointmentsTeacher.bind(this);
     }
     componentDidMount() {
-        if (this.props.userInfo.role != "teacher") {
+        if (this.props.userInfo.role !== "teacher") {
             this.initAppointmentsStudent()
         } else {
             this.initAppointmentsTeacher()
@@ -219,7 +219,7 @@ export default class TimeTable extends React.PureComponent {
                         </div>
 
                         <div className={classes.text}>
-                            {this.props.userInfo.role != "teacher"
+                            {this.props.userInfo.role !== "teacher"
                                 ? <>Formateur : <br></br>{data.formateur.split(' ')[0]}</>
                                 : <>Classe : <br></br>{data.classe}</>
                             }

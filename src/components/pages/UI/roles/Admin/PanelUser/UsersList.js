@@ -37,7 +37,7 @@ const UsersList = (props) => {
                 const userTab = [];
                 querySnapshot.forEach(function (doc) {
                     const { nom, prenom, role, email, classe, telephone } = doc.data()
-                    if (role != 'admin') {
+                    if (role !== 'admin') {
                         userTab.push({ nom, prenom, role, email, telephone, classe, uid: doc.id })
                     }
                 });
@@ -162,7 +162,7 @@ const UsersList = (props) => {
 
                             new Promise((resolve) => {
                                 const { role, uid } = oldData;
-                                if (role != "teacher") {
+                                if (role !== "teacher") {
                                     const { classe } = oldData;
                                     db.collection("classes").doc(classe).get().then(function (doc) {
                                         if (doc.exists) {

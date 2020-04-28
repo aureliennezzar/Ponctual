@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 var style = {
     backgroundColor: "#747272",
     color: "#FFF",

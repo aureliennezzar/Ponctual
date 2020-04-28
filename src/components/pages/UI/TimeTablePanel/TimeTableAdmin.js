@@ -469,7 +469,7 @@ class TimeTableAdmin extends React.PureComponent {
     const usersRef = db.collection("users")
 
     this.state.formateurs.forEach(formateur => {
-      const result = data.filter(appointment => appointment.formateur == formateur[1]);
+      const result = data.filter(appointment => appointment.formateur === formateur[1]);
       if (result.length > 0) {
         usersRef.doc(formateur[0]).get().then((doc) => {
           usersRef.doc(doc.id).set({

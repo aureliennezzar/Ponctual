@@ -34,12 +34,12 @@ const CallRoll = props => {
                                     db.collection("users").doc(eleve).get().then(function (doc) {
                                         if (doc.exists) {
                                             let statusAppointmentDate = 0
-                                            if (Object.keys(doc.data().status[1]).length != 0) {
+                                            if (Object.keys(doc.data().status[1]).length !== 0) {
                                                 statusAppointmentDate = doc.data().status[1].startDate.seconds
                                             }
                                             const actualAppointmentDate = Math.round(actualAppointment.startDate.getTime() / 1000)
 
-                                            if (statusAppointmentDate != actualAppointmentDate) {
+                                            if (statusAppointmentDate !== actualAppointmentDate) {
                                                 if (state.isFirstCallRoll) {
                                                     console.log("FIRST CALL ROLL")
                                                     db.collection("users").doc(state.teacherUid).update({

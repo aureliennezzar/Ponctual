@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { ClassAddContext } from './ClassAddContext'
+import React, { useEffect} from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import TableChartIcon from '@material-ui/icons/TableChart';
 import Tooltip from '@material-ui/core/Tooltip';
-import ClassAdd from './ClassAdd';
 import { NavLink } from "react-router-dom";
 import './ClassMenuToolbar.css'
 const ClassMenuToolbar = (props) => {

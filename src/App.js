@@ -10,7 +10,6 @@ import { PrivateRoute } from "./components/routes/PrivateRoute"
 import Panel from "./components/pages/UI/Panel";
 import Login from "./components/pages/Login"
 import loader from './assets/loader.gif'
-import TimeTablePanel from './components/pages/UI/TimeTablePanel/TimeTablePanel';
 import TimeTable from './components/pages/UI/TimeTablePanel/TimeTable';
 import TimeTableAdmin from './components/pages/UI/TimeTablePanel/TimeTableAdmin';
 import AdminGestion from './components/pages/UI/roles/Admin/AdminGestion'

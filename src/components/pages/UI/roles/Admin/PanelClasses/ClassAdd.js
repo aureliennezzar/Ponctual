@@ -42,7 +42,7 @@ const ClassAdd = (props) => {
                 const teachersTab = [];
                 querySnapshot.forEach(function (doc) {
                     const { nom, prenom, role } = doc.data()
-                    if (role == "teacher") teachersTab.push({ label: nom + ' ' + prenom })
+                    if (role === "teacher") teachersTab.push({ label: nom + ' ' + prenom })
                 });
                 setFormateurs(teachersTab);
                 setLoading(false)
@@ -50,7 +50,7 @@ const ClassAdd = (props) => {
     }
     useEffect(() => {
         if (loading) {
-            if (mode != "default") {
+            if (mode !== "default") {
                 const { nom, formateur } = mode[1]
                 setState({
                     nom,
@@ -121,7 +121,7 @@ const ClassAdd = (props) => {
             <div className="hider">
                 <form className="classAddForm" onSubmit={handleSubmit} autoComplete="off">
                     <div className={classes.root}>
-                        {mode[0] != "delete" ?
+                        {mode[0] !== "delete" ?
                             <>
                                 <TextField className="classAddInputs" id="outlined-basic" label="Nom" variant="outlined" size="small" name="nom" onChange={handleChange} value={nom} />
                                 <TextField
