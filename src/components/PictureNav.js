@@ -156,7 +156,7 @@ const PictureNav = props => {
                                         >
                                            
                                             <p style={{textAlign:"center", fontFamily:"Verdana, sans-serif"}}>{`${prenom.toLowerCase()} ${nom.toUpperCase()}` }</p>
-                                            <hr width="70%" backgroundColor="grey"/>
+                                            <hr width="70%" backgroundcolor="grey"/>
                                          
                                             <MenuItem >
                                                 <input 

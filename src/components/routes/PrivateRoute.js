@@ -9,7 +9,6 @@ export function PrivateRoute({ component: Component, authenticated, role, userIn
     <Route
       {...rest}
       render={props => {
-        console.log(Component.name)
         if (!authenticated) {
           // not logged in so redirect to home
           return <Redirect to={{ pathname: '/', state: { from: props.location } }} />

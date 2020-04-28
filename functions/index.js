@@ -58,7 +58,7 @@ exports.changeClass = functions.firestore
                 }
             )
             const classeRefAfter = admin.firestore().collection("classes").doc(snap.after.data().classe)
-            classeRefAfter.get().then(function (doc) {
+            return classeRefAfter.get().then(function (doc) {
                 if (doc.exists) {
                     classeRefAfter.set({
                         ...doc.data(),
@@ -71,7 +71,6 @@ exports.changeClass = functions.firestore
                 console.log("Error getting document:", error);
             });
         }
-        return console.log("CECI EST UN CONSOLE LOG", snap.after.data())
     });
 exports.removeFromClass = functions.firestore
     .document('users/{uid}')
@@ -138,7 +137,9 @@ exports.createUser = functions.https.onCall(async (data, context) => {
             nom: lastName,
             prenom: firstName,
             classe,
-            status: "absent",
+            status: ["absent",{}],
+            absences: [],
+            retards: [],
             profilepic: false,
             role,
             telephone,

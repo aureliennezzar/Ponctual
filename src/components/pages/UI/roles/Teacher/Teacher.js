@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import BeenhereIcon from '@material-ui/icons/Beenhere';
 import "./Teacher.css"
 import { Redirect } from "react-router-dom";
+import history from "../../../../history";
 const styles = (theme) => ({
   button: {
     margin: theme.spacing(1),
@@ -34,6 +35,8 @@ class Teacher extends Component {
       actualAppointment: {},
       showDayTable: false,
       showCallRoll: false,
+      isCrDisable: false,
+      isNaDisable:false,
     }
     this.initAppointments = this.initAppointments.bind(this)
     this.handleClick = this.handleClick.bind(this)
@@ -59,8 +62,9 @@ class Teacher extends Component {
   }
 
   initAppointments = (user) => {
+    const todayDate = new Date()
+    console.log(todayDate)
 
-    const todayDate = new Date(new Date(new Date().setHours(11)).setMinutes(48))
     db.collection("users").doc(user.uid).get().then((doc) => {
       const tab = Object.values(doc.data().appointments)
       let allClassesAppointments = []
@@ -86,11 +90,22 @@ class Teacher extends Component {
         }
       })
       const actualAppointment = todayAppointments.filter(appointment => {
-        console.log(appointment.endDate, todayDate)
         if (appointment.startDate <= todayDate && appointment.endDate >= todayDate) {
           return appointment
         }
       })[0]
+      if (actualAppointment === undefined) {
+        this.setState({
+          ...this.state,
+          isCrDisable: true,
+          actualAppointment: { title: "Aucun cours", classe: "", location: "", notes: "" }
+        })
+      } else {
+        this.setState({
+          ...this.state,
+          actualAppointment,
+        })
+      }
       const nextAppointments = appointments.filter(appointment => {
         if (appointment.startDate > todayDate) {
           return appointment
@@ -101,6 +116,21 @@ class Teacher extends Component {
       nextAppointments.forEach(appointment => {
         courses.push(appointment.startDate)
       });
+      if (courses.length === 0) {
+        this.setState({
+          ...this.state,
+          isNaDisable:true,
+          nextAppointmentDate: ["", ""],
+          nextAppointment: { title: "Aucun cours", classe: "", location: "", notes: "" }
+        })
+      } else {
+        this.setState({
+          ...this.state,
+          nextAppointmentDate: [nextAppointmentTime, message],
+          nextAppointment,
+        })
+
+      }
       const goal = todayDate;
       const nextAppointmentDate = courses.reduce(function (prev, curr) {
         return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
@@ -135,12 +165,11 @@ class Teacher extends Component {
         nextAppointmentTime = `${nextAppointmentDate.getHours()}:${nextAppointmentDate.getMinutes()}`
       }
 
+
+
       this.setState({
         ...this.state,
-        nextAppointmentDate: [nextAppointmentTime, message],
-        nextAppointment,
         todayAppointments,
-        actualAppointment,
       })
     }).catch(function (err) {
       console.log(err)
@@ -177,7 +206,8 @@ class Teacher extends Component {
               color="primary"
               className={classes.button}
               startIcon={<TableChartIcon />}
-              onClick={this.handleClick}>
+              onClick={this.handleClick}
+              disabled={this.state.isNaDisable}>
               Vos cours de la journée
         </Button>
           </div>
@@ -198,7 +228,9 @@ class Teacher extends Component {
               color="secondary"
               className={classes.button}
               startIcon={<BeenhereIcon />}
-              onClick={this.initRollCall}>
+              onClick={this.initRollCall}
+              disabled={this.state.isCrDisable}
+            >
               Faire l'appel
         </Button>
           </div>
@@ -230,7 +262,15 @@ class Teacher extends Component {
           </div>
           : null}
         {this.state.showCallRoll
-          ? <Redirect to="/appel" />
+          ? <Redirect to={{
+            pathname: '/appel',
+            state: {
+              actualAppointment: this.state.actualAppointment,
+              teacherUid: auth().currentUser.uid,
+            }
+          }}>
+            {history.push("/appel")}
+          </Redirect>
           : null}
 
       </div>

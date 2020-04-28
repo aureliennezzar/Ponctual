@@ -16,12 +16,17 @@ const ClassMenu = (props) => {
                     eleves.forEach(eleve => {
                         db.collection("users").doc(eleve).get().then(function (doc) {
                             if (doc.exists) {
-                                if (doc.data().profilepic.length > 0) {
-                                    const profilePicRef = storageRef.child(`${eleve}/profile_31x31.jpg`);
-                                    profilePicRef.getDownloadURL().then((url) => {
-                                        setUsersData(oldArray => [...oldArray, { displayName: `${doc.data().prenom} ${doc.data().nom}`, photoUrl: url }])
+                                if (doc.data().profilepic) {
+                                    storageRef.child(eleve).listAll().then(function (res) {
+                                        res.items.forEach(function (itemRef) {
+                                            itemRef.getDownloadURL().then((url) => {
+                                                setUsersData(oldArray => [...oldArray, { displayName: `${doc.data().prenom} ${doc.data().nom}`, photoUrl: url }])
+                                            }).catch(function (error) {
+                                            });
+                                        });
                                     }).catch(function (error) {
                                     });
+
                                 } else {
                                     setUsersData(oldArray => [...oldArray, { displayName: `${doc.data().prenom} ${doc.data().nom}`, photoUrl: null }])
                                 }
@@ -38,7 +43,7 @@ const ClassMenu = (props) => {
     }, [])
     return (
         <>
-            {loading|| noStuds ? <div className="loader"><p>Aucun élève.</p></div> : usersData.map((user, i) => {
+            {loading || noStuds ? <div className="loader"><p>Aucun élève.</p></div> : usersData.map((user, i) => {
                 const { displayName, photoUrl } = user;
                 return <div key={i} style={{ margin: 10 }}><Tooltip title={displayName} ><Avatar alt={displayName} src={photoUrl} /></Tooltip></div>
             })}

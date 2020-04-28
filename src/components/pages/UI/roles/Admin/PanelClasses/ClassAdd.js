@@ -141,7 +141,7 @@ const ClassAdd = (props) => {
                                         </MenuItem>
                                     ))}
                                 </TextField>
-                            </> : <h3>Êtes-vous sur de vouloir supprimer cette classe ?</h3>
+                            </> : <h3 style={{color: "red"}}>Êtes-vous sur de vouloir supprimer cette classe ?</h3>
                         }
 
                         <div style={{ display: "flex" }}>

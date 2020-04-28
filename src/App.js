@@ -55,12 +55,12 @@ const App = (props) => {
         <PrivateRoute exact path="/gestion" authenticated={authenticated} component={AdminGestion} role={role} userInfo={userInfo}></PrivateRoute>
         <PrivateRoute exact path="/appel" authenticated={authenticated} component={CallRoll} role={role} userInfo={userInfo}></PrivateRoute>
         <PrivateRoute exact path="/agenda" authenticated={authenticated} component={TimeTable} role={role} userInfo={userInfo}></PrivateRoute>
-        <PrivateRoute exact path="*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
+        <PrivateRoute path="/agenda/admin/:id" authenticated={authenticated} component={TimeTableAdmin} role={role} userInfo={userInfo}></PrivateRoute>
         <PrivateRoute path="/appel/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
         <PrivateRoute path="/acceuil/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
         <PrivateRoute path="/gestion/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
-        <PrivateRoute path="/agenda/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
-        <PrivateRoute path="/agenda/admin/:id" authenticated={authenticated} component={TimeTableAdmin} role={role} userInfo={userInfo}></PrivateRoute>
+        <PrivateRoute path="*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute>
+        {/* <PrivateRoute path="/agenda/*" authenticated={authenticated} component={NotFoundPage}></PrivateRoute> */}
       </Switch>
     </Router>
   );
