@@ -11,7 +11,9 @@ import { ViewState } from '@devexpress/dx-react-scheduler';
 export default class DayTimeTable extends React.PureComponent {
   constructor(props) {
     super(props);
-    let today = new Date();
+    let today = new Date('April 30, 2020 08:02:00');
+    // let today = new Date();
+
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0');
     const yyyy = today.getFullYear();
@@ -31,7 +33,7 @@ export default class DayTimeTable extends React.PureComponent {
           locale={'fr-FR'}
         >
           <ViewState
-            currentDate="2020-04-27"
+            currentDate="2020-04-28"
           />
           <DayView
             startDayHour={8}

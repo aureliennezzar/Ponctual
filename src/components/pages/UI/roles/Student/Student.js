@@ -11,6 +11,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import IconButton from '@material-ui/core/IconButton';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import StudentContact from './StudentContact'
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 const styles = (theme) => ({
   button: {
     margin: theme.spacing(1),
@@ -23,6 +25,10 @@ const styles = (theme) => ({
   },
 });
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 class Student extends Component {
   constructor(props) {
     super(props)
@@ -30,15 +36,18 @@ class Student extends Component {
     this.state = {
       loading: true,
       user: currentUser,
+      userClass: "",
       nextAppointmentDate: [],
       nextAppointment: {},
+      todayAppointments: [],
       showDayTable: false,
       showContact: false,
+      isBtnDisable: false,
     }
     this.initAppointments = this.initAppointments.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.initContact = this.initContact.bind(this)
-
+    this.handleClose = this.handleClose.bind(this)
   }
 
   componentDidMount() {
@@ -61,6 +70,10 @@ class Student extends Component {
   initAppointments = (user) => {
     db.collection("users").doc(user.uid).get().then((doc) => {
       db.collection("classes").doc(doc.data().classe).get().then((doc) => {
+        this.setState({
+          ...this.state,
+          userClass: doc.id
+        })
         const appointments = doc.data().appointments.map(appointment => {
           appointment.startDate = new Date(appointment.startDate.seconds * 1000)
           appointment.endDate = new Date(appointment.endDate.seconds * 1000)
@@ -75,9 +88,14 @@ class Student extends Component {
           const aDd = String(appointmentDay.getDate()).padStart(2, '0');
           const aMm = String(appointmentDay.getMonth() + 1).padStart(2, '0');
           appointmentDay = aDd + '/' + aMm;
-          if (appointmentDay === "27/04") {
+          if (appointmentDay === "30/04") {
             return appointment
           }
+        })
+
+        this.setState({
+          ...this.state,
+          todayAppointments,
         })
         const nextAppointments = appointments.filter(appointment => {
           if (appointment.startDate > new Date()) {
@@ -120,12 +138,22 @@ class Student extends Component {
         } else {
           nextAppointmentTime = `${nextAppointmentDate.getHours()}:${nextAppointmentDate.getMinutes()}`
         }
-        this.setState({
-          ...this.state,
-          nextAppointmentDate: [nextAppointmentTime, message],
-          nextAppointment,
-          todayAppointments,
-        })
+
+        if (courses.length === 0) {
+          this.setState({
+            ...this.state,
+            isBtnDisable: true,
+            nextAppointmentDate: ["", ""],
+            nextAppointment: { title: "Aucun cours", classe: "", location: "", notes: "" }
+          })
+        } else {
+          this.setState({
+            ...this.state,
+            nextAppointmentDate: [nextAppointmentTime, message],
+            nextAppointment,
+          })
+
+        }
       }).catch(function (err) {
         console.log(err)
       })
@@ -133,6 +161,15 @@ class Student extends Component {
       console.log(err)
     })
   }
+  handleClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({
+      ...this.state,
+      submitSnackbar: false,
+    })
+  };
   handleClick() {
     this.setState({
       ...this.state,
@@ -146,7 +183,6 @@ class Student extends Component {
     })
   }
   render() {
-
     const { classes } = this.props;
     const nextCourseInfosStudent =
       <div className="nextCourseInfosCtnr">
@@ -160,7 +196,9 @@ class Student extends Component {
             color="primary"
             className={classes.button}
             startIcon={<TableChartIcon />}
-            onClick={this.handleClick}>
+            onClick={this.handleClick}
+          // disabled={this.state.isBtnDisable}
+          >
             Vos cours de la journée
         </Button>
           <Button
@@ -168,11 +206,14 @@ class Student extends Component {
             color="secondary"
             className={classes.button}
             startIcon={<AnnouncementIcon />}
-            onClick={this.initContact}>
-            Signaler un retard/absences
+            onClick={this.initContact}
+          // disabled={this.state.isBtnDisable}
+          >
+            Signaler un retard/absence
         </Button>
         </div>
       </div>
+
     return (
       <div className="studentPanel">
         {this.state.loading === false && this.state.user && <h1>Bonjour, {this.state.user.displayName}</h1>}
@@ -181,7 +222,7 @@ class Student extends Component {
         {nextCourseInfosStudent}
         {this.state.showContact
           ? <Fade in={this.state.showContact}>
-            <StudentContact initContact={this.initContact} />
+            <StudentContact submit={this.handleClick} user={this.state.user} userClass={this.state.userClass} initContact={this.initContact} todayAppointments={this.state.todayAppointments} nextAppointment={this.state.nextAppointment} />
           </Fade>
           : null}
         {this.state.showDayTable
@@ -202,7 +243,6 @@ class Student extends Component {
             </Fade>
           </div>
           : null}
-
       </div>
     )
   }
