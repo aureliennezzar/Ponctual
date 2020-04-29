@@ -5,7 +5,7 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
-import { makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { Link } from 'react-router-dom'
 import { signOut } from "../scripts/auth";
@@ -20,13 +20,13 @@ import { storageRef } from "../scripts/services/firebase";
 const useStyles = makeStyles(theme => ({
     overrides: {
         MuiIconButton: {
-          root: {
-            '&:hover': {
-              background: "$labelcolor"
+            root: {
+                '&:hover': {
+                    background: "$labelcolor"
+                }
             }
-          }
         }
-      },
+    },
     root: {
 
         height: "100%",
@@ -69,11 +69,11 @@ const PictureNav = props => {
 
     const handleFile = event => {
         let file = event.target.files[0]
-        uploadFile(file,event);
+        uploadFile(file, event);
     }
 
     const { imageComponent, displayName } = props
-    const uploadFile = (file,event) => {
+    const uploadFile = (file, event) => {
         if (userId && file !== undefined && file.type.split('/')[0] === "image") {
             storageRef.child(userId).listAll().then(function (res) {
                 if (res.items.length > 0) {
@@ -87,8 +87,8 @@ const PictureNav = props => {
                 }
                 storageRef.child(`${userId}/${file.name}`).put(file).then(function (snapshot) {
                     db.collection('users').doc(userId).update({
-                        profilepic:true,
-                        profilePicChanged:true
+                        profilepic: true,
+                        profilePicChanged: true
                     })
                     console.log('Uploaded a blob or file!');
                 }).catch(function (error) {
@@ -97,30 +97,30 @@ const PictureNav = props => {
             }).catch(function (error) {
             });
         }
-    
+
         handleClose(event)
     }
 
     const prevOpen = useRef(open);
     useEffect(() => {
         const user = auth().currentUser;
-        if(user ){
+        if (user) {
             setUserId(user.uid)
-        if (prevOpen.current === true && open === false) {
-            anchorRef.current.focus();
-        }
+            if (prevOpen.current === true && open === false) {
+                anchorRef.current.focus();
+            }
 
-        prevOpen.current = open;
-     }
+            prevOpen.current = open;
+        }
     }, [open]);
-   const prenom = displayName.split(' ')[0]
-   const nom = displayName.split(' ')[1]
+    const prenom = displayName.split(' ')[0]
+    const nom = displayName.split(' ')[1]
     return (
         <>
             <div className={classPicture.root}>
-                <div style={{width:"100%",height:"100%"}}>
-                   
-                    <IconButton 
+                <div style={{ width: "100%", height: "100%" }}>
+
+                    <IconButton
                         size="medium"
                         ref={anchorRef}
                         aria-controls={open ? "menu-list-grow" : undefined}
@@ -154,12 +154,12 @@ const PictureNav = props => {
                                             id="menu-list-grow"
                                             onKeyDown={handleListKeyDown}
                                         >
-                                           
-                                            <p style={{textAlign:"center", fontFamily:"Verdana, sans-serif"}}>{`${prenom.toLowerCase()} ${nom.toUpperCase()}` }</p>
-                                            <hr width="70%" backgroundcolor="grey"/>
-                                         
+
+                                            <p style={{ textAlign: "center", fontFamily: "Verdana, sans-serif" }}>{`${prenom.toLowerCase()} ${nom.toUpperCase()}`}</p>
+                                            <hr width="70%" backgroundcolor="grey" />
+
                                             <MenuItem >
-                                                <input 
+                                                <input
                                                     accept="image/*"
                                                     type="file"
                                                     id="file-input"
@@ -170,17 +170,18 @@ const PictureNav = props => {
                                                 <label
                                                     style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
                                                     htmlFor="file-input">
-                                                    <PhotoCameraIcon style={{marginRight:5}}/> Changer de photo
+                                                    <PhotoCameraIcon style={{ marginRight: 5 }} /> Changer de photo
                                                 </label>
                                             </MenuItem>
-                                            <MenuItem onClick={handleClose}><AccountBoxIcon style={{marginRight:5}}/> Mon profile</MenuItem>
+                                            <Link to='/profile' style={{ textDecoration: "none", color: "black" }} >
+                                                <MenuItem onClick={handleClose}><AccountBoxIcon style={{ marginRight: 5 }} /> Mon profil</MenuItem></Link>
 
                                             <Link
                                                 to='/'
                                                 onClick={signOut}
                                                 style={{ textDecoration: "none", color: "black" }}>
                                                 <MenuItem>
-                                                    <ExitToAppIcon style={{marginRight:5}}/>Se déconnecter
+                                                    <ExitToAppIcon style={{ marginRight: 5 }} />Se déconnecter
                                                 </MenuItem>
                                             </Link>
                                             <br></br>

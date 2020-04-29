@@ -1,0 +1,51 @@
+.profilectnr {
+    width: 100vw;
+    height: 93%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.profileRight{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    
+}
+.profileLeft{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    
+}
+.userInfoCtnr{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    height: 500px;
+    width: 50%;
+    background-color: rgb(241, 241, 241);
+    -webkit-box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
+    -moz-box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
+    box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
+}
+#nom{
+    font-size: 2em;
+}
+.chartCtnr {
+    display: flex;
+    width: 100%;
+    height: 80%;
+    border-left:1px solid rgb(214, 214, 214);
+    flex-direction: column;
+    align-items: space-around;
+}
+.pieChart{
+    display: flex;
+    justify-content: center;
+}

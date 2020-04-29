@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { auth, db } from "../scripts/services/firebase";
-import { storageRef } from "../scripts/services/firebase";
+import { auth, db, storageRef } from "../scripts/services/firebase";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
-import './Nav.css'
-import PictureNav from './PictureNav'
-import HomeNav from './HomeNav'
+import './Nav.css';
+import PictureNav from './PictureNav';
+import HomeNav from './HomeNav';
 const Nav = props => {
     const [state, setState] = useState({
         imageComponent: <AccountCircleIcon fontSize="large" />,
@@ -18,8 +16,10 @@ const Nav = props => {
 
 
     useEffect(() => {
+
         const user = auth().currentUser;
         if (user && loading) {
+            console.log(user)
             setState({ ...state, user })
             setUser(user)
             initListener(user)
@@ -54,8 +54,10 @@ const Nav = props => {
     const initListener = (user) => {
         db.collection('users').doc(user.uid)
             .onSnapshot(function (doc) {
-                if (doc.data().profilePicChanged) {
-                    setUser(user)
+                if (loading) {
+                    if (doc.data().profilePicChanged) {
+                        setUser(user)
+                    }
                 }
 
             });
@@ -65,9 +67,9 @@ const Nav = props => {
         <nav>
 
             <div className="leftNav">
-                <HomeNav userInfo={props.userInfo}/>
+                <HomeNav userInfo={props.userInfo} />
             </div>
-            
+
             <div className="middleNav">
                 <p>LOGO</p>
             </div>

@@ -42,3 +42,36 @@ select:focus {
   align-items: center;
   justify-content: center;
 }
+#app {
+  padding: 20px;
+  font-family: robot, arial
+}
+.Line {
+  fill: #000;
+  fill-opacity: 0.3;
+}
+
+.lineChartt path {
+  stroke: steelblue;
+  stroke-width: 2px;
+  fill: none;
+}
+
+.lineChart  .axis {
+  stroke: #000;
+}
+
+.lineChart  .axis-labels text {
+  fill: #000;
+  fill-opacity: 0.9;
+  font-size: 12px;
+  text-anchor: middle;
+}
+
+.lineChart > .axis-labels line {
+  stroke: #000;
+}
+
+.lineChart > .gridline {
+  opacity: 0.2;
+}

@@ -15,6 +15,7 @@ import TimeTableAdmin from './components/pages/UI/TimeTablePanel/TimeTableAdmin'
 import AdminGestion from './components/pages/UI/roles/Admin/AdminGestion'
 import CallRoll from './components/pages/UI/roles/Teacher/CallRoll'
 import NotFoundPage from './components/NotFoundPage'
+import Profile from './components/pages/UI/Profile'
 
 
 const App = (props) => {
@@ -51,6 +52,7 @@ const App = (props) => {
       <Switch>
         <PublicRoute exact path="/" authenticated={authenticated} component={Login} role={role}></PublicRoute>
         <PrivateRoute exact path="/acceuil" authenticated={authenticated} component={Panel} role={role} userInfo={userInfo}></PrivateRoute>
+        <PrivateRoute exact path="/profile" authenticated={authenticated} component={Profile} role={role} userInfo={userInfo}></PrivateRoute>
         <PrivateRoute exact path="/gestion" authenticated={authenticated} component={AdminGestion} role={role} userInfo={userInfo}></PrivateRoute>
         <PrivateRoute exact path="/appel" authenticated={authenticated} component={CallRoll} role={role} userInfo={userInfo}></PrivateRoute>
         <PrivateRoute exact path="/agenda" authenticated={authenticated} component={TimeTable} role={role} userInfo={userInfo}></PrivateRoute>
