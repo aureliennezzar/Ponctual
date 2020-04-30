@@ -1,8 +1,8 @@
 .nextCourseInfosCtnr {
     display: flex;
     justify-content: center;
-    width: 350px;
-    height: auto;
+    width: 500px;
+    height: auto;   
     color: black;
     background: white;
     text-align: center;
@@ -17,9 +17,10 @@
 
 .studentPanel {
     width: 100%;
-    height: 92.2vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 

@@ -247,7 +247,7 @@ class Teacher extends Component {
       Faire l'appel
 </Button>
     const actualCourseInfosStudent =
-      <div style={{ paddingRight: "100px" }}>
+      <div>
         <p>Cours actuel : </p>
         <div className="nextCourseInfosCtnr">
           <div className="nextCourseInfos">
@@ -265,9 +265,19 @@ class Teacher extends Component {
       </div>
     return (
       <div className="teacherPanel">
-        {this.state.loading === false && this.state.user && <h1>Bonjour, {this.state.user.displayName}</h1>}
 
-        <div style={{ display: "flex" }}>
+        {this.state.loading === false && this.state.user
+
+          &&
+          <h1 style={{
+            position: "fixed",
+            top: 120,
+            fontSize: "40px"
+          }} id="teacherTitle">
+            Bonjour, {this.state.user.displayName} !
+                  </h1>}
+
+        <div style={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-around", flexFlow: "wrap" }}>
           {actualCourseInfosStudent}
           {nextCourseInfosStudent}</div>
         {this.state.showDayTable
@@ -299,9 +309,6 @@ class Teacher extends Component {
           }}>
             {history.push("/appel")}
           </Redirect>
-          : null}
-        {this.state.showCHW
-          ? <CreateHomeWork />
           : null}
 
       </div>

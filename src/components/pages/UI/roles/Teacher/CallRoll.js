@@ -15,7 +15,7 @@ const CallRoll = props => {
     const { actualAppointment, teacherUid, studentsMessages } = props.location.state
     const [noStuds, setNoStuds] = useState(false)
     const [usersData, setUsersData] = useState([
-        { status: "absent", uid: "478632748632", displayName: `test test`, photoUrl: null },
+        // { status: "absent", uid: "478632748632", displayName: `test test`, photoUrl: null },
     ])
     const [state, setState] = useState({
         actualAppointment,
@@ -94,7 +94,7 @@ const CallRoll = props => {
     })
     const handleClick = (e) => {
 
-        const timestamp = new Date('April 30, 2020 08:15:00');
+        const timestamp = new Date('April 30, 2020 08:10:00');
         // const timestamp = new Date();
         if (timestamp > new Date(actualAppointment.endDate)) return
         const eventStyle = e.currentTarget.style

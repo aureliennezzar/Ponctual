@@ -1,11 +1,27 @@
-.teacherPanel{
+.teacherPanel {
     width: 100%;
-    height: 92.2vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
-.nextCourseTeacher{
+
+.nextCourseTeacher {
     width: 50%;
     height: 200px;
+}
+
+@media screen and (min-width: 0px) and (max-width: 400px) {
+    #teacherTitle {
+        display: block;
+    }
+    /* show it on small screens */
+}
+
+@media screen and (min-width: 401px) and (max-width: 999px) {
+    #teacherTitle {
+        display: none;
+    }
+    /* hide it elsewhere */
 }
