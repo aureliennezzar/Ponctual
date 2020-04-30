@@ -1,6 +1,9 @@
 # Ponctual
 Ponctual est une application de gestion permettant, en tant qu'élève, formateur ou administrateur d'une école de rendre compte la vie scolaire simplement et rapidement. Ainsi il est possible pour les formateur de prendre connaissance de leurs cours et de gérer la ponctualité de ses élèves, ces données sont accessibles par le formateur, l'administrateur et l'élève lui même. 
-# Technologies utilisées en Front-End
+
+## Fonctionnalités
+
+### Technologies utilisées en Front-End
 
 - La librairie REACT JS 
 - HTML5/CSS3
@@ -8,7 +11,7 @@ Ponctual est une application de gestion permettant, en tant qu'élève, formateu
 - DevExpress pour l’agenda
 - La librairie D3 pour l’affichage de données statistiques
 
-# Technologies utilisées en Back-End
+### Technologies utilisées en Back-End
 
 - Le service server-less de Google Firebase :
 - Cloud Functions
@@ -16,7 +19,7 @@ Ponctual est une application de gestion permettant, en tant qu'élève, formateu
 - Storage
 - NodeMailer pour l’envois des mails
 
-### Installation
+## Installation
 
 * Installer node et npm
 * Allez à la racine du projet
@@ -39,7 +42,10 @@ Un administrateur créer les comptes Eleves, Formateurs et Administrateurs.
 # Ponctual [ENG]
 Ponctual is a management application allowing, as a student, trainer or administrator of a school to report on school life simply and quickly. Thus it is possible for the trainer to take note of their courses and manage the punctuality of his students, these data are accessible by the trainer, the administrator and the student himself.
 
-# Technologies used in Front-End
+
+## Fonctionnalitites
+
+#### Technologies used in Front-End
 
 - The REACT JS library
 - HTML5 / CSS3
@@ -47,7 +53,7 @@ Ponctual is a management application allowing, as a student, trainer or administ
 - DevExpress for the calendar
 - The D3 library for displaying statistical data
 
-# Technologies used in Back-End
+#### Technologies used in Back-End
 
 - The serverless service of Google Firebase:
 - Cloud functions
@@ -55,7 +61,7 @@ Ponctual is a management application allowing, as a student, trainer or administ
 - Storage room
 - NodeMailer for sending emails
 
-### Installing
+## Installing
 
 * Install node and npm
 * Navigate to root project directory
