@@ -300,9 +300,7 @@ class Teacher extends Component {
             {history.push("/appel")}
           </Redirect>
           : null}
-        {this.state.showCHW
-          ? <CreateHomeWork />
-          : null}
+          <CreateHomeWork />
 
       </div>
     )
