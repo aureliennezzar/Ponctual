@@ -51,7 +51,7 @@ select:focus {
   fill-opacity: 0.3;
 }
 
-.lineChartt path {
+.lineChart path {
   stroke: steelblue;
   stroke-width: 2px;
   fill: none;

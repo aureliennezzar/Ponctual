@@ -5,7 +5,7 @@ export default class LineChart extends React.Component {
   
       const {data, width, height} = this.props
       const margin = 20;
-      const h = height - 2 * margin, w = width - 2 * margin
+      const h = height - 4 * margin, w = width - 2 * margin
   
       //number formatter
       const xFormat = d3.format('.2')

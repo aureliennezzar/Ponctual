@@ -28,7 +28,7 @@
     justify-content: space-around;
     flex-direction: column;
     height: 500px;
-    width: 50%;
+    width: 60%;
     background-color: rgb(241, 241, 241);
     -webkit-box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
     -moz-box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
@@ -43,9 +43,14 @@
     height: 80%;
     border-left:1px solid rgb(214, 214, 214);
     flex-direction: column;
-    align-items: space-around;
+    justify-content: space-between;
 }
 .pieChart{
     display: flex;
     justify-content: center;
+}
+.lineChart{
+    display: flex;
+    justify-content: center;
+
 }
