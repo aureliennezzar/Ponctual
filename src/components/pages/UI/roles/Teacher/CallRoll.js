@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
 import { db, storageRef } from '../../../../../scripts/services/firebase'
 import Nav from '../../../../Nav'
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import firebase from 'firebase';
 import './CallRoll.css'
 
 const CallRoll = props => {
     const { classe } = props.location.state.actualAppointment
-    const { actualAppointment, teacherUid } = props.location.state
+    const { actualAppointment, teacherUid, studentsMessages } = props.location.state
     const [noStuds, setNoStuds] = useState(false)
-    const [usersData, setUsersData] = useState([])
+    const [usersData, setUsersData] = useState([
+        { status: "absent", uid: "478632748632", displayName: `test test`, photoUrl: null },
+    ])
     const [state, setState] = useState({
         actualAppointment,
         teacherUid,
@@ -43,6 +47,7 @@ const CallRoll = props => {
                                                 if (state.isFirstCallRoll) {
                                                     console.log("FIRST CALL ROLL")
                                                     db.collection("users").doc(state.teacherUid).update({
+                                                        // firstCallRoll: new Date('April 30, 2020 08:02:00')
                                                         firstCallRoll: new Date()
                                                     })
                                                 }
@@ -89,13 +94,19 @@ const CallRoll = props => {
     })
     const handleClick = (e) => {
 
-        const timestamp = new Date();
+        const timestamp = new Date('April 30, 2020 08:15:00');
+        // const timestamp = new Date();
         if (timestamp > new Date(actualAppointment.endDate)) return
         const eventStyle = e.currentTarget.style
         const style = e.currentTarget.getAttribute("style")
         const uid = e.currentTarget.getAttribute("data-uid")
         switch (true) {
             case style.indexOf("green") >= 0 || style.indexOf("orange") >= 0:
+                if (style.indexOf("green") >= 0) {
+                    db.collection("users").doc(uid).update({
+                        presences: firebase.firestore.FieldValue.increment(-1),
+                    })
+                }
                 db.collection("users").doc(uid).update({
                     status: ["absent", actualAppointment],
                     absences: firebase.firestore.FieldValue.arrayUnion(actualAppointment)
@@ -105,7 +116,7 @@ const CallRoll = props => {
                         retards: firebase.firestore.FieldValue.arrayRemove(actualAppointment)
                     })
                 }
-                eventStyle.border = '2px solid red'
+                eventStyle.border = '3px solid red'
 
                 break;
             default:
@@ -120,16 +131,17 @@ const CallRoll = props => {
                     })
                     console.log(minutes)
                     if (minutes >= 5) {
-                        eventStyle.border = '2px solid orange'
+                        eventStyle.border = '3px solid orange'
                         db.collection("users").doc(uid).update({
                             status: ["retard", actualAppointment],
                             retards: firebase.firestore.FieldValue.arrayUnion(actualAppointment),
                         })
 
                     } else {
-                        eventStyle.border = '2px solid green'
+                        eventStyle.border = '3px solid green'
                         db.collection("users").doc(uid).update({
                             status: ["present", actualAppointment],
+                            presences: firebase.firestore.FieldValue.increment(1),
                         })
 
                     }
@@ -144,6 +156,53 @@ const CallRoll = props => {
         <>
             <Nav userInfo={props.userInfo} />
             <div className="callRollPanelCtnr">
+
+                <div className="studentsMessagesPanel">
+                    <div style={{
+                        width: "80%",
+                        position: "relative",
+                        display: "flex",
+                        justifyContent: "center",
+                        borderBottom: "1px solid rgb(207, 212, 212)",
+                        marginBottom: "25px"
+                    }}>
+                        <h2>Messages des élèves</h2>
+                    </div>
+                    <div className="studentMessages">
+                        {studentsMessages.map(message => {
+                            if (message.type[0] === "retard") {
+                                return <div style={{
+                                    width: "80%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center",
+                                    borderBottom: "1px solid rgb(207, 212, 212)",
+                                    marginBottom: "25px"
+                                }}>
+                                    <p><b>{message.studentName}</b> sera en retard de <b>{message.type[1]}</b> minutes</p>
+                                    <p><b>Raison</b> : {message.message}</p>
+
+                                </div>
+
+                            } else {
+                                return <div style={{
+                                    width: "80%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center",
+                                    borderBottom: "1px solid rgb(207, 212, 212)",
+                                    marginBottom: "25px"
+                                }}>
+                                    <p>{message.studentName} sera absent à ce cours</p>
+                                    <p>Raison : {message.message}</p>
+
+                                </div>
+
+                            }
+
+                        })}
+                    </div>
+                </div>
                 <div className="callRollPanel">
                     <div style={{
                         width: "80%",
@@ -175,22 +234,23 @@ const CallRoll = props => {
                                 }
                                 return <div key={i} style={{ margin: 5, borderRadius: "50%" }}  >
                                     <Tooltip title={displayName} >
-                                        <Avatar style={{ border: `2px solid ${couleur}`, cursor: "pointer" }} data-uid={uid} onClick={handleClick} alt={displayName} src={photoUrl} ></Avatar>
+                                        <Avatar style={{ border: `3px solid ${couleur}`, cursor: "pointer" }} data-uid={uid} onClick={handleClick} alt={displayName} src={photoUrl} ></Avatar>
                                     </Tooltip>
                                 </div>
                             })}
                         </div>
                     </div>
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        endIcon={<Icon>send</Icon>}
-                        className="sc_submitBtn"
-                        type="submit"
-                    >
-                        Envoyer
+                    <Link to='/acceuil' style={{ textDecoration: "none" }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            startIcon={<ArrowBackIcon />}
+                            className="sc_submitBtn"
+                            type="submit"
+                        >
+                            Retour
                       </Button>
+                    </Link>
                 </div>
             </div>
         </>

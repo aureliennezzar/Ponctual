@@ -9,6 +9,8 @@ import Fade from "@material-ui/core/Fade";
 import ClearIcon from '@material-ui/icons/Clear';
 import IconButton from '@material-ui/core/IconButton';
 import BeenhereIcon from '@material-ui/icons/Beenhere';
+import Badge from '@material-ui/core/Badge';
+import CreateHomeWork from './CreateHomeWork'
 import "./Teacher.css"
 import { Redirect } from "react-router-dom";
 import history from "../../../../history";
@@ -36,11 +38,13 @@ class Teacher extends Component {
       showDayTable: false,
       showCallRoll: false,
       isCrDisable: false,
-      isNaDisable:false,
+      isNaDisable: false,
+      cr_badge: false,
     }
     this.initAppointments = this.initAppointments.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.initRollCall = this.initRollCall.bind(this)
+    this.initCreateHomeWork = this.initCreateHomeWork.bind(this)
 
   }
 
@@ -62,8 +66,8 @@ class Teacher extends Component {
   }
 
   initAppointments = (user) => {
-    const todayDate = new Date()
-    console.log(todayDate)
+    // const todayDate = new Date()
+    const todayDate = new Date('April 30, 2020 08:02:00')
 
     db.collection("users").doc(user.uid).get().then((doc) => {
       const tab = Object.values(doc.data().appointments)
@@ -101,6 +105,28 @@ class Teacher extends Component {
           actualAppointment: { title: "Aucun cours", classe: "", location: "", notes: "" }
         })
       } else {
+        db.collection('users').doc(this.state.user.uid).get().then((doc) => {
+
+          const actualStudentsMessages = doc.data().studentsMessages.map(studentMessage => {
+            console.log(studentMessage.appointment, actualAppointment)
+
+            if (studentMessage.appointment.startDate.seconds === Math.round(actualAppointment.startDate.getTime() / 1000)) {
+              return studentMessage
+            }
+          })
+          if (actualStudentsMessages[0] === undefined) {
+            this.setState({
+              actualStudentsMessages: [],
+              cr_badge: false
+            })
+          } else {
+            this.setState({
+              actualStudentsMessages,
+              cr_badge: true
+            })
+          }
+
+        })
         this.setState({
           ...this.state,
           actualAppointment,
@@ -116,12 +142,33 @@ class Teacher extends Component {
       nextAppointments.forEach(appointment => {
         courses.push(appointment.startDate)
       });
+      const goal = todayDate;
+      const nextAppointmentDate = courses.reduce(function (prev, curr) {
+        return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
+      });
+      const nextAppointment = nextAppointments.filter(appointment => {
+        if (appointment.startDate === nextAppointmentDate)
+          return appointment
+      })[0]
+      const day = String(nextAppointmentDate.getDate()).padStart(2, '0');
+      const month = String(nextAppointmentDate.getMonth() + 1).padStart(2, '0');
+      const nextDate = day + '/' + month;
+      var days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+
+      var dayName = days[nextAppointmentDate.getDay()];
+      let message = `- ${dayName} ${nextDate} à`
+      let nextAppointmentTime = ""
+      if (nextAppointmentDate.getMinutes() < 10) {
+        nextAppointmentTime = `${nextAppointmentDate.getHours()}:0${nextAppointmentDate.getMinutes()}`
+      } else {
+        nextAppointmentTime = `${nextAppointmentDate.getHours()}:${nextAppointmentDate.getMinutes()}`
+      }
       if (courses.length === 0) {
         this.setState({
           ...this.state,
-          isNaDisable:true,
+          isNaDisable: true,
           nextAppointmentDate: ["", ""],
-          nextAppointment: { title: "Aucun cours", classe: "", location: "", notes: "" }
+          nextAppointment: { title: "Aucun cours", classe: "", location: "", notes: "" },
         })
       } else {
         this.setState({
@@ -131,39 +178,7 @@ class Teacher extends Component {
         })
 
       }
-      const goal = todayDate;
-      const nextAppointmentDate = courses.reduce(function (prev, curr) {
-        return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev);
-      });
-      const nextAppointment = nextAppointments.filter(appointment => {
-        if (appointment.startDate === nextAppointmentDate)
-          return appointment
-      })[0]
 
-      const timeDiff = nextAppointmentDate.getTime() - todayDate.getTime();
-      const daysDiff = Math.round(timeDiff / (1000 * 3600 * 24))
-      let message = ""
-      switch (true) {
-        case (daysDiff === 0):
-          message += "aujourd'hui à"
-          break;
-        case (daysDiff === 1):
-          message += "demain à"
-          break;
-
-        default:
-          const dd = String(nextAppointmentDate.getDate()).padStart(2, '0');
-          const mm = String(nextAppointmentDate.getMonth() + 1).padStart(2, '0');
-          const nextDate = dd + '/' + mm;
-          message += `le ${nextDate} à`
-          break;
-      }
-      let nextAppointmentTime = ""
-      if (nextAppointmentDate.getMinutes() < 10) {
-        nextAppointmentTime = `${nextAppointmentDate.getHours()}:0${nextAppointmentDate.getMinutes()}`
-      } else {
-        nextAppointmentTime = `${nextAppointmentDate.getHours()}:${nextAppointmentDate.getMinutes()}`
-      }
 
 
 
@@ -187,6 +202,13 @@ class Teacher extends Component {
       showCallRoll: !this.state.showCallRoll,
     })
   }
+  initCreateHomeWork() {
+    this.setState({
+      ...this.state,
+      showCHW: !this.state.showCHW,
+    })
+  }
+
   render() {
 
     const { classes } = this.props;
@@ -208,12 +230,22 @@ class Teacher extends Component {
               startIcon={<TableChartIcon />}
               onClick={this.handleClick}
               disabled={this.state.isNaDisable}>
+
               Vos cours de la journée
-        </Button>
+            </Button>
           </div>
         </div>
       </div>
-
+    const callRollBtn = <Button
+      variant="contained"
+      color="secondary"
+      className={classes.button}
+      startIcon={<BeenhereIcon />}
+      onClick={this.initRollCall}
+      disabled={this.state.isCrDisable}
+    >
+      Faire l'appel
+</Button>
     const actualCourseInfosStudent =
       <div style={{ paddingRight: "100px" }}>
         <p>Cours actuel : </p>
@@ -223,16 +255,11 @@ class Teacher extends Component {
             <p>Classe : <b>{this.state.actualAppointment.classe}</b></p>
             <p>Salle : <b>{this.state.actualAppointment.location}</b></p>
             <p>Informations : <b>{this.state.actualAppointment.notes}</b></p>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.button}
-              startIcon={<BeenhereIcon />}
-              onClick={this.initRollCall}
-              disabled={this.state.isCrDisable}
-            >
-              Faire l'appel
-        </Button>
+            {this.state.cr_badge
+              ? <Badge badgeContent={"!"} color="primary">
+                {callRollBtn}
+              </Badge>
+              : callRollBtn}
           </div>
         </div>
       </div>
@@ -255,7 +282,7 @@ class Teacher extends Component {
                       <ClearIcon />
                     </IconButton>
                   </div>
-                  <DayTimeTable appointments={this.state.todayAppointments} />
+                  <DayTimeTable appointments={this.state.todayAppointments} dt_data={this.state.dt_data} />
                 </div>
               </Paper>
             </Fade>
@@ -266,11 +293,15 @@ class Teacher extends Component {
             pathname: '/appel',
             state: {
               actualAppointment: this.state.actualAppointment,
+              studentsMessages: this.state.actualStudentsMessages,
               teacherUid: auth().currentUser.uid,
             }
           }}>
             {history.push("/appel")}
           </Redirect>
+          : null}
+        {this.state.showCHW
+          ? <CreateHomeWork />
           : null}
 
       </div>

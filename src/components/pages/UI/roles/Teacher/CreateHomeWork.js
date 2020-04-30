@@ -13,11 +13,12 @@ import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 import Icon from '@material-ui/core/Icon';
 import Checkbox from '@material-ui/core/Checkbox';
-import './StudentContact.css'
+import '../Student/StudentContact.css'
 import { db } from "../../../../../scripts/services/firebase";
 import firebase from 'firebase';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+
 const styles = (theme) => ({
     button: {
         margin: theme.spacing(1),
@@ -35,7 +36,7 @@ function Alert(props) {
 function valuetext(value) {
     return `${value} min`;
 }
-class StudentContact extends Component {
+class CreateHomeWork extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -242,4 +243,4 @@ class StudentContact extends Component {
     }
 }
 
-export default withStyles(styles)(StudentContact)
+export default withStyles(styles)(CreateHomeWork)
