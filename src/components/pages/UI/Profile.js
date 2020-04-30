@@ -28,10 +28,11 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
     },
     withoutLabel: {
-        marginTop: theme.spacing(3),
+        marginTop: theme.spacing(2),
     },
     textField: {
-        width: '25ch',
+        width: '20ch',
+        fontSize:'20px'
     },
 }));
 
@@ -155,10 +156,10 @@ const Profile = props => {
     const nom = state.displayName.split(' ')[1]
  
     const dataL = [
-        { a: 1, b: 3 },
+        { a: 1, b: 10 },
         { a: 2, b: 6 },
         { a: 3, b: 2 },
-        { a: 4, b: 12 },
+        { a: 4, b: 20 },
         { a: 5, b: 8 }
     ]
     return (
@@ -182,6 +183,7 @@ const Profile = props => {
                                 >
                                     <InputLabel htmlFor="filled-adornment-password">Ancien mot de passe</InputLabel>
                                     <FilledInput
+                                        size="small"
                                         id="filled-adornment-password"
                                         type={values.showCurrentPassword ? "text" : "password"}
                                         value={values.currentPassword}
@@ -206,6 +208,7 @@ const Profile = props => {
                                 >
                                     <InputLabel htmlFor="filled-adornment-password">Nouveau mot de passe</InputLabel>
                                     <FilledInput
+                                        size="small"
                                         id="filled-adornment-password"
                                         type={values.showPassword ? "text" : "password"}
                                         value={values.password}
@@ -226,19 +229,16 @@ const Profile = props => {
                                 </FormControl>
                                 <Button onClick={updatePassword}><SendIcon /></Button>
                             </div>}
-
                         </div>
                     </div>
 
                 </div>
 
-
-
-
                 {userInfo.role === 'student' ?
                     <div className='profileRight'>
                         <div className="chartCtnr">
                             <div className="pieChart">
+                            <h3>Taux de retards/absences</h3>
                                 <UserStat
                                     data={data}
                                     width={200}
@@ -248,7 +248,8 @@ const Profile = props => {
                                 />
                             </div>
                             <div className="lineChart">
-                                <LineChart data={dataL} width={500} height={350} margin={20} />
+                                <h3>Evolution des retards/absences sur le mois</h3>
+                                <LineChart data={dataL} width={500} height={300}  />
                             </div>
                         </div>
                     </div>

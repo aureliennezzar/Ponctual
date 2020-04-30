@@ -51,7 +51,7 @@ select:focus {
   fill-opacity: 0.3;
 }
 
-.lineChartt path {
+.lineChart path {
   stroke: steelblue;
   stroke-width: 2px;
   fill: none;
@@ -68,10 +68,10 @@ select:focus {
   text-anchor: middle;
 }
 
-.lineChart > .axis-labels line {
+.lineChart  .axis-labels line {
   stroke: #000;
 }
 
-.lineChart > .gridline {
+.lineChart  .gridline {
   opacity: 0.2;
 }
