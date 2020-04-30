@@ -17,6 +17,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import SendIcon from '@material-ui/icons/Send';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
     },
     textField: {
         width: '20ch',
-        fontSize:'20px'
     },
 }));
 
@@ -82,7 +82,8 @@ const Profile = props => {
 
             const user = auth().currentUser;
             if (userInfo.role === "student") setDataStudent(user)
-            const { displayName, email } = user
+            const { displayName, email} = user
+            
             if (user) {
 
                 setState({
@@ -174,14 +175,16 @@ const Profile = props => {
 
                         <div style={{ left: 0 }}><p> {`Email : ${state.email}`}</p><p>{`Rôle : ${state.role}`}</p></div>
 
-                        <div style={{ display: "flex", flexDirection: "column" }}>
-                            {state.resetPassword === false ? <Button onClick={() => setState({ ...state, resetPassword: !state.resetPassword })}>Réinitialiser mot de passe</Button> : null}
-                            {state.resetPassword && <div style={{ display: "flex", justifyContent: "center" }}>
+                        <div style={{ display: "flex", flexDirection: "column", width:"90%",alignItems:"center"}}>
+                            {state.resetPassword === false ? <Button style={{width:"50%"}} onClick={() => setState({ ...state, resetPassword: !state.resetPassword })}>Réinitialiser mot de passe</Button> : null}
+                            {state.resetPassword && <div style={{ display: "flex", justifyContent: "center",width:"95%",alignItems:"center" }}>
+                                <Button onClick={() => setState({ ...state, resetPassword: false })} style={{height:48,width:40}}><CancelIcon/></Button>
                                 <FormControl
                                     className={clsx(classes.margin, classes.textField)}
                                     variant="filled"
+                                    size="small"
                                 >
-                                    <InputLabel htmlFor="filled-adornment-password">Ancien mot de passe</InputLabel>
+                                    <InputLabel style={{fontSize:"10px"}} htmlFor="filled-adornment-password">Ancien mot de passe</InputLabel>
                                     <FilledInput
                                         size="small"
                                         id="filled-adornment-password"
@@ -205,8 +208,10 @@ const Profile = props => {
                                 <FormControl
                                     className={clsx(classes.margin, classes.textField)}
                                     variant="filled"
+                                    size="small"
+                                    
                                 >
-                                    <InputLabel htmlFor="filled-adornment-password">Nouveau mot de passe</InputLabel>
+                                    <InputLabel style={{fontSize:"10px"}} htmlFor="filled-adornment-password">Nouveau mot de passe</InputLabel>
                                     <FilledInput
                                         size="small"
                                         id="filled-adornment-password"
@@ -227,7 +232,7 @@ const Profile = props => {
                                         }
                                     />
                                 </FormControl>
-                                <Button onClick={updatePassword}><SendIcon /></Button>
+                                <Button onClick={updatePassword} style={{height:48,width:40}}><SendIcon /></Button>
                             </div>}
                         </div>
                     </div>
