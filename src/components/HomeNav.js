@@ -65,16 +65,17 @@ const HomeNav = props => {
                             <div elevation={4} className={classes.paper}>
                                 <Tooltip title="Emploi du temps"><NavLink to={"/agenda"} ><Button ><TableChartIcon /></Button></NavLink></Tooltip>
                             </div>
-                        </Grow></> :
-                            <> <Grow
-                                in={open}
-                                style={{ transformOrigin: "0 0 0" }}
-                                {...(open ? { timeout: 500 } : {})}
-                            >
-                                <div elevation={4} className={classes.paper}>
-                                    <Tooltip title="Gestion"><NavLink to={"/gestion"} ><Button><TuneIcon /></Button></NavLink></Tooltip>
-                                </div>
-                            </Grow> </>}
+                        </Grow></> : null
+                            // <> <Grow
+                            //     in={open}
+                            //     style={{ transformOrigin: "0 0 0" }}
+                            //     {...(open ? { timeout: 500 } : {})}
+                            // >
+                            //     <div elevation={4} className={classes.paper}>
+                            //         <Tooltip title="Gestion"><NavLink to={"/gestion"} ><Button><TuneIcon /></Button></NavLink></Tooltip>
+                            //     </div>
+                            // </Grow> </>
+                            }
                         {teacher || student ? <Grow
                             in={open}
                             style={{ transformOrigin: "0 0 0" }}

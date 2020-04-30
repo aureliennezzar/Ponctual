@@ -8,24 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { NavLink } from "react-router-dom";
 
-// const useStyles = makeStyles((theme) => ({
-//     root: {
-//         display: 'flex',
-//         width: '100%',
-//         textAlign: 'center',
-//         justifyContent: "space-between",
-//         alignItems: "center",
-//         '& input': {
-//             width: 200,
-//             height: '100%',
-//         },
-//         '& > .select': {
-//             width: 200,
-//             height: '80%'
-//         }
-//     }
-// }));
-// const styles = useStyles();
+
 class TimeTablePanel extends Component {
     constructor(props) {
         super(props)

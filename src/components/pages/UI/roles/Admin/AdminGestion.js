@@ -43,8 +43,7 @@ const theme = createMuiTheme({
 
 const Admin = props => {
   return (
-    <>
-      <Nav userInfo={props.userInfo} />
+      
       <div className="adminPanel">
 
         <div className="left">
@@ -63,7 +62,6 @@ const Admin = props => {
 
         </div>
       </div>
-    </>
   )
 }
 export default Admin

@@ -19,7 +19,20 @@
     /* show it on small screens */
 }
 
-@media screen and (min-width: 401px) and (max-width: 999px) {
+@media screen and (min-width: 401px) and (max-width: 1149px) {
+    #teacherTitle {
+        display: none;
+    }
+    /* hide it elsewhere */
+}
+@media screen and (min-height: 0px) and (max-height: 400px) {
+    #teacherTitle  {
+        display: block;
+    }
+    /* show it on small screens */
+}
+
+@media screen and (min-height: 0px) and (max-height: 872px) {
     #teacherTitle {
         display: none;
     }

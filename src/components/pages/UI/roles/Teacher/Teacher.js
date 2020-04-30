@@ -50,7 +50,6 @@ class Teacher extends Component {
 
   componentDidMount() {
     if (this.state.loading) {
-      document.body.style.background = "#F4F7F6";
       const { currentUser } = auth()
       this.setState({
         ...this.state,
@@ -66,8 +65,7 @@ class Teacher extends Component {
   }
 
   initAppointments = (user) => {
-    // const todayDate = new Date()
-    const todayDate = new Date('April 30, 2020 08:02:00')
+    const todayDate = new Date()
 
     db.collection("users").doc(user.uid).get().then((doc) => {
       const tab = Object.values(doc.data().appointments)

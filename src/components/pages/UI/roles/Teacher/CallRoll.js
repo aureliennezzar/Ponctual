@@ -5,7 +5,6 @@ import Nav from '../../../../Nav'
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import firebase from 'firebase';
 import './CallRoll.css'
@@ -13,10 +12,10 @@ import './CallRoll.css'
 const CallRoll = props => {
     const { classe } = props.location.state.actualAppointment
     const { actualAppointment, teacherUid, studentsMessages } = props.location.state
+    
+    console.log(studentsMessages)
     const [noStuds, setNoStuds] = useState(false)
-    const [usersData, setUsersData] = useState([
-        // { status: "absent", uid: "478632748632", displayName: `test test`, photoUrl: null },
-    ])
+    const [usersData, setUsersData] = useState([])
     const [state, setState] = useState({
         actualAppointment,
         teacherUid,
@@ -47,7 +46,6 @@ const CallRoll = props => {
                                                 if (state.isFirstCallRoll) {
                                                     console.log("FIRST CALL ROLL")
                                                     db.collection("users").doc(state.teacherUid).update({
-                                                        // firstCallRoll: new Date('April 30, 2020 08:02:00')
                                                         firstCallRoll: new Date()
                                                     })
                                                 }
@@ -93,9 +91,7 @@ const CallRoll = props => {
         }
     })
     const handleClick = (e) => {
-
-        const timestamp = new Date('April 30, 2020 08:10:00');
-        // const timestamp = new Date();
+        const timestamp = new Date();
         if (timestamp > new Date(actualAppointment.endDate)) return
         const eventStyle = e.currentTarget.style
         const style = e.currentTarget.getAttribute("style")
@@ -155,7 +151,9 @@ const CallRoll = props => {
     return (
         <>
             <Nav userInfo={props.userInfo} />
+            
             <div className="callRollPanelCtnr">
+            <h1 id='callRollTitle' style={{position: "fixed", top:100}}>{actualAppointment.title} - {actualAppointment.classe}</h1>
 
                 <div className="studentsMessagesPanel">
                     <div style={{
@@ -215,6 +213,7 @@ const CallRoll = props => {
                     </div>
 
                     <div style={{ width: "80%" }}>
+                        <div style={{marginBottom: "50px"}}><p style={{color:"#676767"}}>Appuyer sur un avatar pour noter la presence de l'élève.</p></div>
                         <div className="studentsCtnr">
                             {loading || noStuds ? <div className="loader"><p>Aucun élève.</p></div> : usersData.map((user, i) => {
                                 const { displayName, photoUrl, uid, status } = user;

@@ -15,9 +15,7 @@ const Admin = props => {
   }, [])
   return (
     <div className="teacherPanel">
-      {loading === false && user && <h1>Bonjour, {user.displayName} Admin</h1>}
-    
-     
+      {loading === false && user && <h1>Bonjour, ADMIN</h1>}
     </div>
   )
 }

@@ -1,16 +1,17 @@
 .nextCourseInfosCtnr {
     display: flex;
     justify-content: center;
-    width: 500px;
-    height: auto;   
+    width: 575px;
+    height: auto;
     color: black;
     background: white;
     text-align: center;
-    -webkit-box-shadow: 0px 0px 22px -12px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 22px -12px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 22px -12px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 0px 22px -12px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 22px -12px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 22px -12px rgba(0, 0, 0, 0.75);
 }
-.nextCourseInfos{
+
+.nextCourseInfos {
     text-align: center;
     align-items: center;
 }
@@ -23,7 +24,6 @@
     justify-content: center;
     align-items: center;
 }
-
 
 .dayTimeTableCtnr {
     position: absolute;
@@ -54,4 +54,18 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
     cursor: pointer;
+}
+
+@media screen and (min-height: 0px) and (max-height: 400px) {
+    #studentTitle {
+        display: block;
+    }
+    /* show it on small screens */
+}
+
+@media screen and (min-height: 0px) and (max-height: 790px) {
+    #studentTitle {
+        display: none;
+    }
+    /* hide it elsewhere */
 }

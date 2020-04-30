@@ -88,7 +88,7 @@ class Student extends Component {
           const aDd = String(appointmentDay.getDate()).padStart(2, '0');
           const aMm = String(appointmentDay.getMonth() + 1).padStart(2, '0');
           appointmentDay = aDd + '/' + aMm;
-          if (appointmentDay === "30/04") {
+          if (appointmentDay === today) {
             return appointment
           }
         })
@@ -198,7 +198,7 @@ class Student extends Component {
               className={classes.button}
               startIcon={<TableChartIcon />}
               onClick={this.handleClick}
-            // disabled={this.state.isBtnDisable}
+            disabled={this.state.isBtnDisable}
             >
               Vos cours de la journée
         </Button>
@@ -208,7 +208,7 @@ class Student extends Component {
               className={classes.button}
               startIcon={<AnnouncementIcon />}
               onClick={this.initContact}
-            // disabled={this.state.isBtnDisable}
+            disabled={this.state.isBtnDisable}
             >
               Signaler un retard/absence
         </Button>
@@ -218,7 +218,7 @@ class Student extends Component {
 
     return (
       <div className="studentPanel">
-        {this.state.loading === false && this.state.user && <h1 style={{ position: "fixed", top: 160,fontSize:"40px" }}>Bonjour, {this.state.user.displayName} !</h1>}
+        {this.state.loading === false && this.state.user && <h1 id="studentTitle" style={{ position: "fixed", top: 100,fontSize:"40px" }}>Bonjour, {this.state.user.displayName} !</h1>}
         <div>
           <h4>Votre prochain cours : </h4>
           {nextCourseInfosStudent}

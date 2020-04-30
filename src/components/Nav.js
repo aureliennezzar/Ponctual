@@ -71,7 +71,7 @@ const Nav = props => {
             </div>
 
             <div className="middleNav">
-                <p>LOGO</p>
+                <p>PONCTUAL</p>
             </div>
             <div className="rightNav">
 
