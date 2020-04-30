@@ -191,35 +191,38 @@ class Student extends Component {
           <p>Formateur : <b>{this.state.nextAppointment.formateur}</b></p>
           <p>Salle : <b>{this.state.nextAppointment.location}</b></p>
           <p>Informations : <b>{this.state.nextAppointment.notes}</b></p>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            startIcon={<TableChartIcon />}
-            onClick={this.handleClick}
-          // disabled={this.state.isBtnDisable}
-          >
-            Vos cours de la journée
+          <div style={{ display: "flex", height: "55px" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              startIcon={<TableChartIcon />}
+              onClick={this.handleClick}
+            // disabled={this.state.isBtnDisable}
+            >
+              Vos cours de la journée
         </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            startIcon={<AnnouncementIcon />}
-            onClick={this.initContact}
-          // disabled={this.state.isBtnDisable}
-          >
-            Signaler un retard/absence
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+              startIcon={<AnnouncementIcon />}
+              onClick={this.initContact}
+            // disabled={this.state.isBtnDisable}
+            >
+              Signaler un retard/absence
         </Button>
+          </div>
         </div>
       </div>
 
     return (
       <div className="studentPanel">
-        {this.state.loading === false && this.state.user && <h1>Bonjour, {this.state.user.displayName}</h1>}
-
-        <p>Votre prochain cours : </p>
-        {nextCourseInfosStudent}
+        {this.state.loading === false && this.state.user && <h1 style={{ position: "fixed", top: 160,fontSize:"40px" }}>Bonjour, {this.state.user.displayName} !</h1>}
+        <div>
+          <h4>Votre prochain cours : </h4>
+          {nextCourseInfosStudent}
+        </div>
         {this.state.showContact
           ? <Fade in={this.state.showContact}>
             <StudentContact submit={this.handleClick} user={this.state.user} userClass={this.state.userClass} initContact={this.initContact} todayAppointments={this.state.todayAppointments} nextAppointment={this.state.nextAppointment} />
