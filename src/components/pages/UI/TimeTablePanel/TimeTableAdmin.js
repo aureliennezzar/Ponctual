@@ -567,85 +567,87 @@ class TimeTableAdmin extends React.PureComponent {
             <h2>Erreur ! Cette page n'existe pas ! </h2>
           </div>
           :
-          <Paper height="50%">
-            <Scheduler
-              firstDayOfWeek={1}
-              locale={'fr-FR'}
-              data={data}
-              height={"auto"}
-            >
-              <ViewState
-                currentDate={currentDate}
-                onCurrentDateChange={this.currentDateChange}
-              />
-              <EditingState
-                onCommitChanges={this.commitChanges}
-                onEditingAppointmentChange={this.onEditingAppointmentChange}
-                onAddedAppointmentChange={this.onAddedAppointmentChange}
-              />
-              <WeekView
-                startDayHour={startDayHour}
-                endDayHour={endDayHour}
-                cellDuration={60}
-                excludedDays={[0]}
-              />
-              <EditRecurrenceMenu />
-              <Appointments
-                appointmentContentComponent={AppointmentContent}
-              />
-              <AppointmentTooltip
-                showOpenButton
-                showCloseButton
-                showDeleteButton
-              />
-              <Toolbar />
-              <DateNavigator />
-              <TodayButton messages={{ today: "Aujourd'hui" }} />
-              <AppointmentForm
-                overlayComponent={this.appointmentForm}
-                visible={editingFormVisible}
-                onVisibilityChange={this.toggleEditingFormVisibility}
-              />
-              <DragDropProvider />
-            </Scheduler>
+          <div style={{position:"fixed", top:60}}>
+            <Paper height="50%">
+              <Scheduler
+                firstDayOfWeek={1}
+                locale={'fr-FR'}
+                data={data}
+                height={"auto"}
+              >
+                <ViewState
+                  currentDate={currentDate}
+                  onCurrentDateChange={this.currentDateChange}
+                />
+                <EditingState
+                  onCommitChanges={this.commitChanges}
+                  onEditingAppointmentChange={this.onEditingAppointmentChange}
+                  onAddedAppointmentChange={this.onAddedAppointmentChange}
+                />
+                <WeekView
+                  startDayHour={startDayHour}
+                  endDayHour={endDayHour}
+                  cellDuration={60}
+                  excludedDays={[0]}
+                />
+                <EditRecurrenceMenu />
+                <Appointments
+                  appointmentContentComponent={AppointmentContent}
+                />
+                <AppointmentTooltip
+                  showOpenButton
+                  showCloseButton
+                  showDeleteButton
+                />
+                <Toolbar />
+                <DateNavigator />
+                <TodayButton messages={{ today: "Aujourd'hui" }} />
+                <AppointmentForm
+                  overlayComponent={this.appointmentForm}
+                  visible={editingFormVisible}
+                  onVisibilityChange={this.toggleEditingFormVisibility}
+                />
+                <DragDropProvider />
+              </Scheduler>
 
-            <Dialog
-              open={confirmationVisible}
-              onClose={this.cancelDelete}
-            >
-              <DialogTitle>
-                Supprimer le cours
+              <Dialog
+                open={confirmationVisible}
+                onClose={this.cancelDelete}
+              >
+                <DialogTitle>
+                  Supprimer le cours
           </DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Êtes-vous sûr de vouloir supprimer ce cours ?
+                <DialogContent>
+                  <DialogContentText>
+                    Êtes-vous sûr de vouloir supprimer ce cours ?
             </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.toggleConfirmationVisible} color="primary" variant="outlined">
-                  Annuler
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.toggleConfirmationVisible} color="primary" variant="outlined">
+                    Annuler
             </Button>
-                <Button onClick={this.commitDeletedAppointment} color="secondary" variant="outlined">
-                  Supprimer
+                  <Button onClick={this.commitDeletedAppointment} color="secondary" variant="outlined">
+                    Supprimer
             </Button>
-              </DialogActions>
-            </Dialog>
+                </DialogActions>
+              </Dialog>
 
-            <Fab
-              color="secondary"
-              className={classes.addButton}
-              onClick={() => {
-                this.setState({ editingFormVisible: true });
-                this.onEditingAppointmentChange(undefined);
-                this.onAddedAppointmentChange({
-                  startDate: new Date(currentDate).setHours(startDayHour),
-                  endDate: new Date(currentDate).setHours(startDayHour + 1),
-                });
-              }}
-            >
-              <AddIcon />
-            </Fab>
-          </Paper>
+              <Fab
+                color="secondary"
+                className={classes.addButton}
+                onClick={() => {
+                  this.setState({ editingFormVisible: true });
+                  this.onEditingAppointmentChange(undefined);
+                  this.onAddedAppointmentChange({
+                    startDate: new Date(currentDate).setHours(startDayHour),
+                    endDate: new Date(currentDate).setHours(startDayHour + 1),
+                  });
+                }}
+              >
+                <AddIcon />
+              </Fab>
+            </Paper>
+          </div>
         }
       </>
     );

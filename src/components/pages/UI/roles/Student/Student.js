@@ -52,7 +52,6 @@ class Student extends Component {
 
   componentDidMount() {
     if (this.state.loading) {
-      document.body.style.background = "#F4F7F6";
       const { currentUser } = auth()
       this.setState({
         ...this.state,

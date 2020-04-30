@@ -231,40 +231,43 @@ export default class TimeTable extends React.PureComponent {
         return (
             <>
                 <Nav userInfo={this.props.userInfo} />
-                <Paper>
-                    <Scheduler
-                        data={data}
-                        height={"auto"}
-                        firstDayOfWeek={1}
-                        locale={'fr-FR'}
-                    >
-                        <ViewState
-                            currentDate={currentDate}
-                            onCurrentDateChange={this.currentDateChange}
-                        />
-                        <WeekView
-                            startDayHour={8}
-                            endDayHour={18}
-                            cellDuration={60}
-                        />
 
-                        <Appointments
-                            appointmentContentComponent={AppointmentContent}
-                        />
+                <div style={{ position: "fixed", top: 60 }}>
+                    <Paper>
+                        <Scheduler
+                            data={data}
+                            height={"auto"}
+                            firstDayOfWeek={1}
+                            locale={'fr-FR'}
+                        >
+                            <ViewState
+                                currentDate={currentDate}
+                                onCurrentDateChange={this.currentDateChange}
+                            />
+                            <WeekView
+                                startDayHour={8}
+                                endDayHour={18}
+                                cellDuration={60}
+                            />
 
-                        <AppointmentTooltip
-                            showCloseButton
-                            visible={visible}
-                            contentComponent={Content}
-                            onVisibilityChange={this.toggleVisibility}
-                            appointmentMeta={appointmentMeta}
-                            onAppointmentMetaChange={this.onAppointmentMetaChange}
-                        />
-                        <Toolbar />
-                        <DateNavigator />
-                        <TodayButton messages={{today: "Aujourd'hui"}}/>
-                    </Scheduler>
-                </Paper>
+                            <Appointments
+                                appointmentContentComponent={AppointmentContent}
+                            />
+
+                            <AppointmentTooltip
+                                showCloseButton
+                                visible={visible}
+                                contentComponent={Content}
+                                onVisibilityChange={this.toggleVisibility}
+                                appointmentMeta={appointmentMeta}
+                                onAppointmentMetaChange={this.onAppointmentMetaChange}
+                            />
+                            <Toolbar />
+                            <DateNavigator />
+                            <TodayButton messages={{ today: "Aujourd'hui" }} />
+                        </Scheduler>
+                    </Paper>
+                </div>
             </>
         );
     }
