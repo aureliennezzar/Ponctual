@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import { storageRef, db } from "../../../../../../scripts/services/firebase";
+import { Link } from 'react-router-dom'
 
 const ClassMenu = (props) => {
     const [usersData, setUsersData] = useState([])
@@ -20,7 +21,7 @@ const ClassMenu = (props) => {
                                     storageRef.child(eleve).listAll().then(function (res) {
                                         res.items.forEach(function (itemRef) {
                                             itemRef.getDownloadURL().then((url) => {
-                                                setUsersData(oldArray => [...oldArray, { displayName: `${doc.data().prenom} ${doc.data().nom}`, photoUrl: url }])
+                                                setUsersData(oldArray => [...oldArray, {uid:doc.id, displayName: `${doc.data().prenom} ${doc.data().nom}`, photoUrl: url }])
                                             }).catch(function (error) {
                                             });
                                         });
@@ -28,7 +29,7 @@ const ClassMenu = (props) => {
                                     });
 
                                 } else {
-                                    setUsersData(oldArray => [...oldArray, { displayName: `${doc.data().prenom} ${doc.data().nom}`, photoUrl: null }])
+                                    setUsersData(oldArray => [...oldArray, { uid:doc.id, displayName: `${doc.data().prenom} ${doc.data().nom}`, photoUrl: null }])
                                 }
                             }
                         }).catch(function (error) {
@@ -44,8 +45,8 @@ const ClassMenu = (props) => {
     return (
         <>
             {loading || noStuds ? <div className="loader"><p>Aucun élève.</p></div> : usersData.map((user, i) => {
-                const { displayName, photoUrl } = user;
-                return <div key={i} style={{ margin: 10 }}><Tooltip title={displayName} ><Avatar alt={displayName} src={photoUrl} /></Tooltip></div>
+                const { displayName, photoUrl,uid } = user;
+                return <Link to={`/profile/${uid}`}><div key={i} style={{ margin: 10 }}><Tooltip title={displayName} ><Avatar alt={displayName} src={photoUrl} /></Tooltip></div></Link>
             })}
         </>
 

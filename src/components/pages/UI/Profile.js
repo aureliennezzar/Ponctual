@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import UserStat from "./UserStat"
-import LineChart from "./LineChart"
 import Nav from "../../../components/Nav"
 import firebase from 'firebase'
 import { auth, db, storageRef } from "../../../scripts/services/firebase";
@@ -18,6 +17,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import SendIcon from '@material-ui/icons/Send';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { Redirect } from 'react-router-dom'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,18 +39,20 @@ const useStyles = makeStyles((theme) => ({
 const Profile = props => {
     const { userInfo } = props
     const [state, setState] = useState({
-        displayName: "",
+        redirect: false,
+        displayName: "Nom indéfini",
         email: "",
         role: "",
-        photoURL: <AccountCircleIcon style={{ height: 150, width: 150 }} />,
         resetPassword: false
     })
+    const [photoURL, setPhotoURL] = useState(<AccountCircleIcon style={{ height: 150, width: 150 }} />)
 
     const [values, setValues] = useState({
         password: '',
         showPassword: false,
         currentPassword: '',
         showCurrentPassword: false,
+        showChangePassword: true,
 
     });
 
@@ -58,56 +60,73 @@ const Profile = props => {
         dataset: [{ value: 0, label: "retards" }, { value: 0, label: "absences" }, { value: 0, label: "presences" }],
         colors: ['orange', 'red', 'green']
     })
+    const { pathname } = props.location
+    const path = pathname.split('/')
     const setDataStudent = (user) => {
+        console.log(user)
 
-        var docRef = db.collection("users").doc(user.uid);
+        var docRef = db.collection("users").doc(user);
 
         docRef.get().then(function (doc) {
             if (doc.exists) {
+                setState({
+                    ...state,
+                    displayName: `${doc.data().nom} ${doc.data().prenom}`,
+                    email: doc.data().email,
+                    role: doc.data().role,
+                   
+                })
                 setData({
                     ...data,
                     dataset: [{ value: doc.data().retards.length, label: "retard" }, { value: doc.data().absences.length, label: "absences" }, { value: doc.data().presences, label: "presences" }]
                 })
+
             } else {
-                // doc.data() will be undefined in this case
                 console.log("No such document!");
             }
         }).catch(function (error) {
             console.log("Error getting document:", error);
         });
+
     }
 
-    useEffect(
-        () => {
-
-            const user = auth().currentUser;
-            if (userInfo.role === "student") setDataStudent(user)
-            const { displayName, email} = user
-            
-            if (user) {
-
-                setState({
-                    ...state,
-                    displayName,
-                    email,
-                    role: userInfo.role,
-                })
-                storageRef.child(user.uid).listAll().then(function (res) {
-                    res.items.forEach(function (itemRef) {
-                        itemRef.getDownloadURL().then((url) => {
-                            setState({
-                                ...state,
-                                displayName,
-                                email,
-                                role: userInfo.role,
-                                photoURL: <img className="resize" src={url} style={{ borderRadius: "50%", height: 150, width: 150 }} />,
-                            })
-
-                        }).catch(function (error) {
-                        });
-                    });
+    const setPhoto = (user) => {
+        console.log(user)
+        storageRef.child(user).listAll().then(function (res) {
+            console.log(res)
+            res.items.forEach(function (itemRef) {
+                itemRef.getDownloadURL().then((url) => {
+                    console.log(url)
+                    setPhotoURL(
+                       
+                        <img className="resize" src={url} style={{ borderRadius: "50%", height: 150, width: 150 }} />,
+                    )
                 }).catch(function (error) {
                 });
+            });
+        }).catch(function (error) {
+        });
+    }
+    useEffect(
+        () => {
+            if (path.length > 2 && userInfo.role === 'admin') {
+                setDataStudent(path[2])
+                setValues({
+                    ...state,
+                    showChangePassword: false
+                })
+                setPhoto(path[2])
+                
+
+            } else {
+               const uid = auth().currentUser.uid
+                setDataStudent(uid)
+                setValues({
+                    ...state,
+                    showChangePassword: true
+                })
+     
+                setPhoto(uid)
             }
         }, [!data]);
 
@@ -152,17 +171,17 @@ const Profile = props => {
     }
     const classes = useStyles();
 
-
+    console.log(state.displayName)
     const prenom = state.displayName.split(' ')[0]
     const nom = state.displayName.split(' ')[1]
- 
-    const dataL = [
-        { a: 1, b: 10 },
-        { a: 2, b: 6 },
-        { a: 3, b: 2 },
-        { a: 4, b: 20 },
-        { a: 5, b: 8 }
-    ]
+
+  
+
+    if (path.length > 2 && path[2] !== auth().currentUser.uid && userInfo.role !== "admin") {
+        console.log(path)
+        return <Redirect to={{ pathname: "/profile" }} />
+    }
+
     return (
         <>
             <Nav userInfo={props.userInfo} />
@@ -170,21 +189,21 @@ const Profile = props => {
                 <div className="profileLeft">
 
                     <div className="userInfoCtnr">
-                        {state.photoURL}
+                        {photoURL}
                         <p id='nom'>{`${prenom} ${nom}`}</p>
 
                         <div style={{ left: 0 }}><p> {`Email : ${state.email}`}</p><p>{`Rôle : ${state.role}`}</p></div>
 
-                        <div style={{ display: "flex", flexDirection: "column", width:"90%",alignItems:"center"}}>
-                            {state.resetPassword === false ? <Button style={{width:"50%"}} onClick={() => setState({ ...state, resetPassword: !state.resetPassword })}>Réinitialiser mot de passe</Button> : null}
-                            {state.resetPassword && <div style={{ display: "flex", justifyContent: "center",width:"95%",alignItems:"center" }}>
-                                <Button onClick={() => setState({ ...state, resetPassword: false })} style={{height:48,width:40}}><CancelIcon/></Button>
+                        {values.showChangePassword && <div style={{ display: "flex", flexDirection: "column", width: "90%", alignItems: "center" }}>
+                            {state.resetPassword === false ? <Button style={{ width: "50%" }} onClick={() => setState({ ...state, resetPassword: !state.resetPassword })}>Réinitialiser mot de passe</Button> : null}
+                            {state.resetPassword && <div style={{ display: "flex", justifyContent: "center", width: "95%", alignItems: "center" }}>
+                                <Button onClick={() => setState({ ...state, resetPassword: false })} style={{ height: 48, width: 40 }}><CancelIcon /></Button>
                                 <FormControl
                                     className={clsx(classes.margin, classes.textField)}
                                     variant="filled"
                                     size="small"
                                 >
-                                    <InputLabel style={{fontSize:"10px"}} htmlFor="filled-adornment-password">Ancien mot de passe</InputLabel>
+                                    <InputLabel style={{ fontSize: "10px" }} htmlFor="filled-adornment-password">Ancien mot de passe</InputLabel>
                                     <FilledInput
                                         size="small"
                                         id="filled-adornment-password"
@@ -209,9 +228,9 @@ const Profile = props => {
                                     className={clsx(classes.margin, classes.textField)}
                                     variant="filled"
                                     size="small"
-                                    
+
                                 >
-                                    <InputLabel style={{fontSize:"10px"}} htmlFor="filled-adornment-password">Nouveau mot de passe</InputLabel>
+                                    <InputLabel style={{ fontSize: "10px" }} htmlFor="filled-adornment-password">Nouveau mot de passe</InputLabel>
                                     <FilledInput
                                         size="small"
                                         id="filled-adornment-password"
@@ -232,18 +251,18 @@ const Profile = props => {
                                         }
                                     />
                                 </FormControl>
-                                <Button onClick={updatePassword} style={{height:48,width:40}}><SendIcon /></Button>
+                                <Button onClick={updatePassword} style={{ height: 48, width: 40 }}><SendIcon /></Button>
                             </div>}
-                        </div>
+                        </div>}
                     </div>
 
                 </div>
 
-                {userInfo.role === 'student' ?
+                {userInfo.role === 'student' || path.length > 2 ?
                     <div className='profileRight'>
                         <div className="chartCtnr">
                             <div className="pieChart">
-                            <h3>Taux de retards/absences</h3>
+                                <h3>Taux de retards/absences</h3>
                                 <UserStat
                                     data={data}
                                     width={200}
@@ -252,10 +271,7 @@ const Profile = props => {
                                     outerRadius={100}
                                 />
                             </div>
-                            <div className="lineChart">
-                                <h3>Evolution des retards/absences sur le mois</h3>
-                                <LineChart data={dataL} width={500} height={300}  />
-                            </div>
+                           
                         </div>
                     </div>
                     : null}
