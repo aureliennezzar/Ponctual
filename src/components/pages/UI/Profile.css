@@ -29,7 +29,7 @@
     flex-direction: column;
     height: 500px;
     width: 60%;
-    background-color: rgb(241, 241, 241);
+    background-color: #ECECEC;
     -webkit-box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
     -moz-box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
     box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
@@ -44,12 +44,29 @@
     border-left:1px solid rgb(214, 214, 214);
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
 }
 .pieChart{
+    flex-direction: column;
+    width: 30%;
+    height: 40%;
+    background-color: #ECECEC;
+    -webkit-box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
+    -moz-box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
+    box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 .lineChart{
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    height: 50%;
+    background-color: #ECECEC;
+    -webkit-box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
+    -moz-box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
+    box-shadow: inset 0px 0px 20px -4px rgba(163,163,163,1);
     display: flex;
     justify-content: center;
 

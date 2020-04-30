@@ -159,7 +159,7 @@ const Profile = props => {
         { a: 1, b: 10 },
         { a: 2, b: 6 },
         { a: 3, b: 2 },
-        { a: 4, b: 12 },
+        { a: 4, b: 20 },
         { a: 5, b: 8 }
     ]
     return (
@@ -238,6 +238,7 @@ const Profile = props => {
                     <div className='profileRight'>
                         <div className="chartCtnr">
                             <div className="pieChart">
+                            <h3>Taux de retards/absences</h3>
                                 <UserStat
                                     data={data}
                                     width={200}
@@ -247,7 +248,8 @@ const Profile = props => {
                                 />
                             </div>
                             <div className="lineChart">
-                                <LineChart data={dataL} width={500} height={350}  />
+                                <h3>Evolution des retards/absences sur le mois</h3>
+                                <LineChart data={dataL} width={500} height={300}  />
                             </div>
                         </div>
                     </div>

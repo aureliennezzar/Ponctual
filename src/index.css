@@ -68,10 +68,10 @@ select:focus {
   text-anchor: middle;
 }
 
-.lineChart > .axis-labels line {
+.lineChart  .axis-labels line {
   stroke: #000;
 }
 
-.lineChart > .gridline {
+.lineChart  .gridline {
   opacity: 0.2;
 }
