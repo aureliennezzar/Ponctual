@@ -81,7 +81,7 @@ const HomeNav = props => {
                             {...(open ? { timeout: 700 } : {})}
                         >
                             <div elevation={4} className={classes.paper}>
-                                {teacher ? <>
+                                {/* {teacher ? <>
                                     <Tooltip title="régider des devoirs">
                                         <Button >
                                             <LibraryBooksIcon />
@@ -94,7 +94,7 @@ const HomeNav = props => {
                                                 <LibraryBooksIcon />
                                             </Button>
                                         </Tooltip>
-                                    </>}
+                                    </>} */}
                             </div>
                         </Grow> : null}
 

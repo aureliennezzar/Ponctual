@@ -21,7 +21,7 @@ const CreateHomeWork = ()=>{
     }
     return(
         <div>
-        <p>Actions : </p>
+        <p>Devoirs : </p>
         <div className="createHomeWorkCtnr">
           <div className="createHomeWorkForm">
             <Button

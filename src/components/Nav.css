@@ -1,11 +1,13 @@
 nav {
+    position: fixed;
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    height: 6.5vh;
+    height: 62px;
     background: rgb(9, 111, 179);
     color: rgb(255, 255, 255);
     border-bottom: 1px #E6EAEA solid;
-    
+    z-index: 1499;
 }
 .rightNav {
     display: flex;
@@ -33,7 +35,6 @@ nav {
 }
 
 nav  img.resize {
-
     width:35px;
     height:35px;
   

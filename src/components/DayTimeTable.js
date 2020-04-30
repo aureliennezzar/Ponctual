@@ -33,7 +33,7 @@ export default class DayTimeTable extends React.PureComponent {
           locale={'fr-FR'}
         >
           <ViewState
-            currentDate="2020-04-28"
+            currentDate="2020-04-30"
           />
           <DayView
             startDayHour={8}
