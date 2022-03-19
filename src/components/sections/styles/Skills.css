@@ -1,0 +1,97 @@
+.skills
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 60px);
+    text-align: center;
+    background: #2D293D;
+    color: #fff;
+}
+
+.skills h2
+{
+    padding-top: 60px;
+    padding-bottom: 30px;
+}
+
+.skillsCtnr
+{
+    display: flex;
+    justify-content: space-between;
+    width: 500px;
+    height: auto;
+    padding: 30px 0;
+}
+
+.techCtnr
+{
+    display: flex;
+    justify-content: space-between;
+    width: 350px;
+    padding-top: 30px;
+
+}
+.appCtnr
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 250px;
+    padding-top: 30px;
+
+}
+.restCtnr{
+    display: flex;
+}
+.skillsDescription{
+    width: 500px;
+}
+.icon 
+{
+    position: relative;
+}
+.icon .tooltiptext 
+{
+    opacity: 0;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.425);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    transition: opacity .2s;
+    will-change: opacity;
+    /* Position the tooltip */
+    z-index: 1;
+    /* margin-left: -60px; */
+  }
+.icon:hover{
+    cursor: pointer;
+
+  }
+.icon:hover .tooltiptext{
+    opacity: 1;
+    transition: opacity .2s;
+}
+#skillsDescription{
+    width: 50%;
+}
+
+@media screen and (max-width:490px){
+    .skillsCtnr, .techCtnr, .appCtnr{
+        width: 70%;
+    }
+    .icon{
+        width: 60px;
+    }
+    .icon img{
+        width: 60px;
+        height: 60px;
+    }
+    .firebaseIcon img{
+        height: 70px;
+
+    }
+}

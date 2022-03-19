@@ -1,0 +1,15 @@
+.projectData-buttons{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 65px;
+    top: 5px;
+    right: 10px;
+}
+.projectData-buttons img:hover{
+    filter: brightness(0%);
+}
+.projectData-buttons{
+    font-size: 20px;
+}

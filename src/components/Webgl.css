@@ -1,0 +1,61 @@
+canvas.webgl
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px !important;
+    height: 400px !important;
+    text-align: center;
+    background: rgba(99, 118, 131, 0);
+    color: #fff;
+    cursor: pointer;
+}
+.webglCtnr img{
+    position: absolute;
+    -webkit-touch-callout:none;
+}
+canvas.webgl h2
+{
+    padding-top: 70px;
+}
+canvas {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -ms-user-select: none; 
+}
+.webglCtnr{
+    position: relative;
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.webglCtnr p{
+    color: rgba(128, 128, 128, 0.726);
+}
+.square
+{
+    border: red 1px solid;
+    position: relative;
+    width: 100% !important;
+    min-height: calc(100vh - 64px) !important;
+}
+.titles{
+    position: absolute;
+    /* color: white; */
+}
+@media screen and (max-width: 333px){
+    .webglCtnr{
+        width: 350px;
+        height: 350px;
+    }
+    canvas.webgl{
+        width: 350px;
+        height: 350px;
+    }
+
+}

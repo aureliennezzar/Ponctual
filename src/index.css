@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque&family=Lato&display=swap');
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  touch-action: manipulation;
+}
+
+html * {
+  font-weight: 300;
+  font-size: 15px;
+}
+html h1{
+  font-size: 35px;
+}
+html h2{
+  font-size: 35px;
+}
+html h4{
+  font-size: 30px;
+}
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+h1, h2, h4 {
+  font-family: "Darker Grotesque",sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Light mode */
+
+@media (prefers-color-scheme: light) {
+  body {
+    background-color: white;
+    color: black;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #232020;
+    color: white;
+  }
+}

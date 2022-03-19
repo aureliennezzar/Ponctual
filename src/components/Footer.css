@@ -1,0 +1,10 @@
+.container  {
+    width: auto;
+    max-width: 900px;
+    padding: 0 15px;
+}
+#footer {
+    position: absolute;
+    bottom: 0;
+    height: 2.5rem;            /* Footer height */
+  }
